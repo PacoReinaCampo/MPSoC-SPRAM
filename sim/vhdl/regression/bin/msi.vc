@@ -43,8 +43,8 @@
 ../../../../rtl/vhdl/pkg/mpsoc_pkg.vhd
 
 ../../../../rtl/vhdl/ahb3/mpsoc_ahb3_spram.vhd
+../../../../rtl/vhdl/ahb3/mpsoc_ram_1r1w.vhd
+../../../../rtl/vhdl/ahb3/mpsoc_ram_1r1w_generic.vhd
 ../../../../rtl/vhdl/wb/mpsoc_wb_spram.vhd
-../../../../rtl/vhdl/core/mpsoc_ram_1r1w.vhd
-../../../../rtl/vhdl/core/mpsoc_ram_1r1w_generic.vhd
 
 ../../../../bench/vhdl/regression/mpsoc_msi_testbench.vhd
