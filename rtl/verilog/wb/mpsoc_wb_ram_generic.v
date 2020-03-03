@@ -10,8 +10,8 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Master Slave Interface Tesbench                               //
-//              AMBA3 AHB-Lite Bus Interface                                  //
+//              Single Port RAM                                               //
+//              Wishbone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -40,78 +40,42 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module mpsoc_msi_testbench;
-
-  //////////////////////////////////////////////////////////////////
-  //
-  // Constants
-  //
-  localparam XLEN = 64;
-  localparam PLEN = 64;
-
-  localparam MASTERS = 5;
-  localparam SLAVES  = 5;
-
-  localparam SYNC_DEPTH = 3;
-  localparam TECHNOLOGY = "GENERIC";
+module mpsoc_wb_ram_generic #(
+  parameter DEPTH   = 256,
+  parameter MEMFILE = ""
+)
+  (
+    input                          clk,
+    input      [3:0]               we,
+    input      [31:0]              din,
+    input      [$clog2(DEPTH)-1:0] waddr,
+    input      [$clog2(DEPTH)-1:0] raddr,
+    output reg [31:0]              dout
+  );
 
   //////////////////////////////////////////////////////////////////
   //
   // Variables
   //
-
-  //Common signals
-  wire                                     HRESETn;
-  wire                                     HCLK;
-
-  wire                                     mst_sram_HSEL;
-  wire               [PLEN           -1:0] mst_sram_HADDR;
-  wire               [XLEN           -1:0] mst_sram_HWDATA;
-  wire               [XLEN           -1:0] mst_sram_HRDATA;
-  wire                                     mst_sram_HWRITE;
-  wire               [                2:0] mst_sram_HSIZE;
-  wire               [                2:0] mst_sram_HBURST;
-  wire               [                3:0] mst_sram_HPROT;
-  wire               [                1:0] mst_sram_HTRANS;
-  wire                                     mst_sram_HMASTLOCK;
-  wire                                     mst_sram_HREADY;
-  wire                                     mst_sram_HREADYOUT;
-  wire                                     mst_sram_HRESP;
+  reg [31:0] mem [0:DEPTH-1];
 
   //////////////////////////////////////////////////////////////////
   //
   // Module Body
   //
+  always @(posedge clk) begin
+    if (we[0]) mem[waddr][7:0]   <= din[7:0];
+    if (we[1]) mem[waddr][15:8]  <= din[15:8];
+    if (we[2]) mem[waddr][23:16] <= din[23:16];
+    if (we[3]) mem[waddr][31:24] <= din[31:24];
+    dout <= mem[raddr];
+  end
 
-  //DUT AHB3
-  mpsoc_ahb3_spram #(
-    .MEM_SIZE          ( 0 ),
-    .MEM_DEPTH         ( 256 ),
-    .HADDR_SIZE        ( PLEN ),
-    .HDATA_SIZE        ( XLEN ),
-    .TECHNOLOGY        ( TECHNOLOGY ),
-    .REGISTERED_OUTPUT ( "NO" )
-  )
-  ahb3_spram (
-    //AHB Slave Interface
-    .HRESETn   ( HRESETn ),
-    .HCLK      ( HCLK    ),
-
-    .HSEL      ( mst_sram_HSEL      ),
-    .HADDR     ( mst_sram_HADDR     ),
-    .HWDATA    ( mst_sram_HWDATA    ),
-    .HRDATA    ( mst_sram_HRDATA    ),
-    .HWRITE    ( mst_sram_HWRITE    ),
-    .HSIZE     ( mst_sram_HSIZE     ),
-    .HBURST    ( mst_sram_HBURST    ),
-    .HPROT     ( mst_sram_HPROT     ),
-    .HTRANS    ( mst_sram_HTRANS    ),
-    .HMASTLOCK ( mst_sram_HMASTLOCK ),
-    .HREADYOUT ( mst_sram_HREADYOUT ),
-    .HREADY    ( mst_sram_HREADY    ),
-    .HRESP     ( mst_sram_HRESP     )
-  );
-
-  //DUT WB
-
+  generate
+    initial
+      if(MEMFILE != "") begin
+        $display("Preloading %m from %s", MEMFILE);
+        $readmemh(MEMFILE, mem);
+      end
+  endgenerate
 endmodule

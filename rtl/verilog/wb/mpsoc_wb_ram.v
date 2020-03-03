@@ -10,8 +10,8 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Master Slave Interface Tesbench                               //
-//              AMBA3 AHB-Lite Bus Interface                                  //
+//              Generic RAM                                                   //
+//              Wishbone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -40,78 +40,94 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module mpsoc_msi_testbench;
+module mpsoc_wb_ram #(
+  //Wishbone parameters
+  parameter DW = 32,
+
+  //Memory parameters
+  parameter DEPTH   = 256,
+  parameter AW      = $clog2(DEPTH),
+  parameter MEMFILE = ""
+)
+  (
+    input           wb_clk_i,
+    input           wb_rst_i,
+
+    input  [AW-1:0] wb_adr_i,
+    input  [DW-1:0] wb_dat_i,
+    input  [3:0]    wb_sel_i,
+    input           wb_we_i,
+    input  [1:0]    wb_bte_i,
+    input  [2:0]    wb_cti_i,
+    input           wb_cyc_i,
+    input           wb_stb_i,
+
+    output reg      wb_ack_o,
+    output          wb_err_o,
+    output [DW-1:0] wb_dat_o
+  );
 
   //////////////////////////////////////////////////////////////////
   //
   // Constants
   //
-  localparam XLEN = 64;
-  localparam PLEN = 64;
-
-  localparam MASTERS = 5;
-  localparam SLAVES  = 5;
-
-  localparam SYNC_DEPTH = 3;
-  localparam TECHNOLOGY = "GENERIC";
+  `include "wb_common.v"
 
   //////////////////////////////////////////////////////////////////
   //
   // Variables
   //
-
-  //Common signals
-  wire                                     HRESETn;
-  wire                                     HCLK;
-
-  wire                                     mst_sram_HSEL;
-  wire               [PLEN           -1:0] mst_sram_HADDR;
-  wire               [XLEN           -1:0] mst_sram_HWDATA;
-  wire               [XLEN           -1:0] mst_sram_HRDATA;
-  wire                                     mst_sram_HWRITE;
-  wire               [                2:0] mst_sram_HSIZE;
-  wire               [                2:0] mst_sram_HBURST;
-  wire               [                3:0] mst_sram_HPROT;
-  wire               [                1:0] mst_sram_HTRANS;
-  wire                                     mst_sram_HMASTLOCK;
-  wire                                     mst_sram_HREADY;
-  wire                                     mst_sram_HREADYOUT;
-  wire                                     mst_sram_HRESP;
+  reg  [AW-1:0] adr_r;
+  wire [AW-1:0] next_adr;
+  wire          valid;
+  reg           valid_r;
+  reg           is_last_r;
+  wire          new_cycle;
+  wire [AW-1:0] adr;
+  wire          ram_we;
 
   //////////////////////////////////////////////////////////////////
   //
   // Module Body
   //
+  assign valid = wb_cyc_i & wb_stb_i;
 
-  //DUT AHB3
-  mpsoc_ahb3_spram #(
-    .MEM_SIZE          ( 0 ),
-    .MEM_DEPTH         ( 256 ),
-    .HADDR_SIZE        ( PLEN ),
-    .HDATA_SIZE        ( XLEN ),
-    .TECHNOLOGY        ( TECHNOLOGY ),
-    .REGISTERED_OUTPUT ( "NO" )
-  )
-  ahb3_spram (
-    //AHB Slave Interface
-    .HRESETn   ( HRESETn ),
-    .HCLK      ( HCLK    ),
+  always @(posedge wb_clk_i) begin
+    is_last_r <= wb_is_last(wb_cti_i);
+  end
 
-    .HSEL      ( mst_sram_HSEL      ),
-    .HADDR     ( mst_sram_HADDR     ),
-    .HWDATA    ( mst_sram_HWDATA    ),
-    .HRDATA    ( mst_sram_HRDATA    ),
-    .HWRITE    ( mst_sram_HWRITE    ),
-    .HSIZE     ( mst_sram_HSIZE     ),
-    .HBURST    ( mst_sram_HBURST    ),
-    .HPROT     ( mst_sram_HPROT     ),
-    .HTRANS    ( mst_sram_HTRANS    ),
-    .HMASTLOCK ( mst_sram_HMASTLOCK ),
-    .HREADYOUT ( mst_sram_HREADYOUT ),
-    .HREADY    ( mst_sram_HREADY    ),
-    .HRESP     ( mst_sram_HRESP     )
+  assign new_cycle = (valid & !valid_r) | is_last_r;
+
+  assign next_adr = wb_next_adr(adr_r, wb_cti_i, wb_bte_i, DW);
+
+  assign adr = new_cycle ? wb_adr_i : next_adr;
+
+  always@(posedge wb_clk_i) begin
+    adr_r   <= adr;
+    valid_r <= valid;
+    //Ack generation
+    wb_ack_o <= valid & (!((wb_cti_i == 3'b000) | (wb_cti_i == 3'b111)) | !wb_ack_o);
+    if(wb_rst_i) begin
+      adr_r    <= {AW{1'b0}};
+      valid_r  <= 1'b0;
+      wb_ack_o <= 1'b0;
+    end
+  end
+
+  assign ram_we = wb_we_i & valid & wb_ack_o;
+
+  //TODO:ck for burst address errors
+  assign wb_err_o =  1'b0;
+
+  mpsoc_wb_ram_generic #(
+    .DEPTH   (DEPTH/4),
+    .MEMFILE (MEMFILE)
+  ) ram0 (
+    .clk   (wb_clk_i),
+    .we    ({4{ram_we}} & wb_sel_i),
+    .din   (wb_dat_i),
+    .waddr (adr_r[AW-1:2]),
+    .raddr (adr[AW-1:2]),
+    .dout  (wb_dat_o)
   );
-
-  //DUT WB
-
 endmodule
