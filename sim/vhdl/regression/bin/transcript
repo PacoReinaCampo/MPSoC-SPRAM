@@ -1,5 +1,5 @@
 # vsim -c -do "run.do" work.mpsoc_msi_testbench 
-# Start time: 22:48:21 on Mar 12,2020
+# Start time: 00:23:28 on Mar 13,2020
 # Loading std.standard
 # Loading std.textio(body)
 # Loading ieee.std_logic_1164(body)
@@ -13,5 +13,5 @@
 # Loading work.mpsoc_wb_spram(rtl)
 # Loading work.mpsoc_wb_ram_generic(rtl)
 # do run.do
-# End time: 22:48:21 on Mar 12,2020, Elapsed time: 0:00:00
+# End time: 00:23:28 on Mar 13,2020, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0

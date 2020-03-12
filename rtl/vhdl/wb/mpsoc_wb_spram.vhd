@@ -155,9 +155,8 @@ architecture RTL of mpsoc_wb_spram is
   function wb_next_adr (
     adr_i : std_logic_vector(AW-1 downto 0);
     cti_i : std_logic_vector(2 downto 0);
-    bte_i : std_logic_vector(1 downto 0);
+    bte_i : std_logic_vector(1 downto 0)
 
-    dw_i : integer
     ) return std_logic_vector is
 
     variable adr : std_logic_vector(AW-1 downto 0);
@@ -166,11 +165,11 @@ architecture RTL of mpsoc_wb_spram is
 
     variable wb_next_adr_return : std_logic_vector (AW-1 downto 0);
   begin
-    if (dw_i = 64) then
+    if (DW = 64) then
       shift := 3;
-    elsif (dw_i = 32) then
+    elsif (DW = 32) then
       shift := 2;
-    elsif (dw_i = 16) then
+    elsif (DW = 16) then
       shift := 1;
     else
       shift := 0;
@@ -239,17 +238,17 @@ begin
 
   new_cycle <= (valid and not valid_r) or is_last_r;
 
-  next_adr <= wb_next_adr(adr_r, wb_cti_i, wb_bte_i, DW);
+  next_adr <= wb_next_adr(adr_r, wb_cti_i, wb_bte_i);
 
   adr <= wb_adr_i when new_cycle = '1' else next_adr;
 
   processing_1 : process (wb_clk_i)
   begin
     if (rising_edge(wb_clk_i)) then
-      adr_r    <= adr;
-      valid_r  <= valid;
+      adr_r   <= adr;
+      valid_r <= valid;
       --Ack generation
-      wb_ack <= valid and (not (to_stdlogic(wb_cti_i = "000") or to_stdlogic(wb_cti_i = "111")) or not wb_ack);
+      wb_ack  <= valid and (not (to_stdlogic(wb_cti_i = "000") or to_stdlogic(wb_cti_i = "111")) or not wb_ack);
       if (wb_rst_i = '1') then
         adr_r   <= (others => '0');
         valid_r <= '0';

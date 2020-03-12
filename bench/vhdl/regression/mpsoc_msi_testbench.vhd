@@ -136,31 +136,31 @@ architecture RTL of mpsoc_msi_testbench is
   end component;
 
   component mpsoc_wb_spram
-  generic (
-    --Wishbone parameters
-    DW : integer := 32;
+    generic (
+      --Wishbone parameters
+      DW : integer := 32;
 
-    --Memory parameters
-    DEPTH   : integer := 256;
-    AW      : integer := integer(log2(real(256)));
-    MEMFILE : string  := ""
-    );
-  port (
-    wb_clk_i : in std_logic;
-    wb_rst_i : in std_logic;
+      --Memory parameters
+      DEPTH   : integer := 256;
+      AW      : integer := integer(log2(real(256)));
+      MEMFILE : string  := ""
+      );
+    port (
+      wb_clk_i : in std_logic;
+      wb_rst_i : in std_logic;
 
-    wb_adr_i : in std_logic_vector(AW-1 downto 0);
-    wb_dat_i : in std_logic_vector(DW-1 downto 0);
-    wb_sel_i : in std_logic_vector(3 downto 0);
-    wb_we_i  : in std_logic;
-    wb_bte_i : in std_logic_vector(1 downto 0);
-    wb_cti_i : in std_logic_vector(2 downto 0);
-    wb_cyc_i : in std_logic;
-    wb_stb_i : in std_logic;
+      wb_adr_i : in std_logic_vector(AW-1 downto 0);
+      wb_dat_i : in std_logic_vector(DW-1 downto 0);
+      wb_sel_i : in std_logic_vector(3 downto 0);
+      wb_we_i  : in std_logic;
+      wb_bte_i : in std_logic_vector(1 downto 0);
+      wb_cti_i : in std_logic_vector(2 downto 0);
+      wb_cyc_i : in std_logic;
+      wb_stb_i : in std_logic;
 
-    wb_ack_o : out std_logic;
-    wb_err_o : out std_logic;
-    wb_dat_o : out std_logic_vector(DW-1 downto 0)
+      wb_ack_o : out std_logic;
+      wb_err_o : out std_logic;
+      wb_dat_o : out std_logic_vector(DW-1 downto 0)
       );
   end component;
 
@@ -181,7 +181,6 @@ begin
       REGISTERED_OUTPUT => "NO"
       )
     port map (
-      --AHB Slave Interface
       HRESETn => HRESETn,
       HCLK    => HCLK,
 
