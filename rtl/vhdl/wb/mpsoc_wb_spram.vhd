@@ -1,4 +1,4 @@
--- Converted from verilog/mpsoc_ram/mpsoc_wb_spram.sv
+-- Converted from mpsoc_wb_spram.v
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -13,8 +13,8 @@
 --                                                                            //
 --                                                                            //
 --              MPSoC-RISCV CPU                                               //
---              Single Port SRAM                                              //
---              AMBA3 AHB-Lite Bus Interface                                  //
+--              Single Port RAM                                               //
+--              Wishbone Bus Interface                                        //
 --                                                                            //
 --//////////////////////////////////////////////////////////////////////////////
 
@@ -48,60 +48,48 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.mpsoc_pkg.all;
-
 entity mpsoc_wb_spram is
   generic (
-    MEM_SIZE          : integer := 256;  --Memory in Bytes
-    MEM_DEPTH         : integer := 256;  --Memory depth
-    PLEN              : integer := 64;
-    XLEN              : integer := 64;
-    TECHNOLOGY        : string  := "GENERIC";
-    REGISTERED_OUTPUT : string  := "NO"
+    --Wishbone parameters
+    DW : integer := 32;
+
+    --Memory parameters
+    DEPTH   : integer := 256;
+    AW      : integer := integer(log2(real(256)));
+    MEMFILE : string  := ""
     );
   port (
-    HRESETn : in std_logic;
-    HCLK    : in std_logic;
+    wb_clk_i : in std_logic;
+    wb_rst_i : in std_logic;
 
-    --AHB Slave Interfaces (receive data from AHB Masters)
-    --AHB Masters connect to these ports
-    HSEL      : in  std_logic;
-    HADDR     : in  std_logic_vector(PLEN-1 downto 0);
-    HWDATA    : in  std_logic_vector(XLEN-1 downto 0);
-    HRDATA    : out std_logic_vector(XLEN-1 downto 0);
-    HWRITE    : in  std_logic;
-    HSIZE     : in  std_logic_vector(2 downto 0);
-    HBURST    : in  std_logic_vector(2 downto 0);
-    HPROT     : in  std_logic_vector(3 downto 0);
-    HTRANS    : in  std_logic_vector(1 downto 0);
-    HMASTLOCK : in  std_logic;
-    HREADYOUT : out std_logic;
-    HREADY    : in  std_logic;
-    HRESP     : out std_logic
+    wb_adr_i : in std_logic_vector(AW-1 downto 0);
+    wb_dat_i : in std_logic_vector(DW-1 downto 0);
+    wb_sel_i : in std_logic_vector(3 downto 0);
+    wb_we_i  : in std_logic;
+    wb_bte_i : in std_logic_vector(1 downto 0);
+    wb_cti_i : in std_logic_vector(2 downto 0);
+    wb_cyc_i : in std_logic;
+    wb_stb_i : in std_logic;
+
+    wb_ack_o : out std_logic;
+    wb_err_o : out std_logic;
+    wb_dat_o : out std_logic_vector(DW-1 downto 0)
     );
 end mpsoc_wb_spram;
 
 architecture RTL of mpsoc_wb_spram is
-  component mpsoc_ram_1r1w
+  component mpsoc_wb_ram_generic
     generic (
-      ABITS      : integer := 10;
-      DBITS      : integer := 32;
-      TECHNOLOGY : string  := "GENERIC"
+      DEPTH   : integer := 256;
+      MEMFILE : string  := ""
       );
     port (
-      rst_ni : in std_logic;
-      clk_i  : in std_logic;
-
-      --Write side
-      waddr_i : in std_logic_vector(ABITS-1 downto 0);
-      din_i   : in std_logic_vector(DBITS-1 downto 0);
-      we_i    : in std_logic;
-      be_i    : in std_logic_vector((DBITS+7)/8-1 downto 0);
-
-      --Read side
-      raddr_i : in  std_logic_vector(ABITS-1 downto 0);
-      re_i    : in  std_logic;
-      dout_o  : out std_logic_vector(DBITS-1 downto 0)
+      clk   : in  std_logic;
+      we    : in  std_logic_vector(3 downto 0);
+      din   : in  std_logic_vector(31 downto 0);
+      waddr : in  std_logic_vector(integer(log2(real(256)))-1 downto 0);
+      raddr : in  std_logic_vector(integer(log2(real(256)))-1 downto 0);
+      dout  : out std_logic_vector(31 downto 0)
       );
   end component;
 
@@ -109,98 +97,103 @@ architecture RTL of mpsoc_wb_spram is
   --
   -- Constants
   --
-  constant BE_SIZE : integer := (XLEN+7)/8;
+  constant CLASSIC_CYCLE : std_logic := '0';
+  constant BURST_CYCLE   : std_logic := '1';
 
-  constant MEM_SIZE_DEPTH : integer := 8*MEM_SIZE/XLEN;
-  constant REAL_MEM_DEPTH : integer := MEM_SIZE_DEPTH;
-  constant MEM_ABITS      : integer := integer(log2(real(REAL_MEM_DEPTH)));
-  constant MEM_ABITS_LSB  : integer := integer(log2(real(BE_SIZE)));
+  constant READ  : std_logic := '0';
+  constant WRITE : std_logic := '1';
 
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Variables
-  --
-  signal we         : std_logic;
-  signal be         : std_logic_vector(BE_SIZE-1 downto 0);
-  signal waddr      : std_logic_vector(PLEN-1 downto 0);
-  signal contention : std_logic;
-  signal ready      : std_logic;
+  constant CTI_CLASSIC      : std_logic_vector(2 downto 0) := "000";
+  constant CTI_CONST_BURST  : std_logic_vector(2 downto 0) := "001";
+  constant CTI_INC_BURST    : std_logic_vector(2 downto 0) := "010";
+  constant CTI_END_OF_BURST : std_logic_vector(2 downto 0) := "111";
 
-  signal dout : std_logic_vector(XLEN-1 downto 0);
+  constant BTE_LINEAR  : std_logic_vector(1 downto 0) := "00";
+  constant BTE_WRAP_4  : std_logic_vector(1 downto 0) := "01";
+  constant BTE_WRAP_8  : std_logic_vector(1 downto 0) := "10";
+  constant BTE_WRAP_16 : std_logic_vector(1 downto 0) := "11";
 
   --////////////////////////////////////////////////////////////////
   --
   -- Functions
   --
-  function gen_be (
-    hsize : std_logic_vector(2 downto 0);
-    haddr : std_logic_vector(PLEN-1 downto 0)
+  function get_cycle_type (
+    cti : std_logic_vector(2 downto 0)
+    ) return std_logic is
+
+    variable get_cycle_type_return : std_logic;
+  begin
+    if (cti = CTI_CLASSIC) then
+      get_cycle_type_return := CLASSIC_CYCLE;
+    else
+      get_cycle_type_return := BURST_CYCLE;
+    end if;
+    return get_cycle_type_return;
+  end get_cycle_type;
+
+  function wb_is_last (
+    cti : std_logic_vector(2 downto 0)
+    ) return std_logic is
+
+    variable wb_is_last_return : std_logic;
+  begin
+    case ((cti)) is
+      when CTI_CLASSIC =>
+        wb_is_last_return := '1';
+      when CTI_CONST_BURST =>
+        wb_is_last_return := '0';
+      when CTI_INC_BURST =>
+        wb_is_last_return := '0';
+      when CTI_END_OF_BURST =>
+        wb_is_last_return := '1';
+      when others =>
+        null;
+    end case;
+    return wb_is_last_return;
+  end wb_is_last;
+
+  function wb_next_adr (
+    adr_i : std_logic_vector(AW-1 downto 0);
+    cti_i : std_logic_vector(2 downto 0);
+    bte_i : std_logic_vector(1 downto 0);
+
+    dw_i : integer
     ) return std_logic_vector is
 
-    variable full_be        : std_logic_vector(127 downto 0);
-    variable haddr_masked   : std_logic_vector(6 downto 0);
-    variable address_offset : std_logic_vector (6 downto 0);
+    variable adr : std_logic_vector(AW-1 downto 0);
 
-    variable gen_be_return : std_logic_vector (BE_SIZE-1 downto 0);
+    variable shift : integer;
+
+    variable wb_next_adr_return : std_logic_vector (AW-1 downto 0);
   begin
-    --get number of active lanes for a 1024bit databus (max width) for this HSIZE
-    case (hsize) is
-      when HSIZE_B1024 =>
-        full_be := X"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
-      when HSIZE_B512 =>
-        full_be := X"0000000000000000FFFFFFFFFFFFFFFF";
-      when HSIZE_B256 =>
-        full_be := X"000000000000000000000000FFFFFFFF";
-      when HSIZE_B128 =>
-        full_be := X"0000000000000000000000000000FFFF";
-      when HSIZE_DWORD =>
-        full_be := X"000000000000000000000000000000FF";
-      when HSIZE_WORD =>
-        full_be := X"0000000000000000000000000000000F";
-      when HSIZE_HWORD =>
-        full_be := X"00000000000000000000000000000003";
-      when others =>
-        full_be := X"00000000000000000000000000000001";
-    end case;
-
-    --What are the lesser bits in HADDR?
-    case (XLEN) is
-      when 1024 =>
-        address_offset := "1111111";
-      when 0512 =>
-        address_offset := "0111111";
-      when 0256 =>
-        address_offset := "0011111";
-      when 0128 =>
-        address_offset := "0001111";
-      when 0064 =>
-        address_offset := "0000111";
-      when 0032 =>
-        address_offset := "0000011";
-      when 0016 =>
-        address_offset := "0000001";
-      when others =>
-        address_offset := "0000000";
-    end case;
-
-    --generate masked address
-    haddr_masked := haddr and address_offset;
-
-    --create byte-enable
-    gen_be_return := std_logic_vector(unsigned(full_be(BE_SIZE-1 downto 0)) sll to_integer(unsigned(haddr_masked)));
-    return gen_be_return;
-  end gen_be;  --gen_be
-
-  function reduce_nand (
-    reduce_nand_in : std_logic_vector
-    ) return std_logic is
-    variable reduce_nand_out : std_logic := '0';
-  begin
-    for i in reduce_nand_in'range loop
-      reduce_nand_out := reduce_nand_out nand reduce_nand_in(i);
-    end loop;
-    return reduce_nand_out;
-  end reduce_nand;
+    if (dw_i = 64) then
+      shift := 3;
+    elsif (dw_i = 32) then
+      shift := 2;
+    elsif (dw_i = 16) then
+      shift := 1;
+    else
+      shift := 0;
+    end if;
+    adr := std_logic_vector(unsigned(adr_i) srl shift);
+    if (cti_i = CTI_INC_BURST) then
+      case ((bte_i)) is
+        when BTE_LINEAR =>
+          adr := std_logic_vector(unsigned(adr)+X"00000001");
+        when BTE_WRAP_4 =>
+          adr := adr(31 downto 2) & std_logic_vector(unsigned(adr(1 downto 0))+"01");
+        when BTE_WRAP_8 =>
+          adr := adr(31 downto 3) & std_logic_vector(unsigned(adr(2 downto 0))+"001");
+        when BTE_WRAP_16 =>
+          adr := adr(31 downto 4) & std_logic_vector(unsigned(adr(3 downto 0))+"0001");
+        when others =>
+          null;
+      end case;
+    end if;
+    -- case (burst_type_i)
+    wb_next_adr_return := std_logic_vector(unsigned(adr) sll shift);
+    return wb_next_adr_return;
+  end wb_next_adr;
 
   function to_stdlogic (
     input : boolean
@@ -213,108 +206,78 @@ architecture RTL of mpsoc_wb_spram is
     end if;
   end function to_stdlogic;
 
+--////////////////////////////////////////////////////////////////
+--
+-- Variables
+--
+  signal adr_r     : std_logic_vector(AW-1 downto 0);
+  signal next_adr  : std_logic_vector(AW-1 downto 0);
+  signal valid     : std_logic;
+  signal valid_r   : std_logic;
+  signal is_last_r : std_logic;
+  signal new_cycle : std_logic;
+  signal adr       : std_logic_vector(AW-1 downto 0);
+  signal ram_we    : std_logic;
+
+  signal wb_ack : std_logic;
+
+  signal we_i : std_logic_vector(3 downto 0);
+
 begin
   --////////////////////////////////////////////////////////////////
   --
   -- Module Body
   --
+  valid <= wb_cyc_i and wb_stb_i;
 
-  --generate internal write signal
-  --This causes read/write contention, which is handled by memory
-  processing_0 : process (HCLK)
+  processing_0 : process (wb_clk_i)
   begin
-    if (rising_edge(HCLK)) then
-      if (HREADY = '1') then
-        we <= HSEL and HWRITE and to_stdlogic(HTRANS /= HTRANS_BUSY) and to_stdlogic(HTRANS /= HTRANS_IDLE);
-      else
-        we <= '0';
+    if (rising_edge(wb_clk_i)) then
+      is_last_r <= wb_is_last(wb_cti_i);
+    end if;
+  end process;
+
+  new_cycle <= (valid and not valid_r) or is_last_r;
+
+  next_adr <= wb_next_adr(adr_r, wb_cti_i, wb_bte_i, DW);
+
+  adr <= wb_adr_i when new_cycle = '1' else next_adr;
+
+  processing_1 : process (wb_clk_i)
+  begin
+    if (rising_edge(wb_clk_i)) then
+      adr_r    <= adr;
+      valid_r  <= valid;
+      --Ack generation
+      wb_ack <= valid and (not (to_stdlogic(wb_cti_i = "000") or to_stdlogic(wb_cti_i = "111")) or not wb_ack);
+      if (wb_rst_i = '1') then
+        adr_r   <= (others => '0');
+        valid_r <= '0';
+        wb_ack  <= '0';
       end if;
     end if;
   end process;
 
-  --decode Byte-Enables
-  processing_1 : process (HCLK)
-  begin
-    if (rising_edge(HCLK)) then
-      if (HREADY = '1') then
-        be <= gen_be(HSIZE, HADDR);
-      end if;
-    end if;
-  end process;
+  ram_we <= wb_we_i and valid and wb_ack;
 
-  --store write address
-  processing_2 : process (HCLK)
-  begin
-    if (rising_edge(HCLK)) then
-      if (HREADY = '1') then
-        waddr <= HADDR;
-      end if;
-    end if;
-  end process;
+  wb_ack_o <= wb_ack;
 
-  --Is there read/write contention on the memory?
-  contention <= to_stdlogic(waddr(MEM_ABITS+MEM_ABITS_LSB-1 downto MEM_ABITS_LSB) = HADDR(MEM_ABITS+MEM_ABITS_LSB-1 downto MEM_ABITS_LSB)) and we and HSEL and HREADY and not HWRITE and to_stdlogic(HTRANS /= HTRANS_BUSY) and to_stdlogic(HTRANS /= HTRANS_IDLE);
+  --TODO:ck for burst address errors
+  wb_err_o <= '0';
 
-  --if all bytes were written contention is/can be handled by memory
-  --otherwise stall a cycle (forced by N3S)
-  --We could do an exception for N3S here, but this file should be technology agnostic
-  ready <= not (contention and reduce_nand(be));
-
-  --  * Hookup Memory Wrapper
-  --  * Use two-port memory, due to pipelined AHB bus;
-  --  *   the actual write to memory is 1 cycle late, causing read/write overlap
-  --  * This assumes there are input registers on the memory
-
-  ram_1r1w : mpsoc_ram_1r1w
+  ram0 : mpsoc_wb_ram_generic
     generic map (
-      ABITS      => MEM_ABITS,
-      DBITS      => XLEN,
-      TECHNOLOGY => TECHNOLOGY
+      DEPTH   => DEPTH/4,
+      MEMFILE => MEMFILE
       )
     port map (
-      rst_ni => HRESETn,
-      clk_i  => HCLK,
-
-      waddr_i => waddr(MEM_ABITS+MEM_ABITS_LSB-1 downto MEM_ABITS_LSB),
-      we_i    => we,
-      be_i    => be,
-      din_i   => HWDATA,
-
-      re_i    => '0',
-      raddr_i => HADDR(MEM_ABITS+MEM_ABITS_LSB-1 downto MEM_ABITS_LSB),
-      dout_o  => dout
+      clk   => wb_clk_i,
+      we    => we_i,
+      din   => wb_dat_i,
+      waddr => adr_r(AW-1 downto 2),
+      raddr => adr(AW-1 downto 2),
+      dout  => wb_dat_o
       );
 
-  --AHB bus response
-  HRESP <= HRESP_OKAY;                  --always OK
-
-  processing_3 : process (HCLK, HRESETn)
-  begin
-    if (HRESETn = '0') then
-      HREADYOUT <= '1';
-    elsif (rising_edge(HCLK)) then
-      if (REGISTERED_OUTPUT = "NO") then
-        HREADYOUT <= ready;
-      elsif (REGISTERED_OUTPUT /= "NO") then
-        if (HTRANS = HTRANS_NONSEQ and HWRITE = '0') then
-          HREADYOUT <= '0';
-        else
-          HREADYOUT <= '1';
-        end if;
-      end if;
-    end if;
-  end process;
-
-  processing_4 : process (HCLK, dout)
-  begin
-    if (REGISTERED_OUTPUT = "NO") then
-      HRDATA <= dout;
-    elsif (REGISTERED_OUTPUT /= "NO") then
-      if (rising_edge(HCLK)) then
-        if (HREADY = '1') then
-          HRDATA <= dout;
-        end if;
-      end if;
-    end if;
-  end process;
+  we_i <= (ram_we & ram_we & ram_we & ram_we) and wb_sel_i;
 end RTL;

@@ -115,7 +115,6 @@ module mpsoc_msi_testbench;
     .REGISTERED_OUTPUT ( "NO" )
   )
   ahb3_spram (
-    //AHB Slave Interface
     .HRESETn   ( HRESETn ),
     .HCLK      ( HCLK    ),
 
@@ -142,7 +141,6 @@ module mpsoc_msi_testbench;
     .MEMFILE ( MEMFILE )
   )
   wb_spram (
-    //Wishbone Master interface
     .wb_clk_i ( HRESETn ),
     .wb_rst_i ( HCLK    ),
 

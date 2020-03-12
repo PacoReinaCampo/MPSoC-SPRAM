@@ -113,7 +113,7 @@ module mpsoc_wb_spram #(
   function [31:0] wb_next_adr;
     input [31:0] adr_i;
     input [2:0]  cti_i;
-    input [2:0]  bte_i;
+    input [1:0]  bte_i;
 
     input integer dw;
 
