@@ -40,7 +40,7 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module wb_ram_tb;
+module wb_spram_tb;
   //////////////////////////////////////////////////////////////////
   //
   // Constants
@@ -110,7 +110,7 @@ module wb_ram_tb;
   end
 
   mpsoc_wb_spram #(
-    .depth (MEMORY_SIZE)
+    .DEPTH (MEMORY_SIZE)
   )
   dut (
     // Wishbone interface
