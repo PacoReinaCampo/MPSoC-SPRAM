@@ -40,35 +40,35 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-`include "mpsoc_pkg.sv"
+`include "mpsoc_spram_ahb3_pkg.sv"
 
 module mpsoc_ahb3_spram #(
   parameter MEM_SIZE          = 0,   //Memory in Bytes
   parameter MEM_DEPTH         = 256, //Memory depth
-  parameter HADDR_SIZE        = 64,
-  parameter HDATA_SIZE        = 32,
+  parameter PLEN              = 64,
+  parameter XLEN              = 32,
   parameter TECHNOLOGY        = "GENERIC",
   parameter REGISTERED_OUTPUT = "NO"
 )
   (
-    input                       HRESETn,
-    input                       HCLK,
+    input                 HRESETn,
+    input                 HCLK,
 
     //AHB Slave Interfaces (receive data from AHB Masters)
     //AHB Masters connect to these ports
-    input                       HSEL,
-    input      [HADDR_SIZE-1:0] HADDR,
-    input      [HDATA_SIZE-1:0] HWDATA,
-    output reg [HDATA_SIZE-1:0] HRDATA,
-    input                       HWRITE,
-    input      [           2:0] HSIZE,
-    input      [           2:0] HBURST,
-    input      [           3:0] HPROT,
-    input      [           1:0] HTRANS,
-    input                       HMASTLOCK,
-    output reg                  HREADYOUT,
-    input                       HREADY,
-    output                      HRESP
+    input                 HSEL,
+    input      [PLEN-1:0] HADDR,
+    input      [XLEN-1:0] HWDATA,
+    output reg [XLEN-1:0] HRDATA,
+    input                 HWRITE,
+    input      [     2:0] HSIZE,
+    input      [     2:0] HBURST,
+    input      [     3:0] HPROT,
+    input      [     1:0] HTRANS,
+    input                 HMASTLOCK,
+    output reg            HREADYOUT,
+    input                 HREADY,
+    output                HRESP
   );
 
   //////////////////////////////////////////////////////////////////
@@ -76,9 +76,9 @@ module mpsoc_ahb3_spram #(
   // Constants
   //
 
-  localparam BE_SIZE        = (HDATA_SIZE+7)/8;
+  localparam BE_SIZE        = (XLEN+7)/8;
 
-  localparam MEM_SIZE_DEPTH = 8*MEM_SIZE / HDATA_SIZE;
+  localparam MEM_SIZE_DEPTH = 8*MEM_SIZE / XLEN;
   localparam REAL_MEM_DEPTH = MEM_DEPTH > MEM_SIZE_DEPTH ? MEM_DEPTH : MEM_SIZE_DEPTH;
   localparam MEM_ABITS      = $clog2(REAL_MEM_DEPTH);
   localparam MEM_ABITS_LSB  = $clog2(BE_SIZE);
@@ -87,13 +87,13 @@ module mpsoc_ahb3_spram #(
   //
   // Variables
   //
-  logic                  we;
-  logic [BE_SIZE   -1:0] be;
-  logic [HADDR_SIZE-1:0] waddr;
-  logic                  contention;
-  logic                  ready;
+  logic               we;
+  logic [BE_SIZE-1:0] be;
+  logic [PLEN   -1:0] waddr;
+  logic               contention;
+  logic               ready;
 
-  logic [HDATA_SIZE-1:0] dout;
+  logic [XLEN   -1:0] dout;
 
   //////////////////////////////////////////////////////////////////
   //
@@ -101,8 +101,8 @@ module mpsoc_ahb3_spram #(
   //
 
   function [BE_SIZE-1:0] gen_be;
-    input [           2:0] hsize;
-    input [HADDR_SIZE-1:0] haddr;
+    input [     2:0] hsize;
+    input [PLEN-1:0] haddr;
 
     logic [127:0] full_be;
     logic [  6:0] haddr_masked;
@@ -121,7 +121,7 @@ module mpsoc_ahb3_spram #(
     endcase
 
     //What are the lesser bits in HADDR?
-    case (HDATA_SIZE)
+    case (XLEN)
       1024    : address_offset = 7'b111_1111; 
       0512    : address_offset = 7'b011_1111;
       0256    : address_offset = 7'b001_1111;
@@ -179,7 +179,7 @@ module mpsoc_ahb3_spram #(
 
   mpsoc_ram_1r1w #(
     .ABITS      ( MEM_ABITS  ),
-    .DBITS      ( HDATA_SIZE ),
+    .DBITS      ( XLEN       ),
     .TECHNOLOGY ( TECHNOLOGY ) 
   )
   ram_1r1w (

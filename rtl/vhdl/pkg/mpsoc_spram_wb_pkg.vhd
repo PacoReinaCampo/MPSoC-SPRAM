@@ -1,4 +1,4 @@
--- Converted from mpsoc_wb_spram.v
+-- Converted from mpsoc_spram_wb_pkg.v
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@
 --                                                                            //
 --                                                                            //
 --              MPSoC-RISCV CPU                                               //
---              Single Port RAM                                               //
+--              Master Slave Interface                                        //
 --              Wishbone Bus Interface                                        //
 --                                                                            //
 --//////////////////////////////////////////////////////////////////////////////
@@ -46,57 +46,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
 
-use work.mpsoc_spram_wb_pkg.all;
-
-entity mpsoc_wb_spram is
-  generic (
-    --Memory parameters
-    DEPTH   : integer := 256;
-    MEMFILE : string  := "";
-    --Wishbone parameters
-    DW : integer := 32;
-    AW : integer := integer(log2(real(DEPTH)))
-    );
-  port (
-    wb_clk_i : in std_logic;
-    wb_rst_i : in std_logic;
-
-    wb_adr_i : in std_logic_vector(AW-1 downto 0);
-    wb_dat_i : in std_logic_vector(DW-1 downto 0);
-    wb_sel_i : in std_logic_vector(3 downto 0);
-    wb_we_i  : in std_logic;
-    wb_bte_i : in std_logic_vector(1 downto 0);
-    wb_cti_i : in std_logic_vector(2 downto 0);
-    wb_cyc_i : in std_logic;
-    wb_stb_i : in std_logic;
-
-    wb_ack_o : out std_logic;
-    wb_err_o : out std_logic;
-    wb_dat_o : out std_logic_vector(DW-1 downto 0)
-    );
-end mpsoc_wb_spram;
-
-architecture RTL of mpsoc_wb_spram is
-  component mpsoc_wb_ram_generic
-    generic (
-      DEPTH   : integer := 256;
-      MEMFILE : string  := "";
-
-      AW : integer := integer(log2(real(DEPTH)));
-      DW : integer := 32
-      );
-    port (
-      clk   : in  std_logic;
-      we    : in  std_logic_vector(3 downto 0);
-      din   : in  std_logic_vector(31 downto 0);
-      waddr : in  std_logic_vector(integer(log2(real(256)))-1 downto 0);
-      raddr : in  std_logic_vector(integer(log2(real(256)))-1 downto 0);
-      dout  : out std_logic_vector(31 downto 0)
-      );
-  end component;
-
+package mpsoc_spram_wb_pkg is
   --////////////////////////////////////////////////////////////////
   --
   -- Constants
@@ -117,14 +68,95 @@ architecture RTL of mpsoc_wb_spram is
   constant BTE_WRAP_8  : std_logic_vector(1 downto 0) := "10";
   constant BTE_WRAP_16 : std_logic_vector(1 downto 0) := "11";
 
+  type std_logic_matrix is array (natural range <>) of std_logic_vector;
+  type std_logic_3array is array (natural range <>) of std_logic_matrix;
+  type std_logic_4array is array (natural range <>) of std_logic_3array;
+  type std_logic_5array is array (natural range <>) of std_logic_4array;
+  type std_logic_6array is array (natural range <>) of std_logic_5array;
+  type std_logic_7array is array (natural range <>) of std_logic_6array;
+  type std_logic_8array is array (natural range <>) of std_logic_7array;
+  type std_logic_9array is array (natural range <>) of std_logic_8array;
+
+  type xy_std_logic        is array (natural range <>, natural range <>) of std_logic;
+  type xy_std_logic_vector is array (natural range <>, natural range <>) of std_logic_vector;
+  type xy_std_logic_matrix is array (natural range <>, natural range <>) of std_logic_matrix;
+  type xy_std_logic_3array is array (natural range <>, natural range <>) of std_logic_3array;
+  type xy_std_logic_4array is array (natural range <>, natural range <>) of std_logic_4array;
+  type xy_std_logic_5array is array (natural range <>, natural range <>) of std_logic_5array;
+  type xy_std_logic_6array is array (natural range <>, natural range <>) of std_logic_6array;
+  type xy_std_logic_7array is array (natural range <>, natural range <>) of std_logic_7array;
+  type xy_std_logic_8array is array (natural range <>, natural range <>) of std_logic_8array;
+  type xy_std_logic_9array is array (natural range <>, natural range <>) of std_logic_9array;
+
+  type xyz_std_logic        is array (natural range <>, natural range <>, natural range <>) of std_logic;
+  type xyz_std_logic_vector is array (natural range <>, natural range <>, natural range <>) of std_logic_vector;
+  type xyz_std_logic_matrix is array (natural range <>, natural range <>, natural range <>) of std_logic_matrix;
+  type xyz_std_logic_3array is array (natural range <>, natural range <>, natural range <>) of std_logic_3array;
+  type xyz_std_logic_4array is array (natural range <>, natural range <>, natural range <>) of std_logic_4array;
+  type xyz_std_logic_5array is array (natural range <>, natural range <>, natural range <>) of std_logic_5array;
+  type xyz_std_logic_6array is array (natural range <>, natural range <>, natural range <>) of std_logic_6array;
+  type xyz_std_logic_7array is array (natural range <>, natural range <>, natural range <>) of std_logic_7array;
+  type xyz_std_logic_8array is array (natural range <>, natural range <>, natural range <>) of std_logic_8array;
+  type xyz_std_logic_9array is array (natural range <>, natural range <>, natural range <>) of std_logic_9array;
+
+  function to_stdlogic (input : boolean) return std_logic;
+  function reduce_or (reduce_or_in : std_logic_vector) return std_logic;
+  function reduce_nor (reduce_nor_in : std_logic_vector) return std_logic;
+
+  function get_cycle_type (cti : std_logic_vector(2 downto 0)) return std_logic;
+  function wb_is_last (cti : std_logic_vector(2 downto 0)) return std_logic;
+
+  function wb_next_adr (
+    adr_i : std_logic_vector(31 downto 0);
+    cti_i : std_logic_vector(2 downto 0);
+    bte_i : std_logic_vector(1 downto 0);
+
+    dw : integer
+    ) return std_logic_vector;
+end mpsoc_spram_wb_pkg;
+
+package body mpsoc_spram_wb_pkg is
   --////////////////////////////////////////////////////////////////
   --
   -- Functions
   --
+  function to_stdlogic (
+    input : boolean
+    ) return std_logic is
+  begin
+    if input then
+      return('1');
+    else
+      return('0');
+    end if;
+  end function to_stdlogic;
+
+  function reduce_or (
+    reduce_or_in : std_logic_vector
+    ) return std_logic is
+    variable reduce_or_out : std_logic := '0';
+  begin
+    for i in reduce_or_in'range loop
+      reduce_or_out := reduce_or_out or reduce_or_in(i);
+    end loop;
+    return reduce_or_out;
+  end reduce_or;
+
+  function reduce_nor (
+    reduce_nor_in : std_logic_vector
+    ) return std_logic is
+    variable reduce_nor_out : std_logic := '0';
+  begin
+    for i in reduce_nor_in'range loop
+      reduce_nor_out := reduce_nor_out nor reduce_nor_in(i);
+    end loop;
+    return reduce_nor_out;
+  end reduce_nor;
+
+
   function get_cycle_type (
     cti : std_logic_vector(2 downto 0)
     ) return std_logic is
-
     variable get_cycle_type_return : std_logic;
   begin
     if (cti = CTI_CLASSIC) then
@@ -132,16 +164,16 @@ architecture RTL of mpsoc_wb_spram is
     else
       get_cycle_type_return := BURST_CYCLE;
     end if;
+
     return get_cycle_type_return;
   end get_cycle_type;
 
   function wb_is_last (
     cti : std_logic_vector(2 downto 0)
     ) return std_logic is
-
     variable wb_is_last_return : std_logic;
   begin
-    case ((cti)) is
+    case (cti) is
       when CTI_CLASSIC =>
         wb_is_last_return := '1';
       when CTI_CONST_BURST =>
@@ -153,42 +185,43 @@ architecture RTL of mpsoc_wb_spram is
       when others =>
         null;
     end case;
+
     return wb_is_last_return;
   end wb_is_last;
 
   function wb_next_adr (
-    adr_i : std_logic_vector(AW-1 downto 0);
+    adr_i : std_logic_vector(31 downto 0);
     cti_i : std_logic_vector(2 downto 0);
-    bte_i : std_logic_vector(1 downto 0)
+    bte_i : std_logic_vector(1 downto 0);
 
+    dw : integer
     ) return std_logic_vector is
+    variable wb_next_adr_return : std_logic_vector (31 downto 0);
 
-    variable adr : std_logic_vector(AW-1 downto 0);
+    variable adr : std_logic_vector(31 downto 0);
 
     variable shift : integer;
-
-    variable wb_next_adr_return : std_logic_vector (AW-1 downto 0);
   begin
-    if (DW = 64) then
+    if (dw = 64) then
       shift := 3;
-    elsif (DW = 32) then
+    elsif (dw = 32) then
       shift := 2;
-    elsif (DW = 16) then
+    elsif (dw = 16) then
       shift := 1;
     else
       shift := 0;
     end if;
     adr := std_logic_vector(unsigned(adr_i) srl shift);
     if (cti_i = CTI_INC_BURST) then
-      case ((bte_i)) is
+      case (bte_i) is
         when BTE_LINEAR =>
           adr := std_logic_vector(unsigned(adr)+X"00000001");
         when BTE_WRAP_4 =>
-          adr := adr(31 downto 2) & std_logic_vector(unsigned(adr(1 downto 0))+"01");
+          adr := (adr(31 downto 2) & std_logic_vector(unsigned(adr(1 downto 0))+"01"));
         when BTE_WRAP_8 =>
-          adr := adr(31 downto 3) & std_logic_vector(unsigned(adr(2 downto 0))+"001");
+          adr := (adr(31 downto 3) & std_logic_vector(unsigned(adr(2 downto 0))+"001"));
         when BTE_WRAP_16 =>
-          adr := adr(31 downto 4) & std_logic_vector(unsigned(adr(3 downto 0))+"0001");
+          adr := (adr(31 downto 4) & std_logic_vector(unsigned(adr(3 downto 0))+"0001"));
         when others =>
           null;
       end case;
@@ -197,82 +230,4 @@ architecture RTL of mpsoc_wb_spram is
     wb_next_adr_return := std_logic_vector(unsigned(adr) sll shift);
     return wb_next_adr_return;
   end wb_next_adr;
-
---////////////////////////////////////////////////////////////////
---
--- Variables
---
-  signal adr_r     : std_logic_vector(AW-1 downto 0);
-  signal next_adr  : std_logic_vector(AW-1 downto 0);
-  signal valid     : std_logic;
-  signal valid_r   : std_logic;
-  signal is_last_r : std_logic;
-  signal new_cycle : std_logic;
-  signal adr       : std_logic_vector(AW-1 downto 0);
-  signal ram_we    : std_logic;
-
-  signal wb_ack : std_logic;
-
-  signal we_i : std_logic_vector(3 downto 0);
-
-begin
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Module Body
-  --
-  valid <= wb_cyc_i and wb_stb_i;
-
-  processing_0 : process (wb_clk_i)
-  begin
-    if (rising_edge(wb_clk_i)) then
-      is_last_r <= wb_is_last(wb_cti_i);
-    end if;
-  end process;
-
-  new_cycle <= (valid and not valid_r) or is_last_r;
-
-  next_adr <= wb_next_adr(adr_r, wb_cti_i, wb_bte_i);
-
-  adr <= wb_adr_i when new_cycle = '1' else next_adr;
-
-  processing_1 : process (wb_clk_i)
-  begin
-    if (rising_edge(wb_clk_i)) then
-      adr_r   <= adr;
-      valid_r <= valid;
-      --Ack generation
-      wb_ack  <= valid and (not (to_stdlogic(wb_cti_i = "000") or to_stdlogic(wb_cti_i = "111")) or not wb_ack);
-      if (wb_rst_i = '1') then
-        adr_r   <= (others => '0');
-        valid_r <= '0';
-        wb_ack  <= '0';
-      end if;
-    end if;
-  end process;
-
-  ram_we <= wb_we_i and valid and wb_ack;
-
-  wb_ack_o <= wb_ack;
-
-  --TODO:ck for burst address errors
-  wb_err_o <= '0';
-
-  ram0 : mpsoc_wb_ram_generic
-    generic map (
-      DEPTH   => DEPTH/4,
-      MEMFILE => MEMFILE,
-
-      AW => integer(log2(real(DEPTH/4))),
-      DW => DW
-      )
-    port map (
-      clk   => wb_clk_i,
-      we    => we_i,
-      din   => wb_dat_i,
-      waddr => adr_r(AW-1 downto 2),
-      raddr => adr(AW-1 downto 2),
-      dout  => wb_dat_o
-      );
-
-  we_i <= (ram_we & ram_we & ram_we & ram_we) and wb_sel_i;
-end RTL;
+end mpsoc_spram_wb_pkg;

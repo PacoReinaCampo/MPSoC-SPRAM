@@ -1,4 +1,4 @@
--- Converted from bench/verilog/regression/mpsoc_msi_testbench.sv
+-- Converted from bench/verilog/regression/mpsoc_spram_testbench.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,11 +48,12 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.mpsoc_pkg.all;
-entity mpsoc_msi_testbench is
-end mpsoc_msi_testbench;
+use work.mpsoc_spram_ahb3_pkg.all;
 
-architecture RTL of mpsoc_msi_testbench is
+entity mpsoc_spram_testbench is
+end mpsoc_spram_testbench;
+
+architecture RTL of mpsoc_spram_testbench is
 
   --////////////////////////////////////////////////////////////////
   --
@@ -137,13 +138,13 @@ architecture RTL of mpsoc_msi_testbench is
 
   component mpsoc_wb_spram
     generic (
-      --Wishbone parameters
-      DW : integer := 32;
-
       --Memory parameters
       DEPTH   : integer := 256;
-      AW      : integer := integer(log2(real(256)));
-      MEMFILE : string  := ""
+      MEMFILE : string  := "";
+
+      --Wishbone parameters
+      DW : integer := 32;
+      AW : integer := integer(log2(real(256)))
       );
     port (
       wb_clk_i : in std_logic;
@@ -202,10 +203,10 @@ begin
   --DUT WB
   wb_spram : mpsoc_wb_spram
     generic map (
-      DW      => DW,
       DEPTH   => DEPTH,
-      AW      => AW,
-      MEMFILE => MEMFILE
+      MEMFILE => MEMFILE,
+      DW      => DW,
+      AW      => AW
       )
     port map (
       wb_clk_i => HRESETn,

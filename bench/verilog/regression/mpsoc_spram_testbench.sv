@@ -40,28 +40,26 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module mpsoc_msi_testbench;
+module mpsoc_spram_testbench;
 
   //////////////////////////////////////////////////////////////////
   //
   // Constants
   //
 
-  //AHB3 parameters
   localparam XLEN = 64;
   localparam PLEN = 64;
-
-  localparam MASTERS = 5;
-  localparam SLAVES  = 5;
 
   localparam SYNC_DEPTH = 3;
   localparam TECHNOLOGY = "GENERIC";
 
-  //WB parameters
-  parameter DW      = 32;
+  //Memory parameters
   parameter DEPTH   = 256;
-  parameter AW      = $clog2(DEPTH);
   parameter MEMFILE = "";
+
+  //Wishbone parameters
+  parameter DW = 32;
+  parameter AW = $clog2(DEPTH);
 
   //////////////////////////////////////////////////////////////////
   //
@@ -107,10 +105,10 @@ module mpsoc_msi_testbench;
 
   //DUT AHB3
   mpsoc_ahb3_spram #(
-    .MEM_SIZE          ( 0 ),
+    .MEM_SIZE          ( 256 ),
     .MEM_DEPTH         ( 256 ),
-    .HADDR_SIZE        ( PLEN ),
-    .HDATA_SIZE        ( XLEN ),
+    .PLEN              ( PLEN ),
+    .XLEN              ( XLEN ),
     .TECHNOLOGY        ( TECHNOLOGY ),
     .REGISTERED_OUTPUT ( "NO" )
   )
@@ -135,10 +133,10 @@ module mpsoc_msi_testbench;
 
   //DUT WB
   mpsoc_wb_spram #(
-    .DW      ( DW      ),
     .DEPTH   ( DEPTH   ),
+    .MEMFILE ( MEMFILE ),
     .AW      ( AW      ),
-    .MEMFILE ( MEMFILE )
+    .DW      ( DW      )
   )
   wb_spram (
     .wb_clk_i ( HRESETn ),

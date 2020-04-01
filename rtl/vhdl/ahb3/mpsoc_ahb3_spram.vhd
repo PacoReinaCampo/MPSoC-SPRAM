@@ -48,7 +48,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.mpsoc_pkg.all;
+use work.mpsoc_spram_ahb3_pkg.all;
 
 entity mpsoc_ahb3_spram is
   generic (
@@ -190,28 +190,6 @@ architecture RTL of mpsoc_ahb3_spram is
     gen_be_return := std_logic_vector(unsigned(full_be(BE_SIZE-1 downto 0)) sll to_integer(unsigned(haddr_masked)));
     return gen_be_return;
   end gen_be;  --gen_be
-
-  function reduce_nand (
-    reduce_nand_in : std_logic_vector
-    ) return std_logic is
-    variable reduce_nand_out : std_logic := '0';
-  begin
-    for i in reduce_nand_in'range loop
-      reduce_nand_out := reduce_nand_out nand reduce_nand_in(i);
-    end loop;
-    return reduce_nand_out;
-  end reduce_nand;
-
-  function to_stdlogic (
-    input : boolean
-    ) return std_logic is
-  begin
-    if input then
-      return('1');
-    else
-      return('0');
-    end if;
-  end function to_stdlogic;
 
 begin
   --////////////////////////////////////////////////////////////////
