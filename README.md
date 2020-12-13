@@ -336,9 +336,13 @@ A Random Access Memory (RAM) is a computer memory that can be read and changed i
 | `mpsoc_wb_spram`          | Single-Port RAM for WishBone |
 | `...mpsoc_wb_ram_generic` | RAM Generic Module           |
 
-#### 2.1.1.2. Parameters
+#### 2.1.1.2. Pipeline
 
 ### 2.1.2. Interface
+
+#### 2.1.2.1. Constants
+
+#### 2.1.2.2. Signals
 
 ### 2.1.3. Registers
 
@@ -350,9 +354,13 @@ A Random Access Memory (RAM) is a computer memory that can be read and changed i
 
 #### 2.2.1.1. Organization
 
-#### 2.2.1.2. Parameters
+#### 2.2.1.2. Pipeline
 
 ### 2.2.2. Interface
+
+#### 2.2.2.1. Constants
+
+#### 2.2.2.2. Signals
 
 ### 2.2.3. Registers
 
@@ -364,9 +372,13 @@ A Random Access Memory (RAM) is a computer memory that can be read and changed i
 
 #### 2.3.1.1. Organization
 
-#### 2.3.1.2. Parameters
+#### 2.3.1.2. Pipeline
 
 ### 2.3.2. Interface
+
+#### 2.3.2.1. Constants
+
+#### 2.3.2.2. Signals
 
 ### 2.3.3. Registers
 
