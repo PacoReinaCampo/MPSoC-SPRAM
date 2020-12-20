@@ -42,6 +42,17 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ram/mpsoc_spram.sv
-read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ram/mpsoc_ram_1r1w.sv
-read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ram/mpsoc_ram_1r1w_generic.sv
+implementation_axi4:
+	source system_axi4.qf
+
+implementation_ahb3:
+	source system_ahb3.qf
+
+implementation_wb:
+	source system_wb.qf
+
+implementation_bb:
+	source system_bb.qf
+
+clean:
+	rm -rf system_*

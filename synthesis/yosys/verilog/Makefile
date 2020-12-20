@@ -42,6 +42,17 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ram/mpsoc_spram.sv
-read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ram/mpsoc_ram_1r1w.sv
-read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ram/mpsoc_ram_1r1w_generic.sv
+implementation_axi4:
+	yosys -s system_axi4.ys
+
+implementation_ahb3:
+	yosys -s system_ahb3.ys
+
+implementation_wb:
+	yosys -s system_wb.ys
+
+implementation_bb:
+	yosys -s system_bb.ys
+
+clean:
+	rm -f *.v *.bit

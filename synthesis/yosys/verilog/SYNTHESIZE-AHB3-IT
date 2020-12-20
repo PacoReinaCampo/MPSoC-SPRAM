@@ -1,1 +1,2 @@
-yosys -s system.ys
+make clean
+make implementation_ahb3
