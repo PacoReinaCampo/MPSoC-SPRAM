@@ -42,7 +42,7 @@
 ##                                                                               ##
 ###################################################################################
 
-# read design 
+# read design
 read_verilog -sv ../../../rtl/verilog/bb/msp430_ram.sv
 
 # elaborate design hierarchy

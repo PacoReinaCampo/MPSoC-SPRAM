@@ -45,7 +45,7 @@
 module mpsoc_ahb3_spram #(
   parameter MEM_SIZE          = 0,   //Memory in Bytes
   parameter MEM_DEPTH         = 256, //Memory depth
-  parameter PLEN              = 64,
+  parameter PLEN              = 8,
   parameter XLEN              = 32,
   parameter TECHNOLOGY        = "GENERIC",
   parameter REGISTERED_OUTPUT = "NO"
