@@ -42,6 +42,26 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ram/mpsoc_spram.sv
-read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ram/mpsoc_ram_1r1w.sv
-read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ram/mpsoc_ram_1r1w_generic.sv
+# read design 
+read_verilog -sv ../../../rtl/verilog/bb/msp430_ram.sv
+
+# elaborate design hierarchy
+hierarchy -check -top msp430_ram
+
+# the high-level stuff
+proc; opt; fsm; opt; memory; opt
+
+# mapping to internal cell library
+techmap; opt
+
+# mapping flip-flops to cmos_cells.lib
+dfflibmap -liberty cmos_cells.lib
+
+# mapping logic to cmos_cells.lib
+abc -liberty cmos_cells.lib
+
+# cleanup
+clean
+
+# write synthesized design
+write_verilog system_bb.v

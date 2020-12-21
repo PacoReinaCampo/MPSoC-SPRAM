@@ -42,10 +42,6 @@
 ##                                                                               ##
 ###################################################################################
 
-VIVADO=/opt/Xilinx/Vivado/2018.2/bin/vivado
-
-export VIVADO
-
 implementation_axi4:
 	$(VIVADO) -nojournal -log system_axi4.log -mode batch -source system_axi4.tcl
 	rm -rf .Xil usage_statistics_webtalk.*
