@@ -46,10 +46,9 @@ all: build simulate
 
 build:
 	$(XVLOG) -i ../../../../../rtl/verilog/ahb3/pkg -prj system.prj
-	$(XVLOG) $(GLBL)
 
 simulate:
-	$(XELAB) -L unifast_ver -L unisims_ver -R mpsoc_spram_testbench glbl
+	$(XELAB) mpsoc_spram_testbench
 
 clean:
-	rm -rf *.dir *.log *.pb
+	rm -rf *.dir *.jou *.log *.pb
