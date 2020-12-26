@@ -10,7 +10,7 @@
 ##                                                                               ##
 ##                                                                               ##
 ##              MPSoC-SPRAM CPU                                                  ##
-##              Synthesis Test Makefile                                          ##
+##              Simulation Test Makefile                                         ##
 ##                                                                               ##
 ###################################################################################
 
@@ -42,18 +42,13 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -sv ../../../rtl/verilog/bb/core/msp430_ram.sv
+all: build simulate
 
-read_xdc system_bb.xdc
+build:
+	$(XVLOG) -prj system.prj
 
-synth_design -part xc7z020-clg484-1 -top msp430_ram
+simulate:
+	$(XELAB) mpsoc_spram_testbench
 
-opt_design
-place_design
-route_design
-
-report_utilization
-report_timing
-
-write_verilog -force system_bb.v
-write_bitstream -force system_bb.bit
+clean:
+	rm -rf *.dir *.jou *.log *.pb

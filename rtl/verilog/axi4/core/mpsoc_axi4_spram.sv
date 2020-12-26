@@ -44,6 +44,7 @@ module mpsoc_axi4_spram #(
   parameter int unsigned AXI_ID_WIDTH      = 10,
   parameter int unsigned AXI_ADDR_WIDTH    = 64,
   parameter int unsigned AXI_DATA_WIDTH    = 64,
+  parameter int unsigned AXI_STRB_WIDTH    = 8,
   parameter int unsigned AXI_USER_WIDTH    = 10
 )
   (
