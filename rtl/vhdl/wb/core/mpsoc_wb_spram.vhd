@@ -91,10 +91,10 @@ architecture RTL of mpsoc_wb_spram is
     port (
       clk   : in  std_logic;
       we    : in  std_logic_vector(3 downto 0);
-      din   : in  std_logic_vector(31 downto 0);
-      waddr : in  std_logic_vector(integer(log2(real(256)))-1 downto 0);
-      raddr : in  std_logic_vector(integer(log2(real(256)))-1 downto 0);
-      dout  : out std_logic_vector(31 downto 0)
+      din   : in  std_logic_vector(DW-1 downto 0);
+      waddr : in  std_logic_vector(AW-1 downto 0);
+      raddr : in  std_logic_vector(AW-1 downto 0);
+      dout  : out std_logic_vector(DW-1 downto 0)
       );
   end component;
 
