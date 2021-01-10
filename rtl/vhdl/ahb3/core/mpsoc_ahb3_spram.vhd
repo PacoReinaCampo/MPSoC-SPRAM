@@ -133,8 +133,8 @@ architecture RTL of mpsoc_ahb3_spram is
   -- Functions
   --
   function gen_be (
-    hsize : std_logic_vector(2 downto 0);
-    haddr : std_logic_vector(PLEN-1 downto 0)
+    hsize_s : std_logic_vector(2 downto 0);
+    haddr_s : std_logic_vector(PLEN-1 downto 0)
     ) return std_logic_vector is
 
     variable full_be        : std_logic_vector(127 downto 0);
@@ -144,7 +144,7 @@ architecture RTL of mpsoc_ahb3_spram is
     variable gen_be_return : std_logic_vector (BE_SIZE-1 downto 0);
   begin
     --get number of active lanes for a 1024bit databus (max width) for this HSIZE
-    case (hsize) is
+    case (hsize_s) is
       when HSIZE_B1024 =>
         full_be := X"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
       when HSIZE_B512 =>
@@ -184,7 +184,7 @@ architecture RTL of mpsoc_ahb3_spram is
     end case;
 
     --generate masked address
-    haddr_masked := haddr and address_offset;
+    haddr_masked := haddr_s and address_offset;
 
     --create byte-enable
     gen_be_return := std_logic_vector(unsigned(full_be(BE_SIZE-1 downto 0)) sll to_integer(unsigned(haddr_masked)));
