@@ -1,5 +1,4 @@
-export XVLOG=/opt/Xilinx/Vivado/2020.2/bin/xvlog
-export XELAB=/opt/Xilinx/Vivado/2020.2/bin/xelab
+export PATH=$PATH:/opt/Xilinx/Vivado/2020.2/bin/
 
 make clean
 make
