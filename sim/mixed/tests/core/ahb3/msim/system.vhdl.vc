@@ -1,5 +1,5 @@
-../../../../../rtl/vhdl/ahb3/pkg/mpsoc_spram_ahb3_pkg.vhd
+../../../../../../rtl/vhdl/ahb3/pkg/mpsoc_spram_ahb3_pkg.vhd
 
-../../../../../rtl/vhdl/ahb3/core/mpsoc_ahb3_spram.vhd
-../../../../../rtl/vhdl/ahb3/core/mpsoc_ram_1r1w.vhd
-../../../../../rtl/vhdl/ahb3/core/mpsoc_ram_1r1w_generic.vhd
+../../../../../../rtl/vhdl/ahb3/core/mpsoc_ahb3_spram.vhd
+../../../../../../rtl/vhdl/ahb3/core/mpsoc_ram_1r1w.vhd
+../../../../../../rtl/vhdl/ahb3/core/mpsoc_ram_1r1w_generic.vhd
