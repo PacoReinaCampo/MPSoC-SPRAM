@@ -52,4 +52,4 @@ simulate:
 	xsim -R wb_spram_tb
 
 clean:
-	rm -rf *.dir *.jou *.log *.pb
+	rm -rf *.dir *.jou *.log *.pb .Xil

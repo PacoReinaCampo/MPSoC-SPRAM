@@ -52,4 +52,4 @@ simulate:
 	xsim -R test
 
 clean:
-	rm -rf *.dir *.jou *.log *.pb
+	rm -rf *.dir *.jou *.log *.pb .Xil
