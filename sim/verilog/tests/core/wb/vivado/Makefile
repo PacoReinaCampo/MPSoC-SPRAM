@@ -49,6 +49,7 @@ build:
 
 simulate:
 	xelab wb_spram_tb
+	xsim -R wb_spram_tb
 
 clean:
 	rm -rf *.dir *.jou *.log *.pb
