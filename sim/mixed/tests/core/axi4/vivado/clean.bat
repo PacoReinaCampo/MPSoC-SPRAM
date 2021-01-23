@@ -1,2 +1,2 @@
-del *.dir *.jou *.log *.pb
-rmdir /s /q work
+del *.jou *.log *.pb
+rmdir /s /q xsim.dir
