@@ -55,5 +55,4 @@ route_design
 report_utilization
 report_timing
 
-write_verilog -force system_bb.v
 write_bitstream -force system_bb.bit

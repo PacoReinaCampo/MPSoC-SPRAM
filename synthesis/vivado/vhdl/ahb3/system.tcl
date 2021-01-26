@@ -42,9 +42,9 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -vhdl2008 ../../../rtl/verilog/ahb3/core/mpsoc_ahb3_spram.sv
-read_verilog -vhdl2008 ../../../rtl/verilog/ahb3/core/mpsoc_ram_1r1w.sv
-read_verilog -vhdl2008 ../../../rtl/verilog/ahb3/core/mpsoc_ram_1r1w_generic.sv
+read_vhdl -vhdl2008 ../../../rtl/vhdl/ahb3/core/mpsoc_ahb3_spram.sv
+read_vhdl -vhdl2008 ../../../rtl/vhdl/ahb3/core/mpsoc_ram_1r1w.sv
+read_vhdl -vhdl2008 ../../../rtl/vhdl/ahb3/core/mpsoc_ram_1r1w_generic.sv
 
 read_xdc system_ahb3.xdc
 
@@ -57,5 +57,4 @@ route_design
 report_utilization
 report_timing
 
-write_verilog -force system_ahb3.v
 write_bitstream -force system_ahb3.bit

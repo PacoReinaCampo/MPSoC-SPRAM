@@ -55,5 +55,4 @@ route_design
 report_utilization
 report_timing
 
-write_verilog -force system_axi4.v
 write_bitstream -force system_axi4.bit

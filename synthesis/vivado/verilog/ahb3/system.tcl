@@ -46,6 +46,8 @@ read_verilog -sv ../../../rtl/verilog/ahb3/core/mpsoc_ahb3_spram.sv
 read_verilog -sv ../../../rtl/verilog/ahb3/core/mpsoc_ram_1r1w.sv
 read_verilog -sv ../../../rtl/verilog/ahb3/core/mpsoc_ram_1r1w_generic.sv
 
+read_verilog -sv mpsoc_spram_synthesis.sv
+
 read_xdc system.xdc
 
 synth_design -part xc7z020-clg484-1 -include_dirs ../../../rtl/verilog/ahb3/pkg -top mpsoc_spram_synthesis
@@ -57,5 +59,4 @@ route_design
 report_utilization
 report_timing
 
-write_verilog -force mpsoc_spram_synthesis.v
 write_bitstream -force mpsoc_spram_synthesis.bit

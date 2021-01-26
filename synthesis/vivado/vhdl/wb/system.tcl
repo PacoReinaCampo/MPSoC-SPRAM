@@ -58,5 +58,4 @@ route_design
 report_utilization
 report_timing
 
-write_vhdl -force system_wb.vhd
 write_bitstream -force system_wb.bit
