@@ -42,13 +42,15 @@
 ##                                                                               ##
 ###################################################################################
 
-read_vhdl -vhdl2008 ../../../rtl/vhdl/bb/core/msp430_ram.vhd
+read_vhdl -vhdl2008 ../../../../rtl/vhdl/bb/core/msp430_ram.vhd
 
-read_vhdl -vhdl2008 ../../../rtl/vhdl/bb/pkg/msp430_pkg.vhd
+read_vhdl -vhdl2008 ../../../../rtl/vhdl/bb/pkg/msp430_pkg.vhd
 
-read_xdc system_bb.xdc
+read_vhdl -vhdl2008 mpsoc_spram_synthesis.vhd
 
-synth_design -part xc7z020-clg484-1 -top msp430_ram
+read_xdc system.xdc
+
+synth_design -part xc7z020-clg484-1 -top mpsoc_spram_synthesis
 
 opt_design
 place_design
@@ -57,4 +59,4 @@ route_design
 report_utilization
 report_timing
 
-write_bitstream -force system_bb.bit
+write_bitstream -force mpsoc_spram_synthesis.bit

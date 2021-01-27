@@ -42,14 +42,16 @@
 ##                                                                               ##
 ###################################################################################
 
-read_vhdl -vhdl2008 ../../../rtl/vhdl/wb/core/mpsoc_wb_ram_generic.vhd
-read_vhdl -vhdl2008 ../../../rtl/vhdl/wb/core/mpsoc_wb_spram.vhd
+read_vhdl -vhdl2008 ../../../../rtl/vhdl/wb/core/mpsoc_wb_ram_generic.vhd
+read_vhdl -vhdl2008 ../../../../rtl/vhdl/wb/core/mpsoc_wb_spram.vhd
 
-read_vhdl -vhdl2008 ../../../rtl/vhdl/wb/pkg/mpsoc_spram_wb_pkg.vhd
+read_vhdl -vhdl2008 ../../../../rtl/vhdl/wb/pkg/mpsoc_spram_wb_pkg.vhd
 
-read_xdc system_wb.xdc
+read_vhdl -vhdl2008 mpsoc_spram_synthesis.vhd
 
-synth_design -part xc7z020-clg484-1 -top mpsoc_wb_spram
+read_xdc system.xdc
+
+synth_design -part xc7z020-clg484-1 -top mpsoc_spram_synthesis
 
 opt_design
 place_design
@@ -58,4 +60,4 @@ route_design
 report_utilization
 report_timing
 
-write_bitstream -force system_wb.bit
+write_bitstream -force mpsoc_spram_synthesis.bit

@@ -57,4 +57,4 @@ route_design
 report_utilization
 report_timing
 
-write_bitstream -force system.bit
+write_bitstream -force mpsoc_spram_synthesis.bit

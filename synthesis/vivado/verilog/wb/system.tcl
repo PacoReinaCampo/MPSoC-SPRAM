@@ -42,12 +42,14 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -sv ../../../rtl/verilog/wb/core/mpsoc_wb_ram_generic.sv
-read_verilog -sv ../../../rtl/verilog/wb/core/mpsoc_wb_spram.sv
+read_verilog -sv ../../../../rtl/verilog/wb/core/mpsoc_wb_ram_generic.sv
+read_verilog -sv ../../../../rtl/verilog/wb/core/mpsoc_wb_spram.sv
 
-read_xdc system_wb.xdc
+read_verilog -sv mpsoc_spram_synthesis.sv
 
-synth_design -part xc7z020-clg484-1 -include_dirs ../../../rtl/verilog/wb/pkg -top mpsoc_wb_spram
+read_xdc system.xdc
+
+synth_design -part xc7z020-clg484-1 -include_dirs ../../../../rtl/verilog/wb/pkg -top mpsoc_spram_synthesis
 
 opt_design
 place_design
@@ -56,4 +58,4 @@ route_design
 report_utilization
 report_timing
 
-write_bitstream -force system_wb.bit
+write_bitstream -force mpsoc_spram_synthesis.bit
