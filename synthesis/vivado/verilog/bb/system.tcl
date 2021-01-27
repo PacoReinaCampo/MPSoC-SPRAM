@@ -42,11 +42,13 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -sv ../../../rtl/verilog/bb/core/msp430_ram.sv
+read_verilog -sv ../../../../rtl/verilog/bb/core/msp430_ram.sv
 
-read_xdc system_bb.xdc
+read_verilog -sv mpsoc_spram_synthesis.sv
 
-synth_design -part xc7z020-clg484-1 -top msp430_ram
+read_xdc system.xdc
+
+synth_design -part xc7z020-clg484-1 -top mpsoc_spram_synthesis
 
 opt_design
 place_design
@@ -55,4 +57,4 @@ route_design
 report_utilization
 report_timing
 
-write_bitstream -force system_bb.bit
+write_bitstream -force system.bit
