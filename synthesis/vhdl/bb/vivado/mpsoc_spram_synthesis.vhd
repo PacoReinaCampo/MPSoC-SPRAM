@@ -1,4 +1,4 @@
--- Converted from bench/verilog/regression/mpsoc_spram_testbench.sv
+-- Converted from mpsoc_spram_synthesis.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -12,139 +12,104 @@
 --                  |_|                                                       //
 --                                                                            //
 --                                                                            //
---              MPSoC-RISCV CPU                                               //
---              Master Slave Interface Tesbench                               //
---              AMBA3 AHB-Lite Bus Interface                                  //
+--              MSP430 CPU                                                    //
+--              Processing Unit                                               //
 --                                                                            //
 --//////////////////////////////////////////////////////////////////////////////
 
--- Copyright (c) 2018-2019 by the author(s)
+-- Copyright (c) 2015-2016 by the author(s)
 -- *
--- * Permission is hereby granted, free of charge, to any person obtaining a copy
--- * of this software and associated documentation files (the "Software"), to deal
--- * in the Software without restriction, including without limitation the rights
--- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
--- * copies of the Software, and to permit persons to whom the Software is
--- * furnished to do so, subject to the following conditions:
+-- * Redistribution and use in source and binary forms, with or without
+-- * modification, are permitted provided that the following conditions
+-- * are met:
+-- *     * Redistributions of source code must retain the above copyright
+-- *       notice, this list of conditions and the following disclaimer.
+-- *     * Redistributions in binary form must reproduce the above copyright
+-- *       notice, this list of conditions and the following disclaimer in the
+-- *       documentation and/or other materials provided with the distribution.
+-- *     * Neither the name of the authors nor the names of its contributors
+-- *       may be used to endorse or promote products derived from this software
+-- *       without specific prior written permission.
 -- *
--- * The above copyright notice and this permission notice shall be included in
--- * all copies or substantial portions of the Software.
--- *
--- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
--- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
--- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
--- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
--- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
--- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
--- * THE SOFTWARE.
+-- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+-- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+-- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+-- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+-- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+-- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+-- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+-- * THE POSSIBILITY OF SUCH DAMAGE
 -- *
 -- * =============================================================================
 -- * Author(s):
+-- *   Olivier Girard <olgirard@gmail.com>
 -- *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 -- */
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
 
-use work.mpsoc_spram_ahb3_pkg.all;
+entity mpsoc_spram_synthesis is
+  port (
+  -- Address bus
+  -- Data bus
+  -- Memory size in bytes
+    ram_clk : in std_logic;  -- RAM clock
 
-entity mpsoc_spram_testbench is
-end mpsoc_spram_testbench;
+    ram_addr : in std_logic_vector(AW-1 downto 0);  -- RAM address
+    ram_dout : out std_logic_vector(DW-1 downto 0);  -- RAM data output
+    ram_din : in std_logic_vector(DW-1 downto 0);  -- RAM data input
+    ram_cen : in std_logic   -- RAM chip enable (low active)
+    ram_wen : in std_logic_vector(1 downto 0)  -- RAM write enable (low active)
+  );
+  constant AW : integer := 6;
+  constant DW : integer := 16;
+  constant MEM_SIZE : integer := 256;
+end mpsoc_spram_synthesis;
 
-architecture RTL of mpsoc_spram_testbench is
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Variables
-  --
-
-  --Common signals
-  signal HRESETn : std_logic;
-  signal HCLK    : std_logic;
-
-  --AHB3 signals
-  signal mst_spram_HSEL      : std_logic;
-  signal mst_spram_HADDR     : std_logic_vector(PLEN-1 downto 0);
-  signal mst_spram_HWDATA    : std_logic_vector(XLEN-1 downto 0);
-  signal mst_spram_HRDATA    : std_logic_vector(XLEN-1 downto 0);
-  signal mst_spram_HWRITE    : std_logic;
-  signal mst_spram_HSIZE     : std_logic_vector(2 downto 0);
-  signal mst_spram_HBURST    : std_logic_vector(2 downto 0);
-  signal mst_spram_HPROT     : std_logic_vector(3 downto 0);
-  signal mst_spram_HTRANS    : std_logic_vector(1 downto 0);
-  signal mst_spram_HMASTLOCK : std_logic;
-  signal mst_spram_HREADY    : std_logic;
-  signal mst_spram_HREADYOUT : std_logic;
-  signal mst_spram_HRESP     : std_logic;
-
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Components
-  --
-  component mpsoc_ahb3_spram
-    generic (
-      MEM_SIZE          : integer := 256;  --Memory in Bytes
-      MEM_DEPTH         : integer := 256;  --Memory depth
-      PLEN              : integer := 64;
-      XLEN              : integer := 64;
-      TECHNOLOGY        : string  := "GENERIC";
-      REGISTERED_OUTPUT : string  := "NO"
-      );
-    port (
-      HRESETn : in std_logic;
-      HCLK    : in std_logic;
-
-      --AHB Slave Interfaces (receive data from AHB Masters)
-      --AHB Masters connect to these ports
-      HSEL      : in  std_logic;
-      HADDR     : in  std_logic_vector(PLEN-1 downto 0);
-      HWDATA    : in  std_logic_vector(XLEN-1 downto 0);
-      HRDATA    : out std_logic_vector(XLEN-1 downto 0);
-      HWRITE    : in  std_logic;
-      HSIZE     : in  std_logic_vector(2 downto 0);
-      HBURST    : in  std_logic_vector(2 downto 0);
-      HPROT     : in  std_logic_vector(3 downto 0);
-      HTRANS    : in  std_logic_vector(1 downto 0);
-      HMASTLOCK : in  std_logic;
-      HREADYOUT : out std_logic;
-      HREADY    : in  std_logic;
-      HRESP     : out std_logic
-      );
+architecture RTL of mpsoc_spram_synthesis is
+  component msp430_ram
+  generic (
+    ? : std_logic_vector(? downto 0) := ?;
+    ? : std_logic_vector(? downto 0) := ?;
+    ? : std_logic_vector(? downto 0) := ?
+  );
+  port (
+    ram_clk : std_logic_vector(? downto 0);
+    ram_addr : std_logic_vector(? downto 0);
+    ram_dout : std_logic_vector(? downto 0);
+    ram_din : std_logic_vector(? downto 0);
+    ram_cen : std_logic_vector(? downto 0);
+    ram_wen : std_logic_vector(? downto 0)
+  );
   end component;
 
 begin
+
+
   --////////////////////////////////////////////////////////////////
   --
   -- Module Body
   --
 
   --DUT AHB3
-  ahb3_spram : mpsoc_ahb3_spram
-    generic map (
-      MEM_SIZE          => 256,
-      MEM_DEPTH         => 256,
-      PLEN              => PLEN,
-      XLEN              => XLEN,
-      TECHNOLOGY        => TECHNOLOGY,
-      REGISTERED_OUTPUT => "NO"
-      )
-    port map (
-      HRESETn => HRESETn,
-      HCLK    => HCLK,
+  ram : msp430_ram
+  generic map (
+    AW, 
+    DW, 
+    MEM_SIZE
+  )
+  port map (
+    ram_clk => ram_clk,
 
-      HSEL      => mst_spram_HSEL,
-      HADDR     => mst_spram_HADDR,
-      HWDATA    => mst_spram_HWDATA,
-      HRDATA    => mst_spram_HRDATA,
-      HWRITE    => mst_spram_HWRITE,
-      HSIZE     => mst_spram_HSIZE,
-      HBURST    => mst_spram_HBURST,
-      HPROT     => mst_spram_HPROT,
-      HTRANS    => mst_spram_HTRANS,
-      HMASTLOCK => mst_spram_HMASTLOCK,
-      HREADYOUT => mst_spram_HREADYOUT,
-      HREADY    => mst_spram_HREADY,
-      HRESP     => mst_spram_HRESP
-      );
+    ram_addr => ram_addr,
+    ram_dout => ram_dout,
+    ram_din => ram_din,
+    ram_cen => ram_cen,
+    ram_wen => ram_wen
+  );
 end RTL;

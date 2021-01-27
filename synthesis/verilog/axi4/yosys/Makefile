@@ -45,7 +45,7 @@
 all: synthesize
 
 synthesize:
-	yosys -s system_axi4.ys
+	yosys -s system.ys
 
 clean:
-	rm -f *.v *.bit
+	rm -rf *.v

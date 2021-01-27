@@ -40,77 +40,62 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpsoc_spram_testbench;
-
-  //////////////////////////////////////////////////////////////////
-  //
-  // Constants
-  //
-
-  localparam XLEN = 64;
-  localparam PLEN = 64;
-
-  localparam SYNC_DEPTH = 3;
-  localparam TECHNOLOGY = "GENERIC";
-
+module mpsoc_spram_synthesis #(
   //Memory parameters
-  parameter DEPTH   = 256;
-  parameter MEMFILE = "";
+  parameter DEPTH   = 256,
+  parameter MEMFILE = "",
 
-  //////////////////////////////////////////////////////////////////
-  //
-  // Variables
-  //
+  //Wishbone parameters
+  parameter DW = 32,
+  parameter AW = $clog2(DEPTH)
+)
+  (
+    input           wb_clk_i,
+    input           wb_rst_i,
 
-  //Common signals
-  wire                                     HRESETn;
-  wire                                     HCLK;
+    input  [AW-1:0] wb_adr_i,
+    input  [DW-1:0] wb_dat_i,
+    input  [   3:0] wb_sel_i,
+    input           wb_we_i,
+    input  [   1:0] wb_bte_i,
+    input  [   2:0] wb_cti_i,
+    input           wb_cyc_i,
+    input           wb_stb_i,
 
-  //AHB3 signals
-  wire                                     mst_spram_HSEL;
-  wire               [PLEN           -1:0] mst_spram_HADDR;
-  wire               [XLEN           -1:0] mst_spram_HWDATA;
-  wire               [XLEN           -1:0] mst_spram_HRDATA;
-  wire                                     mst_spram_HWRITE;
-  wire               [                2:0] mst_spram_HSIZE;
-  wire               [                2:0] mst_spram_HBURST;
-  wire               [                3:0] mst_spram_HPROT;
-  wire               [                1:0] mst_spram_HTRANS;
-  wire                                     mst_spram_HMASTLOCK;
-  wire                                     mst_spram_HREADY;
-  wire                                     mst_spram_HREADYOUT;
-  wire                                     mst_spram_HRESP;
+    output reg      wb_ack_o,
+    output          wb_err_o,
+    output [DW-1:0] wb_dat_o
+  );
 
   //////////////////////////////////////////////////////////////////
   //
   // Module Body
   //
 
-  //DUT AHB3
-  mpsoc_ahb3_spram #(
-    .MEM_SIZE          ( 256 ),
-    .MEM_DEPTH         ( 256 ),
-    .PLEN              ( PLEN ),
-    .XLEN              ( XLEN ),
-    .TECHNOLOGY        ( TECHNOLOGY ),
-    .REGISTERED_OUTPUT ( "NO" )
-  )
-  ahb3_spram (
-    .HRESETn   ( HRESETn ),
-    .HCLK      ( HCLK    ),
+  //DUT WB
+  mpsoc_wb_spram #(
+    //Memory parameters
+    .DEPTH   ( DEPTH   ),
+    .MEMFILE ( MEMFILE ),
 
-    .HSEL      ( mst_spram_HSEL      ),
-    .HADDR     ( mst_spram_HADDR     ),
-    .HWDATA    ( mst_spram_HWDATA    ),
-    .HRDATA    ( mst_spram_HRDATA    ),
-    .HWRITE    ( mst_spram_HWRITE    ),
-    .HSIZE     ( mst_spram_HSIZE     ),
-    .HBURST    ( mst_spram_HBURST    ),
-    .HPROT     ( mst_spram_HPROT     ),
-    .HTRANS    ( mst_spram_HTRANS    ),
-    .HMASTLOCK ( mst_spram_HMASTLOCK ),
-    .HREADYOUT ( mst_spram_HREADYOUT ),
-    .HREADY    ( mst_spram_HREADY    ),
-    .HRESP     ( mst_spram_HRESP     )
+    //Wishbone parameters
+    .AW ( AW ),
+    .DW ( DW )
+  )
+  wb_spram (
+    .wb_clk_i ( wb_clk_i ),
+    .wb_rst_i ( wb_rst_i ),
+
+    .wb_adr_i ( wb_adr_i ),
+    .wb_dat_i ( wb_dat_i ),
+    .wb_sel_i ( wb_sel_i ),
+    .wb_we_i  ( wb_we_i  ),
+    .wb_bte_i ( wb_bte_i ),
+    .wb_cti_i ( wb_cti_i ),
+    .wb_cyc_i ( wb_cyc_i ),
+    .wb_stb_i ( wb_stb_i ),
+    .wb_ack_o ( wb_ack_o ),
+    .wb_err_o ( wb_err_o ),
+    .wb_dat_o ( wb_dat_o )
   );
 endmodule

@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpsoc_spram_synthesis;
+module mpsoc_spram_synthesis #(
   parameter MEM_SIZE          = 0,   //Memory in Bytes
   parameter MEM_DEPTH         = 256, //Memory depth
   parameter PLEN              = 8,
@@ -74,12 +74,12 @@ module mpsoc_spram_synthesis;
 
   //DUT AHB3
   mpsoc_ahb3_spram #(
-    .MEM_SIZE          ( 256 ),
-    .MEM_DEPTH         ( 256 ),
+    .MEM_SIZE          ( MEM_SIZE ),
+    .MEM_DEPTH         ( MEM_DEPTH ),
     .PLEN              ( PLEN ),
     .XLEN              ( XLEN ),
     .TECHNOLOGY        ( TECHNOLOGY ),
-    .REGISTERED_OUTPUT ( "NO" )
+    .REGISTERED_OUTPUT ( REGISTERED_OUTPUT )
   )
   ahb3_spram (
     .HRESETn   ( HRESETn ),

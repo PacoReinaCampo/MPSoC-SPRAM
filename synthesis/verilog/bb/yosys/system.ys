@@ -43,7 +43,7 @@
 ###################################################################################
 
 # read design
-read_verilog -sv ../../../../rtl/verilog/bb/msp430_ram.sv
+read_verilog -sv ../../../../rtl/verilog/bb/core/msp430_ram.sv
 
 read_verilog -sv mpsoc_spram_synthesis.sv
 
@@ -67,3 +67,4 @@ clean
 
 # write synthesized design
 write_verilog system.v
+
