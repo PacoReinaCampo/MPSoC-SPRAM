@@ -54,42 +54,44 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity mpsoc_spram_synthesis is
-  port (
-  -- Address bus
-  -- Data bus
-  -- Memory size in bytes
-    ram_clk : in std_logic;  -- RAM clock
-
-    ram_addr : in std_logic_vector(AW-1 downto 0);  -- RAM address
-    ram_dout : out std_logic_vector(DW-1 downto 0);  -- RAM data output
-    ram_din : in std_logic_vector(DW-1 downto 0);  -- RAM data input
-    ram_cen : in std_logic   -- RAM chip enable (low active)
-    ram_wen : in std_logic_vector(1 downto 0)  -- RAM write enable (low active)
+  generic (
+    AW       : integer := 6;   -- Address bus
+    DW       : integer := 16;  -- Data bus
+    MEM_SIZE : integer := 256  -- Memory size in bytes
   );
-  constant AW : integer := 6;
-  constant DW : integer := 16;
-  constant MEM_SIZE : integer := 256;
+  port (
+    -- Address bus
+    -- Data bus
+    -- Memory size in bytes
+    ram_clk : in std_logic;             -- RAM clock
+
+    ram_addr : in  std_logic_vector(AW-1 downto 0);  -- RAM address
+    ram_dout : out std_logic_vector(DW-1 downto 0);  -- RAM data output
+    ram_din  : in  std_logic_vector(DW-1 downto 0);  -- RAM data input
+    ram_cen  : in  std_logic;                        -- RAM chip enable (low active)
+    ram_wen  : in  std_logic_vector(1 downto 0)      -- RAM write enable (low active)
+  );
 end mpsoc_spram_synthesis;
 
 architecture RTL of mpsoc_spram_synthesis is
   component msp430_ram
-  generic (
-    ? : std_logic_vector(? downto 0) := ?;
-    ? : std_logic_vector(? downto 0) := ?;
-    ? : std_logic_vector(? downto 0) := ?
-  );
-  port (
-    ram_clk : std_logic_vector(? downto 0);
-    ram_addr : std_logic_vector(? downto 0);
-    ram_dout : std_logic_vector(? downto 0);
-    ram_din : std_logic_vector(? downto 0);
-    ram_cen : std_logic_vector(? downto 0);
-    ram_wen : std_logic_vector(? downto 0)
-  );
+    generic (
+      AW       : integer := 6;   -- Address bus
+      DW       : integer := 16;  -- Data bus
+      MEM_SIZE : integer := 256  -- Memory size in bytes
+    );
+    port (
+      ram_clk : in std_logic;           -- RAM clock
+
+      ram_addr : in  std_logic_vector(AW-1 downto 0);  -- RAM address
+      ram_dout : out std_logic_vector(DW-1 downto 0);  -- RAM data output
+      ram_din  : in  std_logic_vector(DW-1 downto 0);  -- RAM data input
+      ram_cen  : in  std_logic;                        -- RAM chip enable (low active)
+      ram_wen  : in  std_logic_vector(1 downto 0)      -- RAM write enable (low active)    
+    );
   end component;
 
 begin
-
 
   --////////////////////////////////////////////////////////////////
   --
@@ -98,18 +100,18 @@ begin
 
   --DUT AHB3
   ram : msp430_ram
-  generic map (
-    AW, 
-    DW, 
-    MEM_SIZE
-  )
-  port map (
-    ram_clk => ram_clk,
+    generic map (
+      AW       => AW,
+      DW       => DW,
+      MEM_SIZE => MEM_SIZE
+    )
+    port map (
+      ram_clk => ram_clk,
 
-    ram_addr => ram_addr,
-    ram_dout => ram_dout,
-    ram_din => ram_din,
-    ram_cen => ram_cen,
-    ram_wen => ram_wen
-  );
+      ram_addr => ram_addr,
+      ram_dout => ram_dout,
+      ram_din  => ram_din,
+      ram_cen  => ram_cen,
+      ram_wen  => ram_wen
+    );
 end RTL;

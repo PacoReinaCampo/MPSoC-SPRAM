@@ -183,13 +183,13 @@ architecture RTL of mpsoc_wb_spram is
     if (cti_i = CTI_INC_BURST) then
       case ((bte_i)) is
         when BTE_LINEAR =>
-          adr := std_logic_vector(unsigned(adr)+X"00000001");
+          adr := std_logic_vector(unsigned(adr)+to_unsigned(1, AW));
         when BTE_WRAP_4 =>
-          adr := adr(31 downto 2) & std_logic_vector(unsigned(adr(1 downto 0))+"01");
+          adr := adr(AW-1 downto 2) & std_logic_vector(unsigned(adr(1 downto 0))+"01");
         when BTE_WRAP_8 =>
-          adr := adr(31 downto 3) & std_logic_vector(unsigned(adr(2 downto 0))+"001");
+          adr := adr(AW-1 downto 3) & std_logic_vector(unsigned(adr(2 downto 0))+"001");
         when BTE_WRAP_16 =>
-          adr := adr(31 downto 4) & std_logic_vector(unsigned(adr(3 downto 0))+"0001");
+          adr := adr(AW-1 downto 4) & std_logic_vector(unsigned(adr(3 downto 0))+"0001");
         when others =>
           null;
       end case;

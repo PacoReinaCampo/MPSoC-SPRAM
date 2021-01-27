@@ -1,4 +1,4 @@
--- Converted from bench/verilog/regression/mpsoc_spram_testbench.sv
+-- Converted from mpsoc_spram_synthesis.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,103 +48,95 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.mpsoc_spram_ahb3_pkg.all;
+use work.mpsoc_spram_wb_pkg.all;
 
-entity mpsoc_spram_testbench is
-end mpsoc_spram_testbench;
+entity mpsoc_spram_synthesis is
+  generic (
+    --Memory parameters
+    DEPTH   : integer := 256;
+    MEMFILE : string  := "";
+    --Wishbone parameters
+    DW      : integer := 32;
+    AW      : integer := integer(log2(real(DEPTH)))
+  );
+  port (
+    wb_clk_i : in std_logic;
+    wb_rst_i : in std_logic;
 
-architecture RTL of mpsoc_spram_testbench is
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Variables
-  --
+    wb_adr_i : in std_logic_vector(AW-1 downto 0);
+    wb_dat_i : in std_logic_vector(DW-1 downto 0);
+    wb_sel_i : in std_logic_vector(3 downto 0);
+    wb_we_i  : in std_logic;
+    wb_bte_i : in std_logic_vector(1 downto 0);
+    wb_cti_i : in std_logic_vector(2 downto 0);
+    wb_cyc_i : in std_logic;
+    wb_stb_i : in std_logic;
 
-  --Common signals
-  signal HRESETn : std_logic;
-  signal HCLK    : std_logic;
+    wb_ack_o : out std_logic;
+    wb_err_o : out std_logic;
+    wb_dat_o : out std_logic_vector(DW-1 downto 0)
+    );
+end mpsoc_spram_synthesis;
 
-  --AHB3 signals
-  signal mst_spram_HSEL      : std_logic;
-  signal mst_spram_HADDR     : std_logic_vector(PLEN-1 downto 0);
-  signal mst_spram_HWDATA    : std_logic_vector(XLEN-1 downto 0);
-  signal mst_spram_HRDATA    : std_logic_vector(XLEN-1 downto 0);
-  signal mst_spram_HWRITE    : std_logic;
-  signal mst_spram_HSIZE     : std_logic_vector(2 downto 0);
-  signal mst_spram_HBURST    : std_logic_vector(2 downto 0);
-  signal mst_spram_HPROT     : std_logic_vector(3 downto 0);
-  signal mst_spram_HTRANS    : std_logic_vector(1 downto 0);
-  signal mst_spram_HMASTLOCK : std_logic;
-  signal mst_spram_HREADY    : std_logic;
-  signal mst_spram_HREADYOUT : std_logic;
-  signal mst_spram_HRESP     : std_logic;
-
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Components
-  --
-  component mpsoc_ahb3_spram
+architecture RTL of mpsoc_spram_synthesis is
+  component mpsoc_wb_spram
     generic (
-      MEM_SIZE          : integer := 256;  --Memory in Bytes
-      MEM_DEPTH         : integer := 256;  --Memory depth
-      PLEN              : integer := 64;
-      XLEN              : integer := 64;
-      TECHNOLOGY        : string  := "GENERIC";
-      REGISTERED_OUTPUT : string  := "NO"
-      );
+      --Memory parameters
+      DEPTH   : integer := 256;
+      MEMFILE : string  := "";
+      --Wishbone parameters
+      DW      : integer := 32;
+      AW      : integer := integer(log2(real(DEPTH)))
+    );
     port (
-      HRESETn : in std_logic;
-      HCLK    : in std_logic;
+      wb_clk_i : in std_logic;
+      wb_rst_i : in std_logic;
 
-      --AHB Slave Interfaces (receive data from AHB Masters)
-      --AHB Masters connect to these ports
-      HSEL      : in  std_logic;
-      HADDR     : in  std_logic_vector(PLEN-1 downto 0);
-      HWDATA    : in  std_logic_vector(XLEN-1 downto 0);
-      HRDATA    : out std_logic_vector(XLEN-1 downto 0);
-      HWRITE    : in  std_logic;
-      HSIZE     : in  std_logic_vector(2 downto 0);
-      HBURST    : in  std_logic_vector(2 downto 0);
-      HPROT     : in  std_logic_vector(3 downto 0);
-      HTRANS    : in  std_logic_vector(1 downto 0);
-      HMASTLOCK : in  std_logic;
-      HREADYOUT : out std_logic;
-      HREADY    : in  std_logic;
-      HRESP     : out std_logic
-      );
+      wb_adr_i : in std_logic_vector(AW-1 downto 0);
+      wb_dat_i : in std_logic_vector(DW-1 downto 0);
+      wb_sel_i : in std_logic_vector(3 downto 0);
+      wb_we_i  : in std_logic;
+      wb_bte_i : in std_logic_vector(1 downto 0);
+      wb_cti_i : in std_logic_vector(2 downto 0);
+      wb_cyc_i : in std_logic;
+      wb_stb_i : in std_logic;
+
+      wb_ack_o : out std_logic;
+      wb_err_o : out std_logic;
+      wb_dat_o : out std_logic_vector(DW-1 downto 0)
+    );
   end component;
 
 begin
+
   --////////////////////////////////////////////////////////////////
   --
   -- Module Body
   --
 
-  --DUT AHB3
-  ahb3_spram : mpsoc_ahb3_spram
+  --DUT WB
+  wb_spram : mpsoc_wb_spram
     generic map (
-      MEM_SIZE          => 256,
-      MEM_DEPTH         => 256,
-      PLEN              => PLEN,
-      XLEN              => XLEN,
-      TECHNOLOGY        => TECHNOLOGY,
-      REGISTERED_OUTPUT => "NO"
+      DEPTH   => DEPTH,
+      MEMFILE => MEMFILE,
+
+      AW => AW,
+      DW => DW
       )
     port map (
-      HRESETn => HRESETn,
-      HCLK    => HCLK,
+      wb_clk_i => wb_clk_i,
+      wb_rst_i => wb_rst_i,
 
-      HSEL      => mst_spram_HSEL,
-      HADDR     => mst_spram_HADDR,
-      HWDATA    => mst_spram_HWDATA,
-      HRDATA    => mst_spram_HRDATA,
-      HWRITE    => mst_spram_HWRITE,
-      HSIZE     => mst_spram_HSIZE,
-      HBURST    => mst_spram_HBURST,
-      HPROT     => mst_spram_HPROT,
-      HTRANS    => mst_spram_HTRANS,
-      HMASTLOCK => mst_spram_HMASTLOCK,
-      HREADYOUT => mst_spram_HREADYOUT,
-      HREADY    => mst_spram_HREADY,
-      HRESP     => mst_spram_HRESP
+      wb_adr_i => wb_adr_i,
+      wb_dat_i => wb_dat_i,
+      wb_sel_i => wb_sel_i,
+      wb_we_i  => wb_we_i,
+      wb_bte_i => wb_bte_i,
+      wb_cti_i => wb_cti_i,
+      wb_cyc_i => wb_cyc_i,
+      wb_stb_i => wb_stb_i,
+      wb_ack_o => wb_ack_o,
+      wb_err_o => wb_err_o,
+      wb_dat_o => wb_dat_o
       );
 end RTL;

@@ -75,7 +75,7 @@ set_property PACKAGE_PIN AB9  [get_ports {wb_adr_i[7]}];  # "JA9"
 # ----------------------------------------------------------------------------
 # JB Pmod - Bank 13
 # ---------------------------------------------------------------------------- 
-set_property PACKAGE_PIN W12 [get_ports {wb_rst_i}];  # "JB1"
+#set_property PACKAGE_PIN W12 [get_ports {JB1}];  # "JB1"
 set_property PACKAGE_PIN W11 [get_ports {wb_sel_i[0]}];  # "JB2"
 set_property PACKAGE_PIN V10 [get_ports {wb_sel_i[1]}];  # "JB3"
 set_property PACKAGE_PIN W8 [get_ports {wb_sel_i[2]}];  # "JB4"
@@ -180,7 +180,7 @@ set_property PACKAGE_PIN T4  [get_ports {wb_we_i}];  # "JC4_P"
 # ----------------------------------------------------------------------------
 # User Push Buttons - Bank 34
 # ---------------------------------------------------------------------------- 
-#set_property PACKAGE_PIN P16 [get_ports {BTNC}];  # "BTNC"
+set_property PACKAGE_PIN P16 [get_ports {wb_rst_i}];  # "BTNC"
 #set_property PACKAGE_PIN R16 [get_ports {BTND}];  # "BTND"
 #set_property PACKAGE_PIN N15 [get_ports {BTNL}];  # "BTNL"
 #set_property PACKAGE_PIN R18 [get_ports {BTNR}];  # "BTNR"
