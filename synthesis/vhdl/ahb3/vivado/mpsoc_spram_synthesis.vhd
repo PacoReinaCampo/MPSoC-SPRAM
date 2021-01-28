@@ -50,33 +50,38 @@ use ieee.math_real.all;
 
 use work.mpsoc_spram_ahb3_pkg.all;
 
-entity mpsoc_spram_testbench is
-end mpsoc_spram_testbench;
+entity mpsoc_spram_synthesis is
+  generic (
+    MEM_SIZE          : integer := 256;  --Memory in Bytes
+    MEM_DEPTH         : integer := 256;  --Memory depth
+    PLEN              : integer := 8;
+    XLEN              : integer := 32;
+    TECHNOLOGY        : string  := "GENERIC";
+    REGISTERED_OUTPUT : string  := "NO"
+  );
+  port (
+    HRESETn : in std_logic;
+    HCLK    : in std_logic;
 
-architecture RTL of mpsoc_spram_testbench is
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Variables
-  --
+    --AHB3 Slave Interfaces (receive data from AHB Masters)
+    --AHB3 Masters connect to these ports
+    HSEL      : in  std_logic;
+    HADDR     : in  std_logic_vector(PLEN-1 downto 0);
+    HWDATA    : in  std_logic_vector(XLEN-1 downto 0);
+    HRDATA    : out std_logic_vector(XLEN-1 downto 0);
+    HWRITE    : in  std_logic;
+    HSIZE     : in  std_logic_vector(2 downto 0);
+    HBURST    : in  std_logic_vector(2 downto 0);
+    HPROT     : in  std_logic_vector(3 downto 0);
+    HTRANS    : in  std_logic_vector(1 downto 0);
+    HMASTLOCK : in  std_logic;
+    HREADYOUT : out std_logic;
+    HREADY    : in  std_logic;
+    HRESP     : out std_logic
+  );
+end mpsoc_spram_synthesis;
 
-  --Common signals
-  signal HRESETn : std_logic;
-  signal HCLK    : std_logic;
-
-  --AHB3 signals
-  signal mst_spram_HSEL      : std_logic;
-  signal mst_spram_HADDR     : std_logic_vector(PLEN-1 downto 0);
-  signal mst_spram_HWDATA    : std_logic_vector(XLEN-1 downto 0);
-  signal mst_spram_HRDATA    : std_logic_vector(XLEN-1 downto 0);
-  signal mst_spram_HWRITE    : std_logic;
-  signal mst_spram_HSIZE     : std_logic_vector(2 downto 0);
-  signal mst_spram_HBURST    : std_logic_vector(2 downto 0);
-  signal mst_spram_HPROT     : std_logic_vector(3 downto 0);
-  signal mst_spram_HTRANS    : std_logic_vector(1 downto 0);
-  signal mst_spram_HMASTLOCK : std_logic;
-  signal mst_spram_HREADY    : std_logic;
-  signal mst_spram_HREADYOUT : std_logic;
-  signal mst_spram_HRESP     : std_logic;
+architecture RTL of mpsoc_spram_synthesis is
 
   --////////////////////////////////////////////////////////////////
   --
@@ -86,17 +91,17 @@ architecture RTL of mpsoc_spram_testbench is
     generic (
       MEM_SIZE          : integer := 256;  --Memory in Bytes
       MEM_DEPTH         : integer := 256;  --Memory depth
-      PLEN              : integer := 64;
-      XLEN              : integer := 64;
+      PLEN              : integer := 8;
+      XLEN              : integer := 32;
       TECHNOLOGY        : string  := "GENERIC";
       REGISTERED_OUTPUT : string  := "NO"
-      );
+    );
     port (
       HRESETn : in std_logic;
       HCLK    : in std_logic;
 
-      --AHB Slave Interfaces (receive data from AHB Masters)
-      --AHB Masters connect to these ports
+      --AHB3 Slave Interfaces (receive data from AHB Masters)
+      --AHB3 Masters connect to these ports
       HSEL      : in  std_logic;
       HADDR     : in  std_logic_vector(PLEN-1 downto 0);
       HWDATA    : in  std_logic_vector(XLEN-1 downto 0);
@@ -110,7 +115,7 @@ architecture RTL of mpsoc_spram_testbench is
       HREADYOUT : out std_logic;
       HREADY    : in  std_logic;
       HRESP     : out std_logic
-      );
+    );
   end component;
 
 begin
@@ -122,29 +127,29 @@ begin
   --DUT AHB3
   ahb3_spram : mpsoc_ahb3_spram
     generic map (
-      MEM_SIZE          => 256,
-      MEM_DEPTH         => 256,
+      MEM_SIZE          => MEM_SIZE,
+      MEM_DEPTH         => MEM_DEPTH,
       PLEN              => PLEN,
       XLEN              => XLEN,
       TECHNOLOGY        => TECHNOLOGY,
-      REGISTERED_OUTPUT => "NO"
-      )
+      REGISTERED_OUTPUT => REGISTERED_OUTPUT
+    )
     port map (
       HRESETn => HRESETn,
       HCLK    => HCLK,
 
-      HSEL      => mst_spram_HSEL,
-      HADDR     => mst_spram_HADDR,
-      HWDATA    => mst_spram_HWDATA,
-      HRDATA    => mst_spram_HRDATA,
-      HWRITE    => mst_spram_HWRITE,
-      HSIZE     => mst_spram_HSIZE,
-      HBURST    => mst_spram_HBURST,
-      HPROT     => mst_spram_HPROT,
-      HTRANS    => mst_spram_HTRANS,
-      HMASTLOCK => mst_spram_HMASTLOCK,
-      HREADYOUT => mst_spram_HREADYOUT,
-      HREADY    => mst_spram_HREADY,
-      HRESP     => mst_spram_HRESP
-      );
+      HSEL      => HSEL,
+      HADDR     => HADDR,
+      HWDATA    => HWDATA,
+      HRDATA    => HRDATA,
+      HWRITE    => HWRITE,
+      HSIZE     => HSIZE,
+      HBURST    => HBURST,
+      HPROT     => HPROT,
+      HTRANS    => HTRANS,
+      HMASTLOCK => HMASTLOCK,
+      HREADYOUT => HREADYOUT,
+      HREADY    => HREADY,
+      HRESP     => HRESP
+    );
 end RTL;

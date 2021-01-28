@@ -41,8 +41,8 @@
  */
 
 module mpsoc_spram_synthesis #(
-  parameter MEM_SIZE          = 0,   //Memory in Bytes
-  parameter MEM_DEPTH         = 256, //Memory depth
+  parameter MEM_SIZE          = 256,  //Memory in Bytes
+  parameter MEM_DEPTH         = 256,  //Memory depth
   parameter PLEN              = 8,
   parameter XLEN              = 32,
   parameter TECHNOLOGY        = "GENERIC",

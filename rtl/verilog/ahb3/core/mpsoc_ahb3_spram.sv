@@ -76,7 +76,7 @@ module mpsoc_ahb3_spram #(
   // Constants
   //
 
-  localparam BE_SIZE        = (XLEN+7)/8;
+  localparam BE_SIZE        = (PLEN+7)/8;
 
   localparam MEM_SIZE_DEPTH = 8*MEM_SIZE / XLEN;
   localparam REAL_MEM_DEPTH = MEM_DEPTH > MEM_SIZE_DEPTH ? MEM_DEPTH : MEM_SIZE_DEPTH;
