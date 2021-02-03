@@ -109,7 +109,7 @@ architecture RTL of mpsoc_ahb3_spram is
   --
   -- Constants
   --
-  constant BE_SIZE : integer := (PLEN+7)/8;
+  constant BE_SIZE : integer := (XLEN+7)/8;
 
   constant MEM_SIZE_DEPTH : integer := 8*MEM_SIZE/XLEN;
   constant REAL_MEM_DEPTH : integer := MEM_SIZE_DEPTH;
