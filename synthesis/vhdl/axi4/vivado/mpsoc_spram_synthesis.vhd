@@ -63,7 +63,7 @@ entity mpsoc_spram_synthesis is
     we_o : out std_logic;
     addr_o : out std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
     be_o : out std_logic_vector(AXI_DATA_WIDTH/8-1 downto 0);
-    data_o : out std_logic_vector(AXI_DATA_WIDTH-1 downto 0) 
+    data_o : out std_logic_vector(AXI_DATA_WIDTH-1 downto 0);
     data_i : in std_logic_vector(AXI_DATA_WIDTH-1 downto 0)
   );
 end mpsoc_spram_synthesis;

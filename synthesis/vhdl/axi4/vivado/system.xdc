@@ -180,7 +180,7 @@ set_property PACKAGE_PIN V7 [get_ports {HRESP}];  # "JD1_P"
 # ----------------------------------------------------------------------------
 # User Push Buttons - Bank 34
 # ---------------------------------------------------------------------------- 
-#set_property PACKAGE_PIN P16 [get_ports {BTNC}];  # "BTNC"
+set_property PACKAGE_PIN P16 [get_ports {HRESETn}];  # "BTNC"
 #set_property PACKAGE_PIN R16 [get_ports {BTND}];  # "BTND"
 #set_property PACKAGE_PIN N15 [get_ports {BTNL}];  # "BTNL"
 #set_property PACKAGE_PIN R18 [get_ports {BTNR}];  # "BTNR"
