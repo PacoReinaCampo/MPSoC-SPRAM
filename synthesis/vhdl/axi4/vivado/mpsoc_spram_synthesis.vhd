@@ -50,8 +50,8 @@ use ieee.numeric_std.all;
 entity mpsoc_spram_synthesis is
   generic (
     AXI_ID_WIDTH   : integer := 10;
-    AXI_ADDR_WIDTH : integer := 64;
-    AXI_DATA_WIDTH : integer := 64;
+    AXI_ADDR_WIDTH : integer := 32;
+    AXI_DATA_WIDTH : integer := 16;
     AXI_STRB_WIDTH : integer := 8;
     AXI_USER_WIDTH : integer := 10
   );
@@ -134,7 +134,7 @@ architecture RTL of mpsoc_spram_synthesis is
     we_o : out std_logic;
     addr_o : out std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
     be_o : out std_logic_vector(AXI_DATA_WIDTH/8-1 downto 0);
-    data_o : out std_logic_vector(AXI_DATA_WIDTH-1 downto 0) 
+    data_o : out std_logic_vector(AXI_DATA_WIDTH-1 downto 0);
     data_i : in std_logic_vector(AXI_DATA_WIDTH-1 downto 0)
   );
   end component;
@@ -313,11 +313,11 @@ architecture RTL of mpsoc_spram_synthesis is
     axi_b_valid => axi4_dat_b_valid,
     axi_b_ready => axi4_dat_b_ready,
 
-    req_o => open,
-    we_o => open,
-    addr_o => open,
-    be_o => open,
-    data_o => open,
-    data_i => 0
+    req_o => req_o,
+    we_o => we_o,
+    addr_o => addr_o,
+    be_o => be_o,
+    data_o => data_o,
+    data_i => data_i
   );
 end RTL;
