@@ -57,7 +57,6 @@ entity mpsoc_spram_testbench is
 end mpsoc_spram_testbench;
 
 architecture RTL of mpsoc_spram_testbench is
-
   --////////////////////////////////////////////////////////////////
   --
   -- Constants
@@ -92,7 +91,7 @@ architecture RTL of mpsoc_spram_testbench is
       MEM_SIZE : integer := 256  -- Memory size in bytes
     );
     port (
-      ram_clk : in std_logic;           -- RAM clock
+      ram_clk : in std_logic;  -- RAM clock
 
       ram_addr : in  std_logic_vector(AW-1 downto 0);  -- RAM address
       ram_dout : out std_logic_vector(DW-1 downto 0);  -- RAM data output

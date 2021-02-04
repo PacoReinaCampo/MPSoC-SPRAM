@@ -82,6 +82,7 @@ architecture RTL of mpsoc_spram_testbench is
   --
   -- Components
   --
+
   component mpsoc_ahb3_spram
     generic (
       MEM_SIZE          : integer := 256;  --Memory in Bytes

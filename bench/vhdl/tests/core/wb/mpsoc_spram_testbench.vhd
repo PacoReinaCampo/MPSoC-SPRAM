@@ -52,11 +52,11 @@ entity mpsoc_spram_testbench is
 end mpsoc_spram_testbench;
 
 architecture RTL of mpsoc_spram_testbench is
-
   --////////////////////////////////////////////////////////////////
   --
   -- Constants
   --
+
   constant DW      : integer := 32;
   constant DEPTH   : integer := 256;
   constant AW      : integer := integer(log2(real(DEPTH)));
@@ -88,6 +88,7 @@ architecture RTL of mpsoc_spram_testbench is
   --
   -- Components
   --
+
   component mpsoc_wb_spram
     generic (
       --Memory parameters
