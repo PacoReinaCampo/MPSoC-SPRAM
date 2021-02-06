@@ -1,10 +1,10 @@
 all: build simulate
 
 build:
-	ghdl -a --std=08 ../../../../../rtl/vhdl/wb/pkg/mpsoc_spram_wb_pkg.vhd
-	ghdl -a --std=08 ../../../../../rtl/vhdl/wb/core/mpsoc_wb_ram_generic.vhd
-	ghdl -a --std=08 ../../../../../rtl/vhdl/wb/core/mpsoc_wb_spram.vhd
-	ghdl -a --std=08 ../../../../../bench/vhdl/tests/wb/mpsoc_spram_testbench.vhd
+	ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/pkg/mpsoc_spram_wb_pkg.vhd
+	ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/core/mpsoc_wb_ram_generic.vhd
+	ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/core/mpsoc_wb_spram.vhd
+	ghdl -a --std=08 ../../../../../../bench/vhdl/tests/core/wb/mpsoc_spram_testbench.vhd
 
 simulate:
 	ghdl -m --std=08 mpsoc_spram_testbench

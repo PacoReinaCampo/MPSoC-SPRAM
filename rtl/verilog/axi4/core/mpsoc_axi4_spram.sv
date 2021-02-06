@@ -41,11 +41,11 @@
  */
 
 module mpsoc_axi4_spram #(
-  parameter int unsigned AXI_ID_WIDTH      = 10,
-  parameter int unsigned AXI_ADDR_WIDTH    = 64,
-  parameter int unsigned AXI_DATA_WIDTH    = 64,
-  parameter int unsigned AXI_STRB_WIDTH    = 8,
-  parameter int unsigned AXI_USER_WIDTH    = 10
+  parameter AXI_ID_WIDTH   = 10,
+  parameter AXI_ADDR_WIDTH = 64,
+  parameter AXI_DATA_WIDTH = 64,
+  parameter AXI_STRB_WIDTH = 8,
+  parameter AXI_USER_WIDTH = 10
 )
   (
     input  logic                        clk_i,   // Clock
