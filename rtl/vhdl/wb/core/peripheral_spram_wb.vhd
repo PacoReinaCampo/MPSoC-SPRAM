@@ -1,4 +1,4 @@
--- Converted from mpsoc_wb_spram.v
+-- Converted from peripheral_spram_wb.v
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -49,9 +49,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.mpsoc_spram_wb_pkg.all;
+use work.peripheral_spram_wb_pkg.all;
 
-entity mpsoc_wb_spram is
+entity peripheral_spram_wb is
   generic (
     --Memory parameters
     DEPTH   : integer := 256;
@@ -77,10 +77,10 @@ entity mpsoc_wb_spram is
     wb_err_o : out std_logic;
     wb_dat_o : out std_logic_vector(DW-1 downto 0)
     );
-end mpsoc_wb_spram;
+end peripheral_spram_wb;
 
-architecture RTL of mpsoc_wb_spram is
-  component mpsoc_wb_ram_generic
+architecture RTL of peripheral_spram_wb is
+  component peripheral_spram_generic_wb
     generic (
       DEPTH   : integer := 256;
       MEMFILE : string  := "";
@@ -258,7 +258,7 @@ begin
   --TODO:ck for burst address errors
   wb_err_o <= '0';
 
-  ram0 : mpsoc_wb_ram_generic
+  ram0 : peripheral_spram_generic_wb
     generic map (
       DEPTH   => DEPTH/4,
       MEMFILE => MEMFILE,

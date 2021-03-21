@@ -45,7 +45,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.msp430_pkg.all;
 
-entity msp430_ram is
+entity peripheral_spram_bb is
   generic (
     AW       : integer := 6;     -- Address bus
     DW       : integer := 16;    -- Data bus
@@ -58,9 +58,9 @@ entity msp430_ram is
     ram_din  : in std_logic_vector(DW-1 downto 0);   -- RAM data input
     ram_cen  : in std_logic;                         -- RAM chip enable (low active)
     ram_wen  : in std_logic_vector(1 downto 0));     -- RAM write enable (low active)    
-end msp430_ram;
+end peripheral_spram_bb;
 
-architecture rtl of msp430_ram is
+architecture rtl of peripheral_spram_bb is
 
   signal mem          : std_logic_matrix((MEM_SIZE/2)-1 downto 0)(DW-1 downto 0);
   signal ram_addr_reg : std_logic_vector(AW-1 downto 0);

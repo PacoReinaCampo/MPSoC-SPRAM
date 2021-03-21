@@ -1,4 +1,4 @@
--- Converted from mpsoc_axi4_spram.sv
+-- Converted from peripheral_axi4_spram.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity mpsoc_axi4_spram is
+entity peripheral_spram_axi4 is
   generic (
     AXI_ID_WIDTH   : integer := 10;
     AXI_ADDR_WIDTH : integer := 64;
@@ -115,9 +115,9 @@ entity mpsoc_axi4_spram is
     data_o : out std_logic_vector(AXI_DATA_WIDTH-1 downto 0)
     data_i : in  std_logic_vector(AXI_DATA_WIDTH-1 downto 0)
     );
-end mpsoc_axi4_spram;
+end peripheral_spram_axi4;
 
-architecture RTL of mpsoc_axi4_spram is
+architecture RTL of peripheral_spram_axi4 is
 
 
   -- AXI has the following rules governing the use of bursts:

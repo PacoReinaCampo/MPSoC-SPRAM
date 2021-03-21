@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpsoc_axi4_spram #(
+module peripheral_spram_axi4 #(
   parameter AXI_ID_WIDTH   = 10,
   parameter AXI_ADDR_WIDTH = 64,
   parameter AXI_DATA_WIDTH = 64,

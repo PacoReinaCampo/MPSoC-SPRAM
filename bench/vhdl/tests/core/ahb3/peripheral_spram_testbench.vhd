@@ -1,4 +1,4 @@
--- Converted from bench/verilog/regression/mpsoc_spram_testbench.sv
+-- Converted from bench/verilog/regression/peripheral_spram_testbench.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,12 +48,12 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.mpsoc_spram_ahb3_pkg.all;
+use work.peripheral_spram_ahb3_pkg.all;
 
-entity mpsoc_spram_testbench is
-end mpsoc_spram_testbench;
+entity peripheral_spram_testbench is
+end peripheral_spram_testbench;
 
-architecture RTL of mpsoc_spram_testbench is
+architecture RTL of peripheral_spram_testbench is
   --////////////////////////////////////////////////////////////////
   --
   -- Variables
@@ -83,7 +83,7 @@ architecture RTL of mpsoc_spram_testbench is
   -- Components
   --
 
-  component mpsoc_ahb3_spram
+  component peripheral_spram_ahb3
     generic (
       MEM_SIZE          : integer := 256;  --Memory in Bytes
       MEM_DEPTH         : integer := 256;  --Memory depth
@@ -121,7 +121,7 @@ begin
   --
 
   --DUT AHB3
-  ahb3_spram : mpsoc_ahb3_spram
+  ahb3_spram : peripheral_spram_ahb3
     generic map (
       MEM_SIZE          => 256,
       MEM_DEPTH         => 256,

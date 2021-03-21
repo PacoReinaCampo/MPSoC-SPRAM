@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpsoc_spram_testbench;
+module peripheral_spram_testbench;
 
   //////////////////////////////////////////////////////////////////
   //
@@ -83,7 +83,7 @@ module mpsoc_spram_testbench;
   //
 
   //DUT WB
-  mpsoc_wb_spram #(
+  peripheral_spram_wb #(
     .DEPTH   ( DEPTH   ),
     .MEMFILE ( MEMFILE ),
     .AW      ( AW      ),

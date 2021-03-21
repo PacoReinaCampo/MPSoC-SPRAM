@@ -1,4 +1,4 @@
--- Converted from mpsoc_spram_synthesis.sv
+-- Converted from peripheral_spram_synthesis.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -53,10 +53,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity mpsoc_spram_testbench is
-end mpsoc_spram_testbench;
+entity peripheral_spram_testbench is
+end peripheral_spram_testbench;
 
-architecture RTL of mpsoc_spram_testbench is
+architecture RTL of peripheral_spram_testbench is
   --////////////////////////////////////////////////////////////////
   --
   -- Constants
@@ -84,7 +84,7 @@ architecture RTL of mpsoc_spram_testbench is
   -- Components
   --
 
-  component msp430_ram
+  component peripheral_spram_bb
     generic (
       AW       : integer := 6;   -- Address bus
       DW       : integer := 16;  -- Data bus
@@ -108,7 +108,7 @@ begin
   --
 
   --DUT BB
-  ram : msp430_ram
+  ram : peripheral_spram_bb
     generic map (
       AW       => AW,
       DW       => DW,

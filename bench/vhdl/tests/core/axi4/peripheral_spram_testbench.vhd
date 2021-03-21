@@ -1,4 +1,4 @@
--- Converted from mpsoc_spram_synthesis.sv
+-- Converted from peripheral_spram_synthesis.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity mpsoc_spram_synthesis is
+entity peripheral_spram_synthesis is
   generic (
     AXI_ID_WIDTH   : integer := 10;
     AXI_ADDR_WIDTH : integer := 32;
@@ -66,15 +66,15 @@ entity mpsoc_spram_synthesis is
     data_o : out std_logic_vector(AXI_DATA_WIDTH-1 downto 0);
     data_i : in  std_logic_vector(AXI_DATA_WIDTH-1 downto 0)
     );
-end mpsoc_spram_synthesis;
+end peripheral_spram_synthesis;
 
-architecture RTL of mpsoc_spram_synthesis is
+architecture RTL of peripheral_spram_synthesis is
   --////////////////////////////////////////////////////////////////
   --
   -- Components
   --
 
-  component mpsoc_axi4_spram
+  component peripheral_spram_axi4
     generic (
       AXI_ID_WIDTH   : integer := 10;
       AXI_ADDR_WIDTH : integer := 64;
@@ -257,7 +257,7 @@ begin
   --
 
   --Data AXI4
-  data_axi4 : mpsoc_axi4_spram
+  data_axi4 : peripheral_spram_axi4
     generic map (
       AXI_ID_WIDTH   => AXI_ID_WIDTH,
       AXI_ADDR_WIDTH => AXI_ADDR_WIDTH,

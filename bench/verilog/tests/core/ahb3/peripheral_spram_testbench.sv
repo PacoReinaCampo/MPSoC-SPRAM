@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpsoc_spram_testbench;
+module peripheral_spram_testbench;
 
   //////////////////////////////////////////////////////////////////
   //
@@ -87,7 +87,7 @@ module mpsoc_spram_testbench;
   //
 
   //DUT AHB3
-  mpsoc_ahb3_spram #(
+  peripheral_ahb3_spram #(
     .MEM_SIZE          ( 256 ),
     .MEM_DEPTH         ( 256 ),
     .PLEN              ( PLEN ),

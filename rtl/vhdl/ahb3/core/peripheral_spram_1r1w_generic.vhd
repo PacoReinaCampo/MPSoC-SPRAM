@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/memory/mpsoc_ram_1r1w_generic.sv
+-- Converted from rtl/verilog/memory/peripheral_spram_1r1w_generic.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity mpsoc_ram_1r1w_generic is
+entity peripheral_spram_1r1w_generic is
   generic (
     ABITS : integer := 10;
     DBITS : integer := 32
@@ -66,9 +66,9 @@ entity mpsoc_ram_1r1w_generic is
     raddr_i : in  std_logic_vector(ABITS-1 downto 0);
     dout_o  : out std_logic_vector(DBITS-1 downto 0)
   );
-end mpsoc_ram_1r1w_generic;
+end peripheral_spram_1r1w_generic;
 
-architecture RTL of mpsoc_ram_1r1w_generic is
+architecture RTL of peripheral_spram_1r1w_generic is
   --////////////////////////////////////////////////////////////////
   --
   -- Types

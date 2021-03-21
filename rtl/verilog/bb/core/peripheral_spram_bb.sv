@@ -46,7 +46,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module msp430_ram #(
+module peripheral_spram_bb #(
   parameter AW       =   6,  // Address bus
   parameter DW       =  16,  // Data bus
   parameter MEM_SIZE = 256   // Memory size in bytes
@@ -79,4 +79,4 @@ module msp430_ram #(
   end
 
   assign ram_dout = mem[ram_addr_reg];
-endmodule // msp430_ram
+endmodule // peripheral_spram_bb

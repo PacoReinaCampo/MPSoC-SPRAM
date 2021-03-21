@@ -1,4 +1,4 @@
--- Converted from verilog/mpsoc_ram/mpsoc_ahb3_spram.sv
+-- Converted from verilog/peripheral_ram/peripheral_ahb3_spram.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,9 +48,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.mpsoc_spram_ahb3_pkg.all;
+use work.peripheral_spram_ahb3_pkg.all;
 
-entity mpsoc_ahb3_spram is
+entity peripheral_spram_ahb3 is
   generic (
     MEM_SIZE          : integer := 256;  --Memory in Bytes
     MEM_DEPTH         : integer := 256;  --Memory depth
@@ -79,10 +79,10 @@ entity mpsoc_ahb3_spram is
     HREADY    : in  std_logic;
     HRESP     : out std_logic
     );
-end mpsoc_ahb3_spram;
+end peripheral_spram_ahb3;
 
-architecture RTL of mpsoc_ahb3_spram is
-  component mpsoc_ram_1r1w
+architecture RTL of peripheral_spram_ahb3 is
+  component peripheral_spram_1r1w
     generic (
       ABITS      : integer := 10;
       DBITS      : integer := 32;
@@ -243,7 +243,7 @@ begin
   --  *   the actual write to memory is 1 cycle late, causing read/write overlap
   --  * This assumes there are input registers on the memory
 
-  ram_1r1w : mpsoc_ram_1r1w
+  ram_1r1w : peripheral_spram_1r1w
     generic map (
       ABITS      => MEM_ABITS,
       DBITS      => XLEN,
