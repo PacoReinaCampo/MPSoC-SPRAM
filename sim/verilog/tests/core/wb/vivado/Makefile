@@ -48,8 +48,8 @@ build:
 	xvlog -i ../../../../../../rtl/verilog/wb/pkg -prj system.prj
 
 simulate:
-	xelab wb_spram_tb
-	xsim -R wb_spram_tb
+	xelab peripheral_spram_testbench
+	xsim -R peripheral_spram_testbench
 
 clean:
 	rm -rf *.dir *.jou *.log *.pb .Xil

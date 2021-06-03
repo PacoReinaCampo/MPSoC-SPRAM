@@ -48,8 +48,8 @@ build:
 	xvhdl -prj system.prj
 
 simulate:
-	xelab mpsoc_spram_testbench
-	xsim -R mpsoc_spram_testbench
+	xelab peripheral_spram_testbench
+	xsim -R peripheral_spram_testbench
 
 clean:
 	rm -rf *.dir *.jou *.log *.pb .Xil

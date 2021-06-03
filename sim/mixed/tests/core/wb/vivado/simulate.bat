@@ -3,6 +3,6 @@ call ../../../../../../settings64_vivado.bat
 
 xvlog -i ../../../../../../rtl/verilog/ahb3/pkg -prj system.verilog.prj
 xvhdl -prj system.vhdl.prj
-xelab mpsoc_spram_testbench
-xsim -R mpsoc_spram_testbench
+xelab peripheral_spram_testbench
+xsim -R peripheral_spram_testbench
 pause

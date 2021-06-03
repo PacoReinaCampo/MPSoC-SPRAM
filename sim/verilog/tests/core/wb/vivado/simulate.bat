@@ -2,6 +2,6 @@
 call ../../../../../../settings64_vivado.bat
 
 xvlog -i ../../../../../../rtl/verilog/wb/pkg -prj system.verilog.prj
-xelab wb_spram_tb
-xsim -R wb_spram_tb
+xelab peripheral_spram_testbench
+xsim -R peripheral_spram_testbench
 pause

@@ -1,7 +1,7 @@
 all: build simulate
 
 build:
-	iverilog -g2012 -o system.vvp -c system.vc -s mpsoc_spram_testbench -I ../../../../../../rtl/verilog/axi4/pkg
+	iverilog -g2012 -o system.vvp -c system.vc -s peripheral_spram_testbench -I ../../../../../../rtl/verilog/axi4/pkg
 
 simulate:
 	vvp system.vvp

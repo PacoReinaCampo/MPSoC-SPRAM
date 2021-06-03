@@ -1,6 +1,6 @@
-../../../../../../rtl/vhdl/wb/pkg/mpsoc_spram_wb_pkg.vhd
+../../../../../../rtl/vhdl/wb/pkg/peripheral_spram_wb_pkg.vhd
 
-../../../../../../rtl/vhdl/wb/core/mpsoc_wb_ram_generic.vhd
-../../../../../../rtl/vhdl/wb/core/mpsoc_wb_spram.vhd
+../../../../../../rtl/vhdl/wb/core/peripheral_ram_generic_wb.vhd
+../../../../../../rtl/vhdl/wb/core/peripheral_spram_wb.vhd
 
-../../../../../../bench/vhdl/tests/core/wb/mpsoc_spram_testbench.vhd
+../../../../../../bench/vhdl/tests/core/wb/peripheral_spram_testbench.vhd

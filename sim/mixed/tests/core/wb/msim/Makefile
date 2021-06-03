@@ -6,7 +6,7 @@ build:
 	vcom -2008 -f system.vhdl.vc
 
 simulate:
-	vsim -c -do run.do work.mpsoc_spram_testbench
+	vsim -c -do run.do work.peripheral_spram_testbench
 
 clean:
 	rm -rf work transcript
