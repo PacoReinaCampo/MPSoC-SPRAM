@@ -1,0 +1,19 @@
+├── ahb3
+│   ├── core
+│   │   ├── peripheral_spram_1r1w_generic.sv
+│   │   ├── peripheral_spram_1r1w.sv
+│   │   └── peripheral_spram_ahb3.sv
+│   └── pkg
+│       └── peripheral_ahb3_pkg.sv
+├── axi4
+│   └── core
+│       └── peripheral_spram_axi4.sv
+├── bb
+│   └── core
+│       └── peripheral_spram_bb.sv
+└── wb
+    ├── core
+    │   ├── peripheral_spram_generic_wb.sv
+    │   └── peripheral_spram_wb.sv
+    └── pkg
+        └── peripheral_wb_pkg.sv
