@@ -48,12 +48,22 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.peripheral_spram_ahb3_pkg.all;
+use work.peripheral_ahb3_pkg.all;
 
 entity peripheral_spram_testbench is
 end peripheral_spram_testbench;
 
 architecture RTL of peripheral_spram_testbench is
+
+  --////////////////////////////////////////////////////////////////
+  --
+  -- Constants
+  --
+
+  constant PLEN       : integer := 64;
+  constant XLEN       : integer := 64;
+  constant TECHNOLOGY : string  := "GENERIC";
+
   --////////////////////////////////////////////////////////////////
   --
   -- Variables

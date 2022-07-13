@@ -49,7 +49,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.peripheral_spram_wb_pkg.all;
+use work.vhdl_pkg.all;
+use work.peripheral_wb_pkg.all;
 
 entity peripheral_spram_wb is
   generic (
