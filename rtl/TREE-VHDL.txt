@@ -4,6 +4,7 @@
 │   │   ├── peripheral_spram_1r1w.vhd
 │   │   └── peripheral_spram_ahb3.vhd
 │   └── pkg
+│       ├── peripheral_ahb3_pkg.vhd
 │       └── vhdl_pkg.vhd
 ├── axi4
 │   └── core
@@ -18,4 +19,5 @@
     │   ├── peripheral_spram_generic_wb.vhd
     │   └── peripheral_spram_wb.vhd
     └── pkg
+        ├── peripheral_wb_pkg.vhd
         └── vhdl_pkg.vhd
