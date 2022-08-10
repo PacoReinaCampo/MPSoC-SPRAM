@@ -1,3 +1,4 @@
+vhdl
 ├── ahb3
 │   ├── core
 │   │   ├── peripheral_spram_1r1w_generic.vhd
@@ -21,3 +22,5 @@
     └── pkg
         ├── peripheral_wb_pkg.vhd
         └── vhdl_pkg.vhd
+
+11 directories, 12 files
