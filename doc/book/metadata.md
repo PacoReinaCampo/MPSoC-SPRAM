@@ -1,6 +1,6 @@
 ---
 title: 'MPSoC-SPRAM'
-subtitle: 'QueenField ![](../../icon.jpg)'
+subtitle: 'QueenField ![](../../mpsoc-spram.svg){width=17cm}'
 
 author: Paco Reina Campo
 
