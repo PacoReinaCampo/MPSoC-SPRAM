@@ -1,26 +1,23 @@
 vhdl
-├── ahb3
-│   ├── core
+├── peripheral
+│   ├── ahb3
 │   │   ├── peripheral_spram_1r1w_generic.vhd
 │   │   ├── peripheral_spram_1r1w.vhd
 │   │   └── peripheral_spram_ahb3.vhd
-│   └── pkg
-│       ├── peripheral_ahb3_pkg.vhd
-│       └── vhdl_pkg.vhd
-├── axi4
-│   └── core
-│       └── peripheral_spram_axi4.vhd
-├── bb
-│   ├── core
+│   ├── axi4
+│   │   └── peripheral_spram_axi4.vhd
+│   ├── bb
 │   │   └── peripheral_spram_bb.vhd
-│   └── pkg
-│       └── vhdl_pkg.vhd
-└── wb
+│   └── wb
+│       ├── peripheral_spram_generic_wb.vhd
+│       └── peripheral_spram_wb.vhd
+└── pkg
     ├── core
-    │   ├── peripheral_spram_generic_wb.vhd
-    │   └── peripheral_spram_wb.vhd
-    └── pkg
-        ├── peripheral_wb_pkg.vhd
-        └── vhdl_pkg.vhd
+    │   └── vhdl_pkg.vhd
+    └── peripheral
+        ├── ahb3
+        │   └── peripheral_ahb3_pkg.vhd
+        └── wb
+            └── peripheral_wb_pkg.vhd
 
-11 directories, 12 files
+10 directories, 10 files

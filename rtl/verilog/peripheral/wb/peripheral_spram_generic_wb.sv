@@ -10,8 +10,8 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Memory - Technology Independent (Inferrable) Memory Wrapper   //
-//              AMBA3 AHB-Lite Bus Interface                                  //
+//              Single Port RAM                                               //
+//              Wishbone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -37,63 +37,49 @@
  *
  * =============================================================================
  * Author(s):
+ *   Olof Kindgren <olof.kindgren@gmail.com>
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module peripheral_spram_1r1w_generic #(
-  parameter ABITS = 10,
-  parameter DBITS = 32
+module peripheral_spram_generic_wb #(
+  parameter DEPTH   = 256,
+  parameter MEMFILE = "",
+
+  parameter AW = $clog2(DEPTH),
+  parameter DW = 32
 )
   (
-    input                        rst_ni,
-    input                        clk_i,
-
-    //Write side
-    input      [ ABITS     -1:0] waddr_i,
-    input      [ DBITS     -1:0] din_i,
-    input                        we_i,
-    input      [(DBITS+7)/8-1:0] be_i,
-
-    //Read side
-    input      [ ABITS     -1:0] raddr_i,
-    output reg [ DBITS     -1:0] dout_o
+    input               clk,
+    input      [   3:0] we,
+    input      [DW-1:0] din,
+    input      [AW-1:0] waddr,
+    input      [AW-1:0] raddr,
+    output reg [DW-1:0] dout
   );
 
-  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   //
   // Variables
   //
-  genvar i;
+  reg [DW-1:0] mem [0:DEPTH-1] /* verilator public */;
 
-  logic [DBITS-1:0] mem_array [2**ABITS -1:0];  //memory array
-
-  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   //
   // Module Body
   //
-
-  //write side
-  generate
-    for (i=0; i<(DBITS+7)/8; i=i+1) begin: write
-      if (i*8 +8 > DBITS) begin
-        always @(posedge clk_i) begin
-          if (we_i && be_i[i])
-            mem_array[ waddr_i ] [DBITS-1:i*8] <= din_i[DBITS-1:i*8];
-        end
-      end
-      else begin
-        always @(posedge clk_i) begin
-          if (we_i && be_i[i])
-            mem_array[ waddr_i ][i*8+:8] <= din_i[i*8+:8];
-        end
-      end
-    end
-  endgenerate
-
-  //read side
-
-  //per Altera's recommendations. Prevents bypass logic
-  always @(posedge clk_i) begin
-    dout_o <= mem_array[ raddr_i ];
+  always @(posedge clk) begin
+    if (we[0]) mem[waddr][7:0]   <= din[7:0];
+    if (we[1]) mem[waddr][15:8]  <= din[15:8];
+    if (we[2]) mem[waddr][23:16] <= din[23:16];
+    if (we[3]) mem[waddr][31:24] <= din[31:24];
+    dout <= mem[raddr];
   end
+
+  generate
+    initial
+      if(MEMFILE != "") begin
+        $display("Preloading %m from %s", MEMFILE);
+        $readmemh(MEMFILE, mem);
+      end
+  endgenerate
 endmodule
