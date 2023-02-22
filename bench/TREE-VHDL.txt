@@ -1,5 +1,5 @@
 vhdl
-└── tests
+└── peripheral
     └── core
         ├── ahb3
         │   └── peripheral_spram_testbench.vhd

@@ -1,0 +1,3 @@
++incdir+../../../../../../rtl/verilog/pkg/ahb3
+
+../../../../../../bench/verilog/tests/peripheral/ahb3/peripheral_spram_testbench.sv
