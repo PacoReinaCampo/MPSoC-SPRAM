@@ -118,7 +118,6 @@ end peripheral_spram_axi4;
 
 architecture rtl of peripheral_spram_axi4 is
 
-
   -- AXI has the following rules governing the use of bursts:
   -- - for wrapping bursts, the burst length must be 2, 4, 8, or 16
   -- - a burst must not cross a 4KB address boundary
@@ -140,8 +139,6 @@ architecture rtl of peripheral_spram_axi4 is
   --  ax_req_t                   ax_req_d, ax_req_q;
   signal req_addr_d, req_addr_q : std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
   signal cnt_d, cnt_q           : std_logic_vector(7 downto 0);
-
-
 
   signal aligned_address     : std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
   signal wrap_boundary       : std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
@@ -226,7 +223,6 @@ begin
           end if;
         end if;
 
-
       -- ~> we are still missing a w_valid
       when WAIT_WVALID =>
         axi_w_ready <= '1';
@@ -239,7 +235,6 @@ begin
                      when (axi_w_last) else WRITE;
           cnt_d <= 1;
         end if;
-
 
       when READ =>
         -- keep request to memory high
@@ -285,9 +280,6 @@ begin
       -- ~> we already wrote the first word here
       when WRITE =>
 
-
-
-
         axi_w_ready <= '1';
         -- consume a word here
         if (axi_w_valid) then
@@ -328,7 +320,6 @@ begin
         end if;
     end case;
   end process;
-
 
   -- Registers
   processing_1 : process (clk_i, rst_ni)
