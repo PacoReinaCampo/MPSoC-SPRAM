@@ -43,10 +43,8 @@
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 @echo off
-call ../../../../../../settings64_msim.bat
+call ../../../../../../settings64_iverilog.bat
 
-vlib work
-vlog -sv -f system.verilog.vc
-vcom -2008 -f system.vhdl.vc
-vsim -c -do run.do work.peripheral_spram_testbench
+iverilog -g2012 -o system.vvp -c system.vc -s peripheral_bfm_testbench
+vvp system.vvp
 pause

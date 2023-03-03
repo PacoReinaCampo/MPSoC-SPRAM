@@ -43,10 +43,9 @@
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 @echo off
-call ../../../../../../settings64_msim.bat
+call ../../../../../../settings64_vivado.bat
 
-vlib work
-vlog -sv -f system.verilog.vc
-vcom -2008 -f system.vhdl.vc
-vsim -c -do run.do work.peripheral_spram_testbench
+xvlog -prj system.prj
+xelab peripheral_bfm_testbench
+xsim -R peripheral_bfm_testbench
 pause

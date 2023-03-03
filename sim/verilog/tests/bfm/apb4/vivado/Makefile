@@ -42,7 +42,14 @@
 ##                                                                               ##
 ###################################################################################
 
-../../../../../../rtl/vhdl/pkg/peripheral/wb/peripheral_spram_wb_pkg.vhd
+all: build simulate
 
-../../../../../../rtl/vhdl/peripheral/wb/peripheral_ram_generic_wb.vhd
-../../../../../../rtl/vhdl/peripheral/wb/peripheral_spram_wb.vhd
+build:
+	xvlog -prj system.prj
+
+simulate:
+	xelab peripheral_bfm_testbench
+	xsim -R peripheral_bfm_testbench
+
+clean:
+	rm -rf *.dir *.jou *.log *.pb .Xil

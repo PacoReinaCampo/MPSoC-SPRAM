@@ -1,6 +1,6 @@
 vhdl
-└── peripheral
-    └── core
+└── tests
+    └── peripheral
         ├── ahb3
         │   └── peripheral_spram_testbench.vhd
         ├── axi4
