@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpsoc_spram_synthesis #(
+module peripheral_spram_synthesis #(
   //Memory parameters
   parameter DEPTH   = 256,
   parameter MEMFILE = "",
@@ -73,7 +73,7 @@ module mpsoc_spram_synthesis #(
   //
 
   //DUT WB
-  mpsoc_wb_spram #(
+  peripheral_wb_spram #(
     //Memory parameters
     .DEPTH   ( DEPTH   ),
     .MEMFILE ( MEMFILE ),
