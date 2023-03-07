@@ -84,9 +84,8 @@ end peripheral_spram_synthesis;
 architecture rtl of peripheral_spram_synthesis is
 
   ------------------------------------------------------------------------------
-  --
   -- Components
-  --
+  ------------------------------------------------------------------------------
   component peripheral_ahb3_spram
     generic (
       MEM_SIZE          : integer := 256;  --Memory in Bytes
@@ -120,9 +119,8 @@ architecture rtl of peripheral_spram_synthesis is
 
 begin
   ------------------------------------------------------------------------------
-  --
   -- Module Body
-  --
+  ------------------------------------------------------------------------------
 
   --DUT AHB3
   ahb3_spram : peripheral_ahb3_spram

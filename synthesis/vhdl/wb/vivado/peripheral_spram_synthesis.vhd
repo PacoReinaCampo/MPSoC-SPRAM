@@ -110,9 +110,8 @@ architecture rtl of peripheral_spram_synthesis is
 begin
 
   ------------------------------------------------------------------------------
-  --
   -- Module Body
-  --
+  ------------------------------------------------------------------------------
 
   --DUT WB
   wb_spram : peripheral_wb_spram
