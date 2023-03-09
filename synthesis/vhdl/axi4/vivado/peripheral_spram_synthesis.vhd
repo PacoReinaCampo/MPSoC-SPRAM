@@ -69,6 +69,11 @@ entity peripheral_spram_synthesis is
 end peripheral_spram_synthesis;
 
 architecture rtl of peripheral_spram_synthesis is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_axi4_spram
     generic (
       AXI_ID_WIDTH   : integer := 10;

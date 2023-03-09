@@ -70,6 +70,11 @@ entity peripheral_spram_1r1w is
 end peripheral_spram_1r1w;
 
 architecture rtl of peripheral_spram_1r1w is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_spram_1r1w_generic
     generic (
       ABITS : integer := 10;

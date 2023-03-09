@@ -79,6 +79,11 @@ entity peripheral_spram_synthesis is
 end peripheral_spram_synthesis;
 
 architecture rtl of peripheral_spram_synthesis is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_wb_spram
     generic (
       --Memory parameters

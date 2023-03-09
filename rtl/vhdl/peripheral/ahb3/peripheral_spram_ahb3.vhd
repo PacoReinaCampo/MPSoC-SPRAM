@@ -82,6 +82,11 @@ entity peripheral_spram_ahb3 is
 end peripheral_spram_ahb3;
 
 architecture rtl of peripheral_spram_ahb3 is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_spram_1r1w
     generic (
       ABITS      : integer := 10;

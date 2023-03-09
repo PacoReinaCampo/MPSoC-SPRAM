@@ -80,6 +80,11 @@ entity peripheral_spram_wb is
 end peripheral_spram_wb;
 
 architecture rtl of peripheral_spram_wb is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_spram_generic_wb
     generic (
       DEPTH   : integer := 256;
