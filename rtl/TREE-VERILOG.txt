@@ -12,9 +12,12 @@ verilog
 │       ├── peripheral_spram_generic_wb.sv
 │       └── peripheral_spram_wb.sv
 └── pkg
-    ├── ahb3
-    │   └── peripheral_ahb3_pkg.sv
-    └── wb
-        └── peripheral_wb_pkg.sv
+    └── peripheral
+        ├── ahb3
+        │   └── peripheral_ahb3_pkg.sv
+        ├── axi4
+        │   └── peripheral_axi4_pkg.sv
+        └── wb
+            └── peripheral_wb_pkg.sv
 
-8 directories, 9 files
+10 directories, 10 files

@@ -17,7 +17,9 @@ vhdl
     └── peripheral
         ├── ahb3
         │   └── peripheral_ahb3_pkg.vhd
+        ├── axi4
+        │   └── peripheral_axi4_pkg.vhd
         └── wb
             └── peripheral_wb_pkg.vhd
 
-10 directories, 10 files
+11 directories, 11 files
