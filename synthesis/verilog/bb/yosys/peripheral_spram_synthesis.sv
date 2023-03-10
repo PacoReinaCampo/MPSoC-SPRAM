@@ -67,12 +67,12 @@ module peripheral_spram_synthesis #(
   //
 
   //DUT BB
-  bb_ram #(
+  peripheral_spram_bb #(
     .AW       ( AW ),
     .DW       ( DW ),
     .MEM_SIZE ( MEM_SIZE )
   )
-  ram (
+  spram_bb (
     .ram_clk   ( ram_clk ),
 
     .ram_addr ( ram_addr ),
