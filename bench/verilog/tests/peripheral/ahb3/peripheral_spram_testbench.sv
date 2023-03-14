@@ -88,12 +88,12 @@ module peripheral_spram_testbench;
 
   //DUT AHB3
   peripheral_ahb3_spram #(
-    .MEM_SIZE          ( 256 ),
-    .MEM_DEPTH         ( 256 ),
-    .PLEN              ( PLEN ),
-    .XLEN              ( XLEN ),
-    .TECHNOLOGY        ( TECHNOLOGY ),
-    .REGISTERED_OUTPUT ( "NO" )
+  .MEM_SIZE          ( 256 ),
+  .MEM_DEPTH         ( 256 ),
+  .PLEN              ( PLEN ),
+  .XLEN              ( XLEN ),
+  .TECHNOLOGY        ( TECHNOLOGY ),
+  .REGISTERED_OUTPUT ( "NO" )
   )
   ahb3_spram (
     .HRESETn   ( HRESETn ),

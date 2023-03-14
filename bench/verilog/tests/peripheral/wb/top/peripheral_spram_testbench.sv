@@ -84,10 +84,10 @@ module peripheral_spram_testbench;
 
   //DUT WB
   peripheral_spram_wb #(
-    .DEPTH   ( DEPTH   ),
-    .MEMFILE ( MEMFILE ),
-    .AW      ( AW      ),
-    .DW      ( DW      )
+  .DEPTH   ( DEPTH   ),
+  .MEMFILE ( MEMFILE ),
+  .AW      ( AW      ),
+  .DW      ( DW      )
   )
   wb_spram (
     .wb_clk_i ( HRESETn ),
