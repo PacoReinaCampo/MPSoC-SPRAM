@@ -57,8 +57,8 @@ entity peripheral_spram_wb is
     DEPTH   : integer := 256;
     MEMFILE : string  := "";
     --Wishbone parameters
-    DW : integer := 32;
-    AW : integer := integer(log2(real(DEPTH)))
+    DW      : integer := 32;
+    AW      : integer := integer(log2(real(DEPTH)))
     );
   port (
     wb_clk_i : in std_logic;

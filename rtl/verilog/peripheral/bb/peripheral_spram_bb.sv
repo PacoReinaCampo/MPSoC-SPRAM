@@ -63,8 +63,8 @@ module peripheral_spram_bb #(
   // RAM
   //============
 
-  reg  [DW-1:0]                          mem          [0:(MEM_SIZE/2)-1];
-  reg  [AW-1:0]                          ram_addr_reg;
+  reg  [DW-1:0] mem                     [0:(MEM_SIZE/2)-1];
+  reg  [AW-1:0] ram_addr_reg;
 
   wire [DW-1:0] mem_val = mem[ram_addr];
 

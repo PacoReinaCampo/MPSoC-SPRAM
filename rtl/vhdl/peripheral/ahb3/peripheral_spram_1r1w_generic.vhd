@@ -50,7 +50,7 @@ entity peripheral_spram_1r1w_generic is
   generic (
     ABITS : integer := 10;
     DBITS : integer := 32
-  );
+    );
   port (
     rst_ni : in std_logic;
     clk_i  : in std_logic;
@@ -64,7 +64,7 @@ entity peripheral_spram_1r1w_generic is
     --Read side
     raddr_i : in  std_logic_vector(ABITS-1 downto 0);
     dout_o  : out std_logic_vector(DBITS-1 downto 0)
-  );
+    );
 end peripheral_spram_1r1w_generic;
 
 architecture rtl of peripheral_spram_1r1w_generic is
@@ -76,7 +76,7 @@ architecture rtl of peripheral_spram_1r1w_generic is
   ------------------------------------------------------------------------------
   -- Variables
   ------------------------------------------------------------------------------
-  signal mem_array : type_mem_array;  --memory array
+  signal mem_array : type_mem_array;    --memory array
 
 begin
   ------------------------------------------------------------------------------

@@ -60,42 +60,42 @@ architecture rtl of peripheral_spram_testbench is
   --  Constants
   ------------------------------------------------------------------------------
 
-  constant AW       : integer := 6;   -- Address bus
-  constant DW       : integer := 16;  -- Data bus
-  constant MEM_SIZE : integer := 256  -- Memory size in bytes
+  constant AW       : integer := 6;     -- Address bus
+  constant DW       : integer := 16;    -- Data bus
+  constant MEM_SIZE : integer := 256    -- Memory size in bytes
 
-  ------------------------------------------------------------------------------
-  -- Variables
-  ------------------------------------------------------------------------------
+                                 ------------------------------------------------------------------------------
+                                 -- Variables
+                                 ------------------------------------------------------------------------------
 
-  signal ram_clk : std_logic;  -- RAM clock
+                                 signal ram_clk : std_logic;  -- RAM clock
 
   signal ram_addr : std_logic_vector(AW-1 downto 0);  -- RAM address
   signal ram_dout : std_logic_vector(DW-1 downto 0);  -- RAM data output
   signal ram_din  : std_logic_vector(DW-1 downto 0);  -- RAM data input
-  signal ram_cen  : std_logic;                        -- RAM chip enable (low active)
-  signal ram_wen  : std_logic_vector(1 downto 0)      -- RAM write enable (low active)
+  signal ram_cen  : std_logic;          -- RAM chip enable (low active)
+  signal ram_wen  : std_logic_vector(1 downto 0)  -- RAM write enable (low active)
 
-  ------------------------------------------------------------------------------
-  -- Components
-  ------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------
+    -- Components
+    ------------------------------------------------------------------------------
 
-  component peripheral_spram_bb
-    generic (
-      AW       : integer := 6;   -- Address bus
-      DW       : integer := 16;  -- Data bus
-      MEM_SIZE : integer := 256  -- Memory size in bytes
-    );
-    port (
-      ram_clk : in std_logic;  -- RAM clock
+    component peripheral_spram_bb
+      generic (
+        AW       : integer := 6;        -- Address bus
+        DW       : integer := 16;       -- Data bus
+        MEM_SIZE : integer := 256       -- Memory size in bytes
+        );
+      port (
+        ram_clk : in std_logic;         -- RAM clock
 
-      ram_addr : in  std_logic_vector(AW-1 downto 0);  -- RAM address
-      ram_dout : out std_logic_vector(DW-1 downto 0);  -- RAM data output
-      ram_din  : in  std_logic_vector(DW-1 downto 0);  -- RAM data input
-      ram_cen  : in  std_logic;                        -- RAM chip enable (low active)
-      ram_wen  : in  std_logic_vector(1 downto 0)      -- RAM write enable (low active)    
-    );
-  end component;
+        ram_addr : in  std_logic_vector(AW-1 downto 0);  -- RAM address
+        ram_dout : out std_logic_vector(DW-1 downto 0);  -- RAM data output
+        ram_din  : in  std_logic_vector(DW-1 downto 0);  -- RAM data input
+        ram_cen  : in  std_logic;       -- RAM chip enable (low active)
+        ram_wen  : in  std_logic_vector(1 downto 0)  -- RAM write enable (low active)    
+        );
+    end component;
 
 begin
   ------------------------------------------------------------------------------
@@ -108,7 +108,7 @@ begin
       AW       => AW,
       DW       => DW,
       MEM_SIZE => MEM_SIZE
-    )
+      )
     port map (
       ram_clk => ram_clk,
 
@@ -117,5 +117,5 @@ begin
       ram_din  => ram_din,
       ram_cen  => ram_cen,
       ram_wen  => ram_wen
-    );
+      );
 end rtl;

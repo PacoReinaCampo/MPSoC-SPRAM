@@ -46,17 +46,17 @@ use work.msp430_pkg.all;
 
 entity peripheral_spram_bb is
   generic (
-    AW       : integer := 6;     -- Address bus
-    DW       : integer := 16;    -- Data bus
-    MEM_SIZE : integer := 256);  -- Memory size in bytes
+    AW       : integer := 6;            -- Address bus
+    DW       : integer := 16;           -- Data bus
+    MEM_SIZE : integer := 256);         -- Memory size in bytes
   port (
-    ram_clk  : in std_logic;  -- RAM clock
+    ram_clk : in std_logic;             -- RAM clock
 
-    ram_addr : in std_logic_vector(AW-1 downto 0);   -- RAM address
+    ram_addr : in  std_logic_vector(AW-1 downto 0);  -- RAM address
     ram_dout : out std_logic_vector(DW-1 downto 0);  -- RAM data output
-    ram_din  : in std_logic_vector(DW-1 downto 0);   -- RAM data input
-    ram_cen  : in std_logic;                         -- RAM chip enable (low active)
-    ram_wen  : in std_logic_vector(1 downto 0));     -- RAM write enable (low active)    
+    ram_din  : in  std_logic_vector(DW-1 downto 0);  -- RAM data input
+    ram_cen  : in  std_logic;           -- RAM chip enable (low active)
+    ram_wen  : in  std_logic_vector(1 downto 0));  -- RAM write enable (low active)    
 end peripheral_spram_bb;
 
 architecture rtl of peripheral_spram_bb is
