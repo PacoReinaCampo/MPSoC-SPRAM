@@ -1,4 +1,4 @@
-vhdl
+code
 ├── peripheral
 │   ├── ahb3
 │   │   ├── peripheral_spram_1r1w_generic.vhd

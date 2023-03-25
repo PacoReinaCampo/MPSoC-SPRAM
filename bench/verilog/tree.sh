@@ -42,13 +42,4 @@
 ##                                                                               ##
 ###################################################################################
 
-all: build simulate
-
-build:
-	iverilog -g2012 -o system.vvp -c system.vc -s mpsoc_spram_testbench -I ../../../../../../rtl/verilog/code/pkg/ahb3
-
-simulate:
-	vvp system.vvp
-
-clean:
-	rm -rf system.vvp
+tree -P '*.sv' code > TREE-VERILOG.txt

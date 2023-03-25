@@ -42,6 +42,6 @@
 //                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////
 
-sv work ../../../../../../rtl/verilog/axi4/core/mpsoc_axi4_spram.sv
+sv work ../../../../../../rtl/verilog/code/axi4/core/mpsoc_axi4_spram.sv
 
-sv work ../../../../../../bench/verilog/tests/core/axi4/mpsoc_spram_testbench.sv
+sv work ../../../../../../bench/verilog/code/tests/core/axi4/mpsoc_spram_testbench.sv
