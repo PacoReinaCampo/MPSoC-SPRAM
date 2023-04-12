@@ -42,6 +42,6 @@
 //                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////
 
-vhdl2008 work ../../../../../../../rtl/vhdl/code/axi4/core/mpsoc_axi4_spram.vhd
+vhdl2008 work ../../../../../../../rtl/vhdl/code/peripheral/axi4/peripheral_spram_axi4.vhd
 
-vhdl2008 work ../../../../../../../bench/vhdl/code/tests/core/axi4/mpsoc_spram_testbench.vhd
+vhdl2008 work ../../../../../../../bench/vhdl/code/tests/peripheral/axi4/peripheral_spram_testbench.vhd
