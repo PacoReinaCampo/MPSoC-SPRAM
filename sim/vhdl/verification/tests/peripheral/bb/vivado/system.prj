@@ -42,9 +42,10 @@
 //                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////
 
-vhdl2008 work ../../../../../../../rtl/vhdl/code/wb/pkg/mpsoc_spram_wb_pkg.vhd
+vhdl2008 work ../../../../../../../rtl/vhdl/code/pkg/core/vhdl_pkg.vhd
+vhdl2008 work ../../../../../../../rtl/vhdl/code/pkg/peripheral/wb/peripheral_wb_pkg.vhd
 
-vhdl2008 work ../../../../../../../rtl/vhdl/code/wb/core/mpsoc_wb_ram_generic.vhd
-vhdl2008 work ../../../../../../../rtl/vhdl/code/wb/core/mpsoc_wb_spram.vhd
+vhdl2008 work ../../../../../../../rtl/vhdl/code/peripheral/wb/peripheral_spram_generic_wb.vhd
+vhdl2008 work ../../../../../../../rtl/vhdl/code/peripheral/wb/peripheral_spram_wb.vhd
 
-vhdl2008 work ../../../../../../../bench/vhdl/code/tests/core/wb/mpsoc_spram_testbench.vhd
+vhdl2008 work ../../../../../../../bench/vhdl/code/tests/peripheral/wb/peripheral_spram_testbench.vhd
