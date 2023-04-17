@@ -42,16 +42,17 @@
 ##                                                                               ##
 ###################################################################################
 
-read_vhdl -vhdl2008 ../../../../rtl/vhdl/wb/core/mpsoc_wb_ram_generic.vhd
-read_vhdl -vhdl2008 ../../../../rtl/vhdl/wb/core/mpsoc_wb_spram.vhd
+read_vhdl -vhdl2008 ../../../../rtl/vhdl/code/pkg/core/vhdl_pkg.vhd
+read_vhdl -vhdl2008 ../../../../rtl/vhdl/code/pkg/peripheral/wb/peripheral_wb_pkg.vhd
 
-read_vhdl -vhdl2008 ../../../../rtl/vhdl/wb/pkg/mpsoc_spram_wb_pkg.vhd
+read_vhdl -vhdl2008 ../../../../rtl/vhdl/code/peripheral/wb/peripheral_spram_generic_wb.vhd
+read_vhdl -vhdl2008 ../../../../rtl/vhdl/code/peripheral/wb/peripheral_spram_wb.vhd
 
-read_vhdl -vhdl2008 mpsoc_spram_synthesis.vhd
+read_vhdl -vhdl2008 peripheral_spram_synthesis.vhd
 
 read_xdc system.xdc
 
-synth_design -part xc7z020-clg484-1 -top mpsoc_spram_synthesis
+synth_design -part xc7z020-clg484-1 -top peripheral_spram_synthesis
 
 opt_design
 place_design

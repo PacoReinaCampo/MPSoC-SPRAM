@@ -43,7 +43,7 @@
 ###################################################################################
 
 # read design
-read_verilog -sv ../../../../rtl/verilog/peripheral/bb/peripheral_spram_bb.sv
+read_verilog -sv ../../../../rtl/verilog/code/peripheral/bb/peripheral_spram_bb.sv
 
 read_verilog -sv peripheral_spram_synthesis.sv
 

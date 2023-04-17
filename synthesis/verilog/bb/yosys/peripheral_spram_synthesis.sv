@@ -65,7 +65,7 @@ module peripheral_spram_synthesis #(
   // Module Body
   //
 
-  //DUT BB
+  // DUT BB
   peripheral_spram_bb #(
     .AW      (AW),
     .DW      (DW),
@@ -79,4 +79,4 @@ module peripheral_spram_synthesis #(
     .ram_cen (ram_cen),
     .ram_wen (ram_wen)
   );
-endmodule  // bb_ram
+endmodule

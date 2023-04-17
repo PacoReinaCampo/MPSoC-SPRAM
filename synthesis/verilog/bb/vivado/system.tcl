@@ -42,13 +42,13 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -sv ../../../../rtl/verilog/bb/core/msp430_ram.sv
+read_verilog -sv ../../../../rtl/verilog/code/peripheral/bb/peripheral_spram_bb.sv
 
-read_verilog -sv mpsoc_spram_synthesis.sv
+read_verilog -sv peripheral_spram_synthesis.sv
 
 read_xdc system.xdc
 
-synth_design -part xc7z020-clg484-1 -top mpsoc_spram_synthesis
+synth_design -part xc7z020-clg484-1 -top peripheral_spram_synthesis
 
 opt_design
 place_design

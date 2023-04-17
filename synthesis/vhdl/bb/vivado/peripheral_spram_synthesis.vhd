@@ -76,7 +76,7 @@ architecture rtl of peripheral_spram_synthesis is
   -- Components
   ------------------------------------------------------------------------------
 
-  component bb_ram
+  component peripheral_spram_bb
     generic (
       AW       : integer := 6;   -- Address bus
       DW       : integer := 16;  -- Data bus
@@ -99,8 +99,8 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --DUT BB
-  ram : bb_ram
+  -- DUT BB
+  spram_bb : peripheral_spram_bb
     generic map (
       AW       => AW,
       DW       => DW,

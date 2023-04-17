@@ -168,14 +168,14 @@ module peripheral_spram_synthesis #(
   // Module Body
   //
 
-  //Data AXI4
-  peripheral_axi4_spram #(
+  // Data AXI4
+  peripheral_spram_axi4 #(
     .AXI_ID_WIDTH  (AXI_ID_WIDTH),
     .AXI_ADDR_WIDTH(AXI_ADDR_WIDTH),
     .AXI_DATA_WIDTH(AXI_DATA_WIDTH),
     .AXI_STRB_WIDTH(AXI_STRB_WIDTH),
     .AXI_USER_WIDTH(AXI_USER_WIDTH)
-  ) axi4_spram (
+  ) spram_axi4 (
     .clk_i (HCLK),    // Clock
     .rst_ni(HRESETn), // Asynchronous reset active low
 

@@ -65,12 +65,12 @@ module peripheral_spram_synthesis #(
   // Module Body
   //
 
-  //DUT BB
-  bb_ram #(
+  // DUT BB
+  peripheral_spram_bb #(
     .AW      (AW),
     .DW      (DW),
     .MEM_SIZE(MEM_SIZE)
-  ) ram (
+  ) spram_bb (
     .ram_clk(ram_clk),
 
     .ram_addr(ram_addr),
@@ -79,4 +79,4 @@ module peripheral_spram_synthesis #(
     .ram_cen (ram_cen),
     .ram_wen (ram_wen)
   );
-endmodule  // bb_ram
+endmodule

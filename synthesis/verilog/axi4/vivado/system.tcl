@@ -42,13 +42,13 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -sv ../../../../rtl/verilog/axi4/core/mpsoc_axi4_spram.sv
+read_verilog -sv ../../../../rtl/verilog/code/peripheral/axi4/peripheral_spram_axi4.sv
 
-read_verilog -sv mpsoc_spram_synthesis.sv
+read_verilog -sv peripheral_spram_synthesis.sv
 
 read_xdc system.xdc
 
-synth_design -part xc7z020-clg484-1 -top mpsoc_spram_synthesis
+synth_design -part xc7z020-clg484-1 -top peripheral_spram_synthesis
 
 opt_design
 place_design

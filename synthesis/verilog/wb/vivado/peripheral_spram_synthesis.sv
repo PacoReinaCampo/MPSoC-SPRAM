@@ -71,8 +71,8 @@ module peripheral_spram_synthesis #(
   // Module Body
   //
 
-  //DUT WB
-  peripheral_wb_spram #(
+  // DUT WB
+  peripheral_spram_wb #(
     //Memory parameters
     .DEPTH  (DEPTH),
     .MEMFILE(MEMFILE),
@@ -80,7 +80,7 @@ module peripheral_spram_synthesis #(
     //Wishbone parameters
     .AW(AW),
     .DW(DW)
-  ) wb_spram (
+  ) spram_wb (
     .wb_clk_i(wb_clk_i),
     .wb_rst_i(wb_rst_i),
 

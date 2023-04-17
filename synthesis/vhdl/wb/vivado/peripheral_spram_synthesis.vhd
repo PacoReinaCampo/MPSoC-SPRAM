@@ -48,7 +48,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.peripheral_spram_wb_pkg.all;
+use work.peripheral_wb_pkg.all;
 
 entity peripheral_spram_synthesis is
   generic (
@@ -84,7 +84,7 @@ architecture rtl of peripheral_spram_synthesis is
   -- Components
   ------------------------------------------------------------------------------
 
-  component peripheral_wb_spram
+  component peripheral_spram_wb
     generic (
       --Memory parameters
       DEPTH   : integer := 256;
@@ -118,8 +118,8 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --DUT WB
-  wb_spram : peripheral_wb_spram
+  -- DUT WB
+  spram_wb : peripheral_spram_wb
     generic map (
       DEPTH   => DEPTH,
       MEMFILE => MEMFILE,

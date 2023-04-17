@@ -71,15 +71,15 @@ module peripheral_spram_synthesis #(
   // Module Body
   //
 
-  //DUT AHB3
-  peripheral_ahb3_spram #(
+  // DUT AHB3
+  peripheral_spram_ahb3 #(
     .MEM_SIZE         (MEM_SIZE),
     .MEM_DEPTH        (MEM_DEPTH),
     .PLEN             (PLEN),
     .XLEN             (XLEN),
     .TECHNOLOGY       (TECHNOLOGY),
     .REGISTERED_OUTPUT(REGISTERED_OUTPUT)
-  ) ahb3_spram (
+  ) spram_ahb3 (
     .HRESETn(HRESETn),
     .HCLK   (HCLK),
 
