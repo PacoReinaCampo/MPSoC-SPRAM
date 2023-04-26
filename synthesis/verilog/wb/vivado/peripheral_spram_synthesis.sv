@@ -41,11 +41,11 @@
  */
 
 module peripheral_spram_synthesis #(
-  //Memory parameters
+  // Memory Parameters
   parameter DEPTH   = 256,
   parameter MEMFILE = "",
 
-  //Wishbone parameters
+  // WishBone Parameters
   parameter DW = 32,
   parameter AW = $clog2(DEPTH)
 ) (
@@ -73,11 +73,11 @@ module peripheral_spram_synthesis #(
 
   // DUT WB
   peripheral_spram_wb #(
-    //Memory parameters
+    // Memory Parameters
     .DEPTH  (DEPTH),
     .MEMFILE(MEMFILE),
 
-    //Wishbone parameters
+    // WishBone Parameters
     .AW(AW),
     .DW(DW)
   ) spram_wb (
