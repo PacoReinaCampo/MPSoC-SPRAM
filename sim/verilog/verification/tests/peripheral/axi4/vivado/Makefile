@@ -96,4 +96,4 @@ simulate:
 	xsim -R peripheral_spram_testbench
 
 clean:
-	rm -rf *.dir *.jou *.log *.pb .Xil
+	rm -rf *.dir *.jou *.log *.pb *.vcd .Xil
