@@ -45,7 +45,7 @@
 all: build simulate
 
 build:
-	iverilog -g2012 -o system.vvp -c system.vc -s mpsoc_spram_testbench -I ../../../../../../../rtl/verilog/code/pkg/ahb3
+	iverilog -g2012 -o system.vvp -c system.vc -s peripheral_spram_testbench
 
 simulate:
 	vvp system.vvp

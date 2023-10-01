@@ -45,5 +45,5 @@
 @echo off
 call ../../../../../../../settings64_verilator.bat
 
-verilator -Wno-lint +incdir+../../../../../../../rtl/verilog/code/pkg/ahb3 --cc -f system.vc --top-module peripheral_spram_testbench
+verilator -Wno-lint --cc -f system.vc --top-module peripheral_spram_testbench
 pause
