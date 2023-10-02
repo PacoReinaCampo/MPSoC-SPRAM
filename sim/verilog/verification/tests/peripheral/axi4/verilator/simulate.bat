@@ -45,5 +45,7 @@
 @echo off
 call ../../../../../../../settings64_verilator.bat
 
-verilator -Wno-lint +incdir+../../../../../../../rtl/verilog/code/axi4/pkg --cc -f system.vc --top-module peripheral_spram_testbench
+verilator -Wno-lint -Wno-UNOPTFLAT -Wno-COMBDLY --cc -f system.vc --top-module peripheral_spram_testbench
+make -C obj_dir -j -f Vperipheral_spram_testbench.mk Vperipheral_spram_testbench
+obj_dir/Vperipheral_spram_testbench
 pause
