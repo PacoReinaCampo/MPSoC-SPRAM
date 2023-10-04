@@ -44,10 +44,7 @@
 
 @echo off
 call ../../../../../../../settings64_ghdl.bat
-
-ghdl -a --std=08 ../../../../../../../rtl/vhdl/code/peripheral/axi4/peripheral_spram_axi4.vhd
-
-ghdl -a --std=08 ../../../../../../../bench/vhdl/code/tests/peripheral/axi4/peripheral_spram_testbench.vhd
+sh system.s
 
 ghdl -e --std=08 peripheral_spram_testbench
 ghdl -r --std=08 peripheral_spram_testbench --ieee-asserts=disable-at-0 --vcd=peripheral_spram_testbench.vcd --wave=system.ghw --stop-time=1ms
