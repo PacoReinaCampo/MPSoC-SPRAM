@@ -9,9 +9,9 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              Peripheral-GPIO for MPSoC                                     //
-//              General Purpose Input Output for MPSoC                        //
-//              AMBA3 AHB-Lite Bus Interface                                  //
+//              Peripheral-BFM for MPSoC                                      //
+//              Bus Functional Model for MPSoC                                //
+//              AMBA4 AXI-Lite Bus Interface                                  //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -40,75 +40,46 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module peripheral_bfm_testbench;
-  parameter TIMERS = 3;  //Number of timers
+import peripheral_axi4_pkg::*;
 
-  parameter HADDR_SIZE = 16;
-  parameter HDATA_SIZE = 32;
+module peripheral_bfm_basic;
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Variables
-  //
+  initial begin
+    $dumpfile("basic.vcd");
+    $dumpvars(0, peripheral_bfm_testbench);
+  end
 
-  //AHB signals
-  logic                   HSEL;
-  logic [HADDR_SIZE -1:0] HADDR;
-  logic [HDATA_SIZE -1:0] HWDATA;
-  logic [HDATA_SIZE -1:0] HRDATA;
-  logic                   HWRITE;
-  logic [            2:0] HSIZE;
-  logic [            2:0] HBURST;
-  logic [            3:0] HPROT;
-  logic [            1:0] HTRANS;
-  logic                   HMASTLOCK;
-  logic                   HREADY;
-  logic                   HREADYOUT;
-  logic                   HRESP;
+  integer        i;
 
-  //Timer Interrupt
-  logic                   tint;
+  reg     [31:0] read_data;
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Clock & Reset
-  //
+  initial begin
+    repeat (100) @(posedge peripheral_bfm_testbench.aclk);
+    $display("BASIC: Timeout Failure! @ %d", $time);
+    $finish;
+  end
 
-  bit HCLK, HRESETn;
-  initial begin : gen_HCLK
-    HCLK <= 1'b0;
-    forever #10 HCLK = ~HCLK;
-  end : gen_HCLK
+  initial begin
+    $display("AXI Master BFM Test: Basic");
 
-  initial begin : gen_HRESETn;
-    HRESETn = 1'b1;
-    //ensure falling edge of HRESETn
-    #10;
-    HRESETn = 1'b0;
-    #32;
-    HRESETn = 1'b1;
-  end : gen_HRESETn;
+    @(negedge peripheral_bfm_testbench.aresetn);
+    @(posedge peripheral_bfm_testbench.aresetn);
+    repeat (10) @(posedge peripheral_bfm_testbench.aclk);
+    peripheral_bfm_testbench.master.write_single(32'h0000_0004, 32'hdead_beef, AXI_BURST_SIZE_WORD, 4'hF);
+    peripheral_bfm_testbench.master.write_single(32'h0000_0008, 32'h1234_5678, AXI_BURST_SIZE_WORD, 4'hF);
+    peripheral_bfm_testbench.master.write_single(32'h0000_000C, 32'hABCD_EF00, AXI_BURST_SIZE_WORD, 4'hF);
+    peripheral_bfm_testbench.master.write_single(32'h0000_0010, 32'hAA55_66BB, AXI_BURST_SIZE_WORD, 4'hF);
+    repeat (10) @(posedge peripheral_bfm_testbench.aclk);
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // TB and DUT
-  //
+    peripheral_bfm_testbench.master.read_single_and_check(32'h0000_0004, 32'hdead_beef, AXI_BURST_SIZE_WORD, 4'hF);
+    peripheral_bfm_testbench.master.read_single_and_check(32'h0000_0008, 32'h1234_5678, AXI_BURST_SIZE_WORD, 4'hF);
+    peripheral_bfm_testbench.master.read_single_and_check(32'h0000_000C, 32'hABCD_EF00, AXI_BURST_SIZE_WORD, 4'hF);
+    peripheral_bfm_testbench.master.read_single_and_check(32'h0000_0010, 32'hAA55_66BB, AXI_BURST_SIZE_WORD, 4'hF);
 
-  peripheral_bfm_ahb3 #(
-    .TIMERS    (TIMERS),
-    .HADDR_SIZE(HADDR_SIZE),
-    .HDATA_SIZE(HDATA_SIZE)
-  ) tb (
-    .*
-  );
+    for (i = 0; i < 32; i = i + 1) begin
+      $display("MEMORY[%d] = 0x%04x", i, peripheral_bfm_testbench.slave.memory[i]);
+    end
 
-  peripheral_timer_ahb3 #(
-    .TIMERS    (TIMERS),
-    .HADDR_SIZE(HADDR_SIZE),
-    .HDATA_SIZE(HDATA_SIZE)
-  ) dut (
-    .*
-  );
-
-  assign HREADY = HREADYOUT;
-endmodule : peripheral_bfm_testbench
+    peripheral_bfm_testbench.test_passed <= 1;
+  end
+endmodule  // peripheral_bfm_basic

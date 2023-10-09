@@ -9,9 +9,9 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
-//              Master Slave Interface Tesbench                               //
-//              AMBA3 AXI-Lite Bus Interface                                  //
+//              Peripheral-BFM for MPSoC                                      //
+//              Bus Functional Model for MPSoC                                //
+//              AMBA4 AXI-Lite Bus Interface                                  //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -42,153 +42,165 @@
 
 module peripheral_spram_testbench;
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Constants
-  //
+  // Free running clock
+  reg aclk;
 
-  localparam AXI_ID_WIDTH = 10;
-  localparam AXI_ADDR_WIDTH = 64;
-  localparam AXI_DATA_WIDTH = 64;
-  localparam AXI_STRB_WIDTH = 8;
-  localparam AXI_USER_WIDTH = 10;
+  initial begin
+    aclk <= 0;
+    forever #5 aclk <= ~aclk;
+  end
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Variables
-  //
+  // Reset
+  reg aresetn;
 
-  //Common signals
-  logic                        clk_i;  // Clock
-  logic                        rst_ni;  // Asynchronous reset active low
+  initial begin
+    aresetn <= 1;
+    #11;
+    aresetn <= 0;
+    repeat (10) @(posedge aclk);
+    aresetn <= 1;
+  end
 
-  //AHB3 signals
-  logic [AXI_ID_WIDTH    -1:0] axi_aw_id;
-  logic [AXI_ADDR_WIDTH  -1:0] axi_aw_addr;
-  logic [                 7:0] axi_aw_len;
-  logic [                 2:0] axi_aw_size;
-  logic [                 1:0] axi_aw_burst;
-  logic                        axi_aw_lock;
-  logic [                 3:0] axi_aw_cache;
-  logic [                 2:0] axi_aw_prot;
-  logic [                 3:0] axi_aw_qos;
-  logic [                 3:0] axi_aw_region;
-  logic [AXI_USER_WIDTH  -1:0] axi_aw_user;
-  logic                        axi_aw_valid;
-  logic                        axi_aw_ready;
+  reg         test_passed;
 
-  logic [AXI_ID_WIDTH    -1:0] axi_ar_id;
-  logic [AXI_ADDR_WIDTH  -1:0] axi_ar_addr;
-  logic [                 7:0] axi_ar_len;
-  logic [                 2:0] axi_ar_size;
-  logic [                 1:0] axi_ar_burst;
-  logic                        axi_ar_lock;
-  logic [                 3:0] axi_ar_cache;
-  logic [                 2:0] axi_ar_prot;
-  logic [                 3:0] axi_ar_qos;
-  logic [                 3:0] axi_ar_region;
-  logic [AXI_USER_WIDTH  -1:0] axi_ar_user;
-  logic                        axi_ar_valid;
-  logic                        axi_ar_ready;
+  wire [31:0] araddr;
+  wire [ 3:0] arcache;
+  wire [ 3:0] arid;
+  wire [ 3:0] arlen;
+  wire [ 1:0] arlock;
+  wire [ 2:0] arprot;
+  wire        arready;
+  wire [ 2:0] arsize;
+  wire        arvalid;
+  wire [31:0] awadr;
+  wire [ 1:0] awburst;
+  wire [ 3:0] awcache;
+  wire [ 3:0] awid;
+  wire [ 3:0] awlen;
+  wire [ 1:0] awlock;
+  wire [ 2:0] awprot;
+  wire        awready;
+  wire [ 2:0] awsize;
+  wire        awvalid;
+  wire [ 3:0] bid;
+  wire [ 1:0] bresp;
+  wire        bvalid;
+  wire [31:0] rdata;
+  wire [ 3:0] rid;
+  wire        rlast;
+  wire        rready;
+  wire [ 1:0] rresp;
+  wire        rvalid;
+  wire        test_fail;
+  wire [ 3:0] wid;
+  wire        wlast;
+  wire [31:0] wrdata;
+  wire        wready;
+  wire [ 3:0] wstrb;
+  wire        wvalid;
 
-  logic [AXI_DATA_WIDTH  -1:0] axi_w_data;
-  logic [AXI_STRB_WIDTH  -1:0] axi_w_strb;
-  logic                        axi_w_last;
-  logic [AXI_USER_WIDTH  -1:0] axi_w_user;
-  logic                        axi_w_valid;
-  logic                        axi_w_ready;
+  peripheral_bfm_master_generic_axi4 master (
 
-  logic [AXI_ID_WIDTH    -1:0] axi_r_id;
-  logic [AXI_DATA_WIDTH  -1:0] axi_r_data;
-  logic [                 1:0] axi_r_resp;
-  logic                        axi_r_last;
-  logic [AXI_USER_WIDTH  -1:0] axi_r_user;
-  logic                        axi_r_valid;
-  logic                        axi_r_ready;
+    // Outputs
+    .awid     (awid[3:0]),
+    .awadr    (awadr[31:0]),
+    .awlen    (awlen[3:0]),
+    .awsize   (awsize[2:0]),
+    .awburst  (awburst[1:0]),
+    .awlock   (awlock[1:0]),
+    .awcache  (awcache[3:0]),
+    .awprot   (awprot[2:0]),
+    .awvalid  (awvalid),
+    .wid      (wid[3:0]),
+    .wrdata   (wrdata[31:0]),
+    .wstrb    (wstrb[3:0]),
+    .wlast    (wlast),
+    .wvalid   (wvalid),
+    .bid      (bid[3:0]),
+    .bresp    (bresp[1:0]),
+    .bvalid   (bvalid),
+    .arid     (arid[3:0]),
+    .araddr   (araddr[31:0]),
+    .arlen    (arlen[3:0]),
+    .arsize   (arsize[2:0]),
+    .arlock   (arlock[1:0]),
+    .arcache  (arcache[3:0]),
+    .arprot   (arprot[2:0]),
+    .arvalid  (arvalid),
+    .rready   (rready),
+    .test_fail(test_fail),
 
-  logic [AXI_ID_WIDTH    -1:0] axi_b_id;
-  logic [                 1:0] axi_b_resp;
-  logic [AXI_USER_WIDTH  -1:0] axi_b_user;
-  logic                        axi_b_valid;
-  logic                        axi_b_ready;
-
-  logic                        req_o;
-  logic                        we_o;
-  logic [AXI_ADDR_WIDTH  -1:0] addr_o;
-  logic [AXI_DATA_WIDTH/8-1:0] be_o;
-  logic [AXI_DATA_WIDTH  -1:0] data_o;
-  logic [AXI_DATA_WIDTH  -1:0] data_i;
-
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Module Body
-  //
-
-  //DUT AXI4
-  peripheral_spram_axi4 #(
-    .AXI_ID_WIDTH  (AXI_ID_WIDTH),
-    .AXI_ADDR_WIDTH(AXI_ADDR_WIDTH),
-    .AXI_DATA_WIDTH(AXI_DATA_WIDTH),
-    .AXI_STRB_WIDTH(AXI_STRB_WIDTH),
-    .AXI_USER_WIDTH(AXI_USER_WIDTH)
-  ) axi4_spram (
-    .clk_i (clk_i),  // Clock
-    .rst_ni(rst_ni), // Asynchronous reset active low
-
-    .axi_aw_id    (axi_aw_id),
-    .axi_aw_addr  (axi_aw_addr),
-    .axi_aw_len   (axi_aw_len),
-    .axi_aw_size  (axi_aw_size),
-    .axi_aw_burst (axi_aw_burst),
-    .axi_aw_lock  (axi_aw_lock),
-    .axi_aw_cache (axi_aw_cache),
-    .axi_aw_prot  (axi_aw_prot),
-    .axi_aw_qos   (axi_aw_qos),
-    .axi_aw_region(axi_aw_region),
-    .axi_aw_user  (axi_aw_user),
-    .axi_aw_valid (axi_aw_valid),
-    .axi_aw_ready (axi_aw_ready),
-
-    .axi_ar_id    (axi_ar_id),
-    .axi_ar_addr  (axi_ar_addr),
-    .axi_ar_len   (axi_ar_len),
-    .axi_ar_size  (axi_ar_size),
-    .axi_ar_burst (axi_ar_burst),
-    .axi_ar_lock  (axi_ar_lock),
-    .axi_ar_cache (axi_ar_cache),
-    .axi_ar_prot  (axi_ar_prot),
-    .axi_ar_qos   (axi_ar_qos),
-    .axi_ar_region(axi_ar_region),
-    .axi_ar_user  (axi_ar_user),
-    .axi_ar_valid (axi_ar_valid),
-    .axi_ar_ready (axi_ar_ready),
-
-    .axi_w_data (axi_w_data),
-    .axi_w_strb (axi_w_strb),
-    .axi_w_last (axi_w_last),
-    .axi_w_user (axi_w_user),
-    .axi_w_valid(axi_w_valid),
-    .axi_w_ready(axi_w_ready),
-
-    .axi_r_id   (axi_r_id),
-    .axi_r_data (axi_r_data),
-    .axi_r_resp (axi_r_resp),
-    .axi_r_last (axi_r_last),
-    .axi_r_user (axi_r_user),
-    .axi_r_valid(axi_r_valid),
-    .axi_r_ready(axi_r_ready),
-
-    .axi_b_id   (axi_b_id),
-    .axi_b_resp (axi_b_resp),
-    .axi_b_user (axi_b_user),
-    .axi_b_valid(axi_b_valid),
-    .axi_b_ready(axi_b_ready),
-
-    .req_o (req_o),
-    .we_o  (we_o),
-    .addr_o(addr_o),
-    .be_o  (be_o),
-    .data_o(data_o),
-    .data_i(data_i)
+    // Inputs
+    .aclk   (aclk),
+    .aresetn(aresetn),
+    .awready(awready),
+    .wready (wready),
+    .bready (bready),
+    .arready(arready),
+    .rid    (rid[3:0]),
+    .rdata  (rdata[31:0]),
+    .rresp  (rresp[1:0]),
+    .rlast  (rlast),
+    .rvalid (rvalid)
   );
-endmodule
+
+  peripheral_bfm_slave_generic_axi4 slave (
+
+    // Outputs
+    .awready(awready),
+    .wready (wready),
+    .bid    (bid[3:0]),
+    .bresp  (bresp[1:0]),
+    .bvalid (bvalid),
+    .arready(arready),
+    .rid    (rid[3:0]),
+    .rdata  (rdata[31:0]),
+    .rresp  (rresp[1:0]),
+    .rlast  (rlast),
+    .rvalid (rvalid),
+
+    // Inputs
+    .aclk   (aclk),
+    .aresetn(aresetn),
+    .awid   (awid[3:0]),
+    .awadr  (awadr[31:0]),
+    .awlen  (awlen[3:0]),
+    .awsize (awsize[2:0]),
+    .awburst(awburst[1:0]),
+    .awlock (awlock[1:0]),
+    .awcache(awcache[3:0]),
+    .awprot (awprot[2:0]),
+    .awvalid(awvalid),
+    .wid    (wid[3:0]),
+    .wrdata (wrdata[31:0]),
+    .wstrb  (wstrb[3:0]),
+    .wlast  (wlast),
+    .wvalid (wvalid),
+    .bready (bready),
+    .arid   (arid[3:0]),
+    .araddr (araddr[31:0]),
+    .arlen  (arlen[3:0]),
+    .arsize (arsize[2:0]),
+    .arlock (arlock[1:0]),
+    .arcache(arcache[3:0]),
+    .arprot (arprot[2:0]),
+    .arvalid(arvalid),
+    .rready (rready)
+  );
+
+  peripheral_bfm_basic test ();
+  initial begin
+    @(posedge test_fail);
+    $display("TEST FAIL @ %d", $time);
+    repeat (10) @(posedge aclk);
+    $finish;
+  end
+
+  initial begin
+    test_passed <= 0;
+    @(posedge test_passed);
+    $display("TEST PASSED: @ %d", $time);
+    repeat (10) @(posedge aclk);
+    $finish;
+  end
+endmodule  // peripheral_spram_testbench

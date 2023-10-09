@@ -9,8 +9,8 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
-//              Master Slave Interface Tesbench                               //
+//              Peripheral-GPIO for MPSoC                                     //
+//              General Purpose Input Output for MPSoC                        //
 //              AMBA3 AHB-Lite Bus Interface                                  //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,69 +47,86 @@ module peripheral_spram_testbench;
   // Constants
   //
 
-  localparam XLEN = 64;
-  localparam PLEN = 64;
-
-  localparam SYNC_DEPTH = 3;
-  localparam TECHNOLOGY = "GENERIC";
-
-  //Memory parameters
-  parameter DEPTH = 256;
-  parameter MEMFILE = "";
+  parameter HADDR_SIZE = 16;
+  parameter HDATA_SIZE = 32;
 
   //////////////////////////////////////////////////////////////////////////////
   //
   // Variables
   //
 
-  //Common signals
-  wire                       HRESETn;
-  wire                       HCLK;
-
-  //AHB3 signals
-  wire                       mst_spram_HSEL;
-  wire [PLEN           -1:0] mst_spram_HADDR;
-  wire [XLEN           -1:0] mst_spram_HWDATA;
-  wire [XLEN           -1:0] mst_spram_HRDATA;
-  wire                       mst_spram_HWRITE;
-  wire [                2:0] mst_spram_HSIZE;
-  wire [                2:0] mst_spram_HBURST;
-  wire [                3:0] mst_spram_HPROT;
-  wire [                1:0] mst_spram_HTRANS;
-  wire                       mst_spram_HMASTLOCK;
-  wire                       mst_spram_HREADY;
-  wire                       mst_spram_HREADYOUT;
-  wire                       mst_spram_HRESP;
+  // AHB3 signals
+  logic                   HSEL;
+  logic [HADDR_SIZE -1:0] HADDR;
+  logic [HDATA_SIZE -1:0] HWDATA;
+  logic [HDATA_SIZE -1:0] HRDATA;
+  logic                   HWRITE;
+  logic [            2:0] HSIZE;
+  logic [            2:0] HBURST;
+  logic [            3:0] HPROT;
+  logic [            1:0] HTRANS;
+  logic                   HMASTLOCK;
+  logic                   HREADY;
+  logic                   HREADYOUT;
+  logic                   HRESP;
 
   //////////////////////////////////////////////////////////////////////////////
   //
-  // Module Body
+  // Clock & Reset
   //
 
-  //DUT AHB3
+  bit HCLK, HRESETn;
+  initial begin : gen_HCLK
+    HCLK <= 1'b0;
+    forever #10 HCLK = ~HCLK;
+  end : gen_HCLK
+
+  initial begin : gen_HRESETn;
+    HRESETn = 1'b1;
+    //ensure falling edge of HRESETn
+    #10;
+    HRESETn = 1'b0;
+    #32;
+    HRESETn = 1'b1;
+  end : gen_HRESETn;
+
+  //////////////////////////////////////////////////////////////////////////////
+  //
+  // TB and DUT
+  //
+
+  peripheral_bfm_ahb3 #(
+    .HADDR_SIZE(HADDR_SIZE),
+    .HDATA_SIZE(HDATA_SIZE)
+  ) tb (
+    .*
+  );
+
   peripheral_ahb3_spram #(
     .MEM_SIZE         (256),
     .MEM_DEPTH        (256),
-    .PLEN             (PLEN),
-    .XLEN             (XLEN),
-    .TECHNOLOGY       (TECHNOLOGY),
+    .PLEN             (HADDR_SIZE),
+    .XLEN             (HDATA_SIZE),
+    .TECHNOLOGY       ("GENERIC"),
     .REGISTERED_OUTPUT("NO")
   ) ahb3_spram (
     .HRESETn(HRESETn),
     .HCLK   (HCLK),
 
-    .HSEL     (mst_spram_HSEL),
-    .HADDR    (mst_spram_HADDR),
-    .HWDATA   (mst_spram_HWDATA),
-    .HRDATA   (mst_spram_HRDATA),
-    .HWRITE   (mst_spram_HWRITE),
-    .HSIZE    (mst_spram_HSIZE),
-    .HBURST   (mst_spram_HBURST),
-    .HPROT    (mst_spram_HPROT),
-    .HTRANS   (mst_spram_HTRANS),
-    .HMASTLOCK(mst_spram_HMASTLOCK),
-    .HREADYOUT(mst_spram_HREADYOUT),
-    .HREADY   (mst_spram_HREADY),
-    .HRESP    (mst_spram_HRESP)
+    .HSEL     (HSEL),
+    .HADDR    (HADDR),
+    .HWDATA   (HWDATA),
+    .HRDATA   (HRDATA),
+    .HWRITE   (HWRITE),
+    .HSIZE    (HSIZE),
+    .HBURST   (HBURST),
+    .HPROT    (HPROT),
+    .HTRANS   (HTRANS),
+    .HMASTLOCK(HMASTLOCK),
+    .HREADYOUT(HREADYOUT),
+    .HREADY   (HREADY),
+    .HRESP    (HRESP)
   );
-endmodule
+
+  assign HREADY = HREADYOUT;
+endmodule : peripheral_spram_testbench

@@ -44,4 +44,6 @@
 
 ../../../../../../../rtl/verilog/code/peripheral/axi4/peripheral_spram_axi4.sv
 
+../../../../../../../bench/verilog/code/tests/peripheral/axi4/peripheral_bfm_basic.sv
+../../../../../../../bench/verilog/code/tests/peripheral/axi4/peripheral_bfm_master_generic_axi4.sv
 ../../../../../../../bench/verilog/code/tests/peripheral/axi4/peripheral_spram_testbench.sv
