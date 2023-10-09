@@ -102,14 +102,14 @@ module peripheral_spram_testbench;
     .*
   );
 
-  peripheral_ahb3_spram #(
+  peripheral_spram_ahb3 #(
     .MEM_SIZE         (256),
     .MEM_DEPTH        (256),
     .PLEN             (HADDR_SIZE),
     .XLEN             (HDATA_SIZE),
     .TECHNOLOGY       ("GENERIC"),
     .REGISTERED_OUTPUT("NO")
-  ) ahb3_spram (
+  ) spram_ahb3 (
     .HRESETn(HRESETn),
     .HCLK   (HCLK),
 
