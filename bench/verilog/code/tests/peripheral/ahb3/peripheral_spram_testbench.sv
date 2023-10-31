@@ -81,16 +81,14 @@ module peripheral_spram_testbench;
     forever #10 HCLK = ~HCLK;
   end : gen_HCLK
 
-  initial begin : gen_HRESETn
-    ;
+  initial begin : gen_HRESETn;
     HRESETn = 1'b1;
     //ensure falling edge of HRESETn
     #10;
     HRESETn = 1'b0;
     #32;
     HRESETn = 1'b1;
-  end : gen_HRESETn
-  ;
+  end : gen_HRESETn;
 
   //////////////////////////////////////////////////////////////////////////////
   //
