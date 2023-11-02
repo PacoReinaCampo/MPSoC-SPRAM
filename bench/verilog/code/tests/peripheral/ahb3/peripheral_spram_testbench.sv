@@ -83,7 +83,7 @@ module peripheral_spram_testbench;
 
   initial begin : gen_HRESETn;
     HRESETn = 1'b1;
-    //ensure falling edge of HRESETn
+    // ensure falling edge of HRESETn
     #10;
     HRESETn = 1'b0;
     #32;

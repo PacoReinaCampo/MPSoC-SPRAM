@@ -113,7 +113,7 @@ module peripheral_spram_synthesis #(
   logic                        axi4_ins_b_valid;
   logic                        axi4_ins_b_ready;
 
-  //AXI4 Data
+  // AXI4 Data
   logic [AXI_ID_WIDTH    -1:0] axi4_dat_aw_id;
   logic [AXI_ADDR_WIDTH  -1:0] axi4_dat_aw_addr;
   logic [                 7:0] axi4_dat_aw_len;

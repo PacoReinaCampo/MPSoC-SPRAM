@@ -47,11 +47,11 @@ module peripheral_spram_testbench;
   // Constants
   //
 
-  //Memory parameters
+  // Memory parameters
   parameter DEPTH = 256;
   parameter MEMFILE = "";
 
-  //Wishbone parameters
+  // Wishbone parameters
   parameter DW = 32;
   parameter AW = $clog2(DEPTH);
 
@@ -60,11 +60,11 @@ module peripheral_spram_testbench;
   // Variables
   //
 
-  //Common signals
+  // Common signals
   wire                       clk;
   wire                       rst;
 
-  //WB signals
+  // WB signals
   wire [AW             -1:0] mst_spram_adr_i;
   wire [DW             -1:0] mst_spram_dat_i;
   wire [                3:0] mst_spram_sel_i;
@@ -82,7 +82,7 @@ module peripheral_spram_testbench;
   // Module Body
   //
 
-  //DUT WB
+  // DUT WB
   peripheral_spram_wb #(
     .DEPTH  (DEPTH),
     .MEMFILE(MEMFILE),
