@@ -1,6 +1,3 @@
--- Converted from bench/verilog/regression/peripheral_spram_testbench.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -66,11 +63,11 @@ architecture rtl of peripheral_spram_testbench is
   -- Variables
   ------------------------------------------------------------------------------
 
-  --Common signals
+  -- Common signals
   signal HRESETn : std_logic;
   signal HCLK    : std_logic;
 
-  --AHB3 signals
+  -- AHB3 signals
   signal mst_spram_HSEL      : std_logic;
   signal mst_spram_HADDR     : std_logic_vector(PLEN-1 downto 0);
   signal mst_spram_HWDATA    : std_logic_vector(XLEN-1 downto 0);
@@ -91,8 +88,8 @@ architecture rtl of peripheral_spram_testbench is
 
   component peripheral_spram_ahb3
     generic (
-      MEM_SIZE          : integer := 256;  --Memory in Bytes
-      MEM_DEPTH         : integer := 256;  --Memory depth
+      MEM_SIZE          : integer := 256;  -- Memory in Bytes
+      MEM_DEPTH         : integer := 256;  -- Memory depth
       PLEN              : integer := 64;
       XLEN              : integer := 64;
       TECHNOLOGY        : string  := "GENERIC";
@@ -102,8 +99,8 @@ architecture rtl of peripheral_spram_testbench is
       HRESETn : in std_logic;
       HCLK    : in std_logic;
 
-      --AHB Slave Interfaces (receive data from AHB Masters)
-      --AHB Masters connect to these ports
+      -- AHB Slave Interfaces (receive data from AHB Masters)
+      -- AHB Masters connect to these ports
       HSEL      : in  std_logic;
       HADDR     : in  std_logic_vector(PLEN-1 downto 0);
       HWDATA    : in  std_logic_vector(XLEN-1 downto 0);
@@ -125,7 +122,7 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --DUT AHB3
+  -- DUT AHB3
   ahb3_spram : peripheral_spram_ahb3
     generic map (
       MEM_SIZE          => 256,

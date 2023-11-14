@@ -1,6 +1,3 @@
--- Converted from peripheral_spram_synthesis.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -102,7 +99,7 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --DUT BB
+  -- DUT BB
   ram : peripheral_spram_bb
     generic map (
       AW       => AW,

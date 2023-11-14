@@ -1,6 +1,3 @@
--- Converted from peripheral_wb_spram_generic.v
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --

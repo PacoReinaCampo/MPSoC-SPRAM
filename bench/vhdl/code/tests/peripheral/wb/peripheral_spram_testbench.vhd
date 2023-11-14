@@ -1,6 +1,3 @@
--- Converted from bench/verilog/regression/peripheral_spram_testbench.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -64,11 +61,11 @@ architecture rtl of peripheral_spram_testbench is
   -- Variables
   ------------------------------------------------------------------------------
 
-  --Common signals
+  -- Common signals
   signal clk : std_logic;
   signal rst : std_logic;
 
-  --WB signals
+  -- WB signals
   signal mst_spram_adr_i : std_logic_vector(AW-1 downto 0);
   signal mst_spram_dat_i : std_logic_vector(DW-1 downto 0);
   signal mst_spram_sel_i : std_logic_vector(3 downto 0);
@@ -87,11 +84,11 @@ architecture rtl of peripheral_spram_testbench is
 
   component peripheral_spram_wb
     generic (
-      --Memory parameters
+      -- Memory parameters
       DEPTH   : integer := 256;
       MEMFILE : string  := "";
 
-      --Wishbone parameters
+      -- Wishbone parameters
       DW : integer := 32;
       AW : integer := integer(log2(real(256)))
       );
@@ -119,7 +116,7 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --DUT WB
+  -- DUT WB
   wb_spram : peripheral_spram_wb
     generic map (
       DEPTH   => DEPTH,
