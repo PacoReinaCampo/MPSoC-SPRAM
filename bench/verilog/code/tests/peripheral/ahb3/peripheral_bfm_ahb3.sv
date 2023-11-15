@@ -87,7 +87,6 @@ module peripheral_bfm_ahb3 #(
   int errors;
 
   //////////////////////////////////////////////////////////////////////////////
-  //
   // Instantiate the AHB-Master
   //
   peripheral_bfm_master_ahb3 #(
