@@ -51,6 +51,6 @@ package peripheral_bb_pkg;
   localparam DW = 32;
 
   // Memory size in bytes
-  localparam MEM_SIZE = 4294967296;
+  localparam MEM_SIZE = 32'hFFFFFFFF;
 
 endpackage
