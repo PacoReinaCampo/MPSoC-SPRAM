@@ -11,17 +11,17 @@ import uvm_pkg::*;
 
 module peripheral_uvm_testbench;
   // Declaration of Local Fields
-  bit aclk;
+  bit clk_i;
 
   // Clock Generation
-  always #1 aclk = ~aclk;
+  always #1 clk_i = ~clk_i;
 
   initial begin
-    aclk = 0;
+    clk_i = 0;
   end
 
   // Creatinng instance of interface, in order to connect DUT and testcase
-  peripheral_uvm_interface vif (aclk);
+  peripheral_uvm_interface vif (clk_i);
 
   // Peripheral_adder DUT Instantation
   peripheral_spram_axi4 #(
