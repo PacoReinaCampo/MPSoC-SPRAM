@@ -1,4 +1,4 @@
-import peripheral_axi4_pkg::*;
+import peripheral_bb_pkg::*;
 
 class peripheral_uvm_monitor extends uvm_monitor;
   // Declaration of Virtual interface
@@ -44,64 +44,29 @@ class peripheral_uvm_monitor extends uvm_monitor;
   // Description : run task for collecting peripheral_adder transactions
   task collect_write_transaction();
     begin
-      // Operate in a synchronous manner
-      @(posedge vif.aclk);
+      @(posedge vif.ram_clk);
 
-      // Address Phase
-      act_transaction.awid    <= vif.rc_cb.awid;
-      act_transaction.awadr   <= vif.rc_cb.awadr;
-      act_transaction.awvalid <= vif.rc_cb.awvalid;
-      act_transaction.awlen   <= vif.rc_cb.awlen;
-      act_transaction.awsize  <= vif.rc_cb.awsize;
-      act_transaction.awburst <= vif.rc_cb.awburst;
-      act_transaction.awlock  <= vif.rc_cb.awlock;
-      act_transaction.awcache <= vif.rc_cb.awcache;
-      act_transaction.awprot  <= vif.rc_cb.awprot;
-      @(posedge vif.awready);
+      act_transaction.ram_addr <= vif.rc_cb.ram_addr;
+      act_transaction.ram_din  <= vif.rc_cb.ram_din;
+      act_transaction.ram_dout <= vif.rc_cb.ram_dout;
+      act_transaction.ram_cen  <= vif.rc_cb.ram_cen;
+      act_transaction.ram_wen  <= vif.rc_cb.ram_wen;
 
-      // Data Phase
-      act_transaction.awvalid <= vif.rc_cb.awvalid;
-      act_transaction.awadr   <= vif.rc_cb.awadr;
-      act_transaction.wid     <= vif.rc_cb.wid;
-      act_transaction.wvalid  <= vif.rc_cb.wvalid;
-      act_transaction.wrdata  <= vif.rc_cb.wrdata;
-      act_transaction.wstrb   <= vif.rc_cb.wstrb;
-      act_transaction.wlast   <= vif.rc_cb.wlast;
-      @(posedge vif.wready);
-
-      // Response Phase
-      act_transaction.wid    <= vif.rc_cb.wid;
-      act_transaction.wvalid <= vif.rc_cb.wvalid;
-      act_transaction.wrdata <= vif.rc_cb.wrdata;
-      act_transaction.wstrb  <= vif.rc_cb.wstrb;
-      act_transaction.wlast  <= vif.rc_cb.wlast;
+      @(posedge vif.ram_clk);
+      act_transaction.ram_cen  <= vif.rc_cb.ram_cen;
     end
   endtask
 
   task collect_read_transaction();
     begin
-      // Address Phase
-      act_transaction.arid    <= vif.rc_cb.arid;
-      act_transaction.araddr  <= vif.rc_cb.awadr;
-      act_transaction.arvalid <= vif.rc_cb.arvalid;
-      act_transaction.arlen   <= vif.rc_cb.arlen;
-      act_transaction.arsize  <= vif.rc_cb.arsize;
-      act_transaction.arlock  <= vif.rc_cb.arlock;
-      act_transaction.arcache <= vif.rc_cb.arcache;
-      act_transaction.arprot  <= vif.rc_cb.arprot;
-      act_transaction.rready  <= vif.rc_cb.rready;
-      @(posedge vif.arready);
+      act_transaction.ram_addr <= vif.rc_cb.ram_addr;
+      act_transaction.ram_din  <= vif.rc_cb.ram_din;
+      act_transaction.ram_dout <= vif.rc_cb.ram_dout;
+      act_transaction.ram_cen  <= vif.rc_cb.ram_cen;
+      act_transaction.ram_wen  <= vif.rc_cb.ram_wen;
 
-      // Data Phase
-      act_transaction.arvalid <= vif.rc_cb.arvalid;
-      act_transaction.rready  <= vif.rc_cb.rready;
-      @(posedge vif.rvalid);
-
-      act_transaction.rready <= vif.rc_cb.rready;
-      act_transaction.rdata  <= vif.rc_cb.rdata;
-      @(negedge vif.rvalid);
-
-      act_transaction.araddr <= vif.rc_cb.araddr;
+      @(posedge vif.ram_clk);
+      act_transaction.ram_cen  <= vif.rc_cb.ram_cen;
     end
   endtask
 endclass : peripheral_uvm_monitor

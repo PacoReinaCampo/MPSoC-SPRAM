@@ -9,6 +9,8 @@ import uvm_pkg::*;
 `include "peripheral_uvm_sequence.sv"
 `include "peripheral_uvm_test.sv"
 
+import peripheral_bb_pkg::*;
+
 module peripheral_uvm_testbench;
   // Declaration of Local Fields
   bit ram_clk;

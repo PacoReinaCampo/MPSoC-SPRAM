@@ -1,6 +1,6 @@
 `include "peripheral_uvm_transaction.sv"
 
-import peripheral_axi4_pkg::*;
+import peripheral_bb_pkg::*;
 
 class peripheral_uvm_driver extends uvm_driver #(peripheral_uvm_transaction);
   // Declaration of component utils to register with factory
@@ -58,7 +58,7 @@ class peripheral_uvm_driver extends uvm_driver #(peripheral_uvm_transaction);
       vif.dr_cb.ram_cen  <= 0;
       vif.dr_cb.ram_wen  <= 0;
 
-      @(posedge vif.aclk);
+      @(posedge vif.ram_clk);
       vif.dr_cb.ram_cen  <= 1;
     end
   endtask
@@ -69,7 +69,7 @@ class peripheral_uvm_driver extends uvm_driver #(peripheral_uvm_transaction);
       vif.dr_cb.ram_cen  <= 0;
       vif.dr_cb.ram_wen  <= 1;
 
-      @(posedge vif.aclk);
+      @(posedge vif.ram_clk);
       vif.dr_cb.ram_cen  <= 1;
     end
   endtask
@@ -82,10 +82,10 @@ class peripheral_uvm_driver extends uvm_driver #(peripheral_uvm_transaction);
 
     vif.dr_cb.ram_addr <= 0;
     vif.dr_cb.ram_din  <= 0;
-    vif.dr_cb.ram_cen  <= 0;
+    vif.dr_cb.ram_cen  <= 1;
     vif.dr_cb.ram_wen  <= 0;
 
-    repeat (5) @(posedge vif.aclk);
+    repeat (5) @(posedge vif.ram_clk);
 
     vif.dr_cb.ram_rst <= 1;  // Inactive HIGH
   endtask
