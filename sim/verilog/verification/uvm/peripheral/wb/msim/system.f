@@ -44,6 +44,7 @@
 
 +incdir+../../../../../../../verification/uvm/src
 
-../../../../../../../verification/uvm/library/core/wb/peripheral_uvm_testbench.sv
+../../../../../../../rtl/verilog/code/pkg/peripheral/wb/peripheral_wb_pkg.sv
+../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_spram_wb.sv
 
-../../../../../../../verification/uvm/application/core/wb/peripheral_design.sv
+../../../../../../../verification/uvm/library/core/wb/peripheral_uvm_testbench.sv
