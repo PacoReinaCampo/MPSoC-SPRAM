@@ -44,8 +44,13 @@ package peripheral_bb_pkg;
   // Constants
   //////////////////////////////////////////////////////////////////////////////
 
-  localparam AW       = 32;   // Address bus
-  localparam DW       = 32;   // Data bus
-  localparam MEM_SIZE = 256;  // Memory size in bytes
+  // Address bus
+  localparam AW = 32;
+
+  // Data bus
+  localparam DW = 32;
+
+  // Memory size in bytes
+  localparam MEM_SIZE = 4294967296;
 
 endpackage

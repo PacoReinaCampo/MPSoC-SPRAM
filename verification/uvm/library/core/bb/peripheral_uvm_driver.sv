@@ -66,6 +66,7 @@ class peripheral_uvm_driver extends uvm_driver #(peripheral_uvm_transaction);
   task read_drive();
     begin
       vif.dr_cb.ram_addr <= req.address;
+      vif.dr_cb.ram_din  <= req.ram_din;
       vif.dr_cb.ram_cen  <= 0;
       vif.dr_cb.ram_wen  <= 1;
 

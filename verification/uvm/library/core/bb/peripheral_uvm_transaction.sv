@@ -18,6 +18,7 @@ class peripheral_uvm_transaction extends uvm_sequence_item;
   `uvm_field_int(ram_rst, UVM_ALL_ON)  // Asynchronous reset active low
 
   `uvm_field_int(ram_addr, UVM_ALL_ON)
+  `uvm_field_int(ram_dout, UVM_ALL_ON)
   `uvm_field_int(ram_din, UVM_ALL_ON)
   `uvm_field_int(ram_cen, UVM_ALL_ON)
   `uvm_field_int(ram_wen, UVM_ALL_ON)

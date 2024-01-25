@@ -55,4 +55,4 @@ test:
 	gtkwave dump.vcd
 
 clean:
-	rm -rf *.dir *.jou *.log *.pb *.vcd
+	rm -rf xsim.* *.dir *.jou *.log *.pb *.vcd *.wdb
