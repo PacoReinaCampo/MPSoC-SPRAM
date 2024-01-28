@@ -42,17 +42,4 @@
 ##                                                                               ##
 ###################################################################################
 
-all: build simulate
-
-build:
-	xvlog -sv -prj system.prj -L uvm
-
-simulate:
-	xelab peripheral_uvm_testbench -relax -s top -timescale 1ns/1ps
-	xsim top -testplusarg UVM_TESTNAME=peripheral_uvm_test -testplusarg UVM_VERBOSITY=UVM_LOW -runall
-
-test:
-	gtkwave dump.vcd
-
-clean:
-	rm -rf *.dir *.jou *.log *.pb *.vcd *.wdb
+make test
