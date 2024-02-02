@@ -45,23 +45,23 @@ class peripheral_uvm_monitor extends uvm_monitor;
   task collect_write_transaction();
     begin
       // Operate in a synchronous manner
-      @(posedge vif.aclk);
+      @(posedge vif.clk_i);
 
       // Address Phase
-      act_transaction.awid    <= vif.rc_cb.awid;
-      act_transaction.awadr   <= vif.rc_cb.awadr;
-      act_transaction.awvalid <= vif.rc_cb.awvalid;
-      act_transaction.awlen   <= vif.rc_cb.awlen;
-      act_transaction.awsize  <= vif.rc_cb.awsize;
-      act_transaction.awburst <= vif.rc_cb.awburst;
-      act_transaction.awlock  <= vif.rc_cb.awlock;
-      act_transaction.awcache <= vif.rc_cb.awcache;
-      act_transaction.awprot  <= vif.rc_cb.awprot;
-      @(posedge vif.awready);
+      act_transaction.axi_aw_id    <= vif.rc_cb.axi_aw_id;
+      act_transaction.axi_aw_adr   <= vif.rc_cb.axi_aw_adr;
+      act_transaction.axi_aw_valid <= vif.rc_cb.axi_aw_valid;
+      act_transaction.axi_aw_len   <= vif.rc_cb.axi_aw_len;
+      act_transaction.axi_aw_size  <= vif.rc_cb.axi_aw_size;
+      act_transaction.axi_aw_burst <= vif.rc_cb.axi_aw_burst;
+      act_transaction.axi_aw_lock  <= vif.rc_cb.axi_aw_lock;
+      act_transaction.axi_aw_cache <= vif.rc_cb.axi_aw_cache;
+      act_transaction.axi_aw_prot  <= vif.rc_cb.axi_aw_prot;
+      @(posedge vif.axi_aw_ready);
 
       // Data Phase
-      act_transaction.awvalid <= vif.rc_cb.awvalid;
-      act_transaction.awadr   <= vif.rc_cb.awadr;
+      act_transaction.axi_aw_valid <= vif.rc_cb.axi_aw_valid;
+      act_transaction.axi_aw_adr   <= vif.rc_cb.axi_aw_adr;
       act_transaction.wid     <= vif.rc_cb.wid;
       act_transaction.wvalid  <= vif.rc_cb.wvalid;
       act_transaction.wrdata  <= vif.rc_cb.wrdata;
@@ -81,19 +81,19 @@ class peripheral_uvm_monitor extends uvm_monitor;
   task collect_read_transaction();
     begin
       // Address Phase
-      act_transaction.arid    <= vif.rc_cb.arid;
-      act_transaction.araddr  <= vif.rc_cb.awadr;
-      act_transaction.arvalid <= vif.rc_cb.arvalid;
-      act_transaction.arlen   <= vif.rc_cb.arlen;
-      act_transaction.arsize  <= vif.rc_cb.arsize;
-      act_transaction.arlock  <= vif.rc_cb.arlock;
-      act_transaction.arcache <= vif.rc_cb.arcache;
-      act_transaction.arprot  <= vif.rc_cb.arprot;
+      act_transaction.axi_ar_id    <= vif.rc_cb.axi_ar_id;
+      act_transaction.axi_ar_addr  <= vif.rc_cb.axi_aw_adr;
+      act_transaction.axi_ar_valid <= vif.rc_cb.axi_ar_valid;
+      act_transaction.axi_ar_len   <= vif.rc_cb.axi_ar_len;
+      act_transaction.axi_ar_size  <= vif.rc_cb.axi_ar_size;
+      act_transaction.axi_ar_lock  <= vif.rc_cb.axi_ar_lock;
+      act_transaction.axi_ar_cache <= vif.rc_cb.axi_ar_cache;
+      act_transaction.axi_ar_prot  <= vif.rc_cb.axi_ar_prot;
       act_transaction.rready  <= vif.rc_cb.rready;
-      @(posedge vif.arready);
+      @(posedge vif.axi_ar_ready);
 
       // Data Phase
-      act_transaction.arvalid <= vif.rc_cb.arvalid;
+      act_transaction.axi_ar_valid <= vif.rc_cb.axi_ar_valid;
       act_transaction.rready  <= vif.rc_cb.rready;
       @(posedge vif.rvalid);
 
@@ -101,7 +101,7 @@ class peripheral_uvm_monitor extends uvm_monitor;
       act_transaction.rdata  <= vif.rc_cb.rdata;
       @(negedge vif.rvalid);
 
-      act_transaction.araddr <= vif.rc_cb.araddr;
+      act_transaction.axi_ar_addr <= vif.rc_cb.axi_ar_addr;
     end
   endtask
 endclass : peripheral_uvm_monitor
