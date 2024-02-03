@@ -49,7 +49,7 @@ class peripheral_uvm_monitor extends uvm_monitor;
 
       // Address Phase
       act_transaction.axi_aw_id    <= vif.rc_cb.axi_aw_id;
-      act_transaction.axi_aw_adr   <= vif.rc_cb.axi_aw_adr;
+      act_transaction.axi_aw_addr  <= vif.rc_cb.axi_aw_addr;
       act_transaction.axi_aw_valid <= vif.rc_cb.axi_aw_valid;
       act_transaction.axi_aw_len   <= vif.rc_cb.axi_aw_len;
       act_transaction.axi_aw_size  <= vif.rc_cb.axi_aw_size;
@@ -61,20 +61,20 @@ class peripheral_uvm_monitor extends uvm_monitor;
 
       // Data Phase
       act_transaction.axi_aw_valid <= vif.rc_cb.axi_aw_valid;
-      act_transaction.axi_aw_adr   <= vif.rc_cb.axi_aw_adr;
-      act_transaction.wid     <= vif.rc_cb.wid;
-      act_transaction.wvalid  <= vif.rc_cb.wvalid;
-      act_transaction.wrdata  <= vif.rc_cb.wrdata;
-      act_transaction.wstrb   <= vif.rc_cb.wstrb;
-      act_transaction.wlast   <= vif.rc_cb.wlast;
-      @(posedge vif.wready);
+      act_transaction.axi_aw_addr  <= vif.rc_cb.axi_aw_addr;
+      act_transaction.axi_aw_id    <= vif.rc_cb.axi_aw_id;
+      act_transaction.axi_aw_valid <= vif.rc_cb.axi_aw_valid;
+      act_transaction.axi_w_data   <= vif.rc_cb.axi_w_data;
+      act_transaction.axi_w_strb   <= vif.rc_cb.axi_w_strb;
+      act_transaction.axi_w_last   <= vif.rc_cb.axi_w_last;
+      @(posedge vif.axi_aw_ready);
 
       // Response Phase
-      act_transaction.wid    <= vif.rc_cb.wid;
-      act_transaction.wvalid <= vif.rc_cb.wvalid;
-      act_transaction.wrdata <= vif.rc_cb.wrdata;
-      act_transaction.wstrb  <= vif.rc_cb.wstrb;
-      act_transaction.wlast  <= vif.rc_cb.wlast;
+      act_transaction.axi_aw_id    <= vif.rc_cb.axi_aw_id;
+      act_transaction.axi_aw_valid <= vif.rc_cb.axi_aw_valid;
+      act_transaction.axi_w_data   <= vif.rc_cb.axi_w_data;
+      act_transaction.axi_w_strb   <= vif.rc_cb.axi_w_strb;
+      act_transaction.axi_w_last   <= vif.rc_cb.axi_w_last;
     end
   endtask
 
@@ -82,24 +82,24 @@ class peripheral_uvm_monitor extends uvm_monitor;
     begin
       // Address Phase
       act_transaction.axi_ar_id    <= vif.rc_cb.axi_ar_id;
-      act_transaction.axi_ar_addr  <= vif.rc_cb.axi_aw_adr;
+      act_transaction.axi_ar_addr  <= vif.rc_cb.axi_aw_addr;
       act_transaction.axi_ar_valid <= vif.rc_cb.axi_ar_valid;
       act_transaction.axi_ar_len   <= vif.rc_cb.axi_ar_len;
       act_transaction.axi_ar_size  <= vif.rc_cb.axi_ar_size;
       act_transaction.axi_ar_lock  <= vif.rc_cb.axi_ar_lock;
       act_transaction.axi_ar_cache <= vif.rc_cb.axi_ar_cache;
       act_transaction.axi_ar_prot  <= vif.rc_cb.axi_ar_prot;
-      act_transaction.rready  <= vif.rc_cb.rready;
+      act_transaction.axi_r_ready  <= vif.rc_cb.axi_r_ready;
       @(posedge vif.axi_ar_ready);
 
       // Data Phase
       act_transaction.axi_ar_valid <= vif.rc_cb.axi_ar_valid;
-      act_transaction.rready  <= vif.rc_cb.rready;
-      @(posedge vif.rvalid);
+      act_transaction.axi_r_ready  <= vif.rc_cb.axi_r_ready;
+      @(posedge vif.axi_r_valid);
 
-      act_transaction.rready <= vif.rc_cb.rready;
-      act_transaction.rdata  <= vif.rc_cb.rdata;
-      @(negedge vif.rvalid);
+      act_transaction.axi_r_ready <= vif.rc_cb.axi_r_ready;
+      act_transaction.axi_r_data  <= vif.rc_cb.axi_r_data;
+      @(negedge vif.axi_r_valid);
 
       act_transaction.axi_ar_addr <= vif.rc_cb.axi_ar_addr;
     end

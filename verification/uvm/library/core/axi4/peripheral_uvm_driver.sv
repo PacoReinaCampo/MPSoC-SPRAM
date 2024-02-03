@@ -58,7 +58,7 @@ class peripheral_uvm_driver extends uvm_driver #(peripheral_uvm_transaction);
 
       // Address Phase
       vif.dr_cb.axi_aw_id    <= 0;
-      vif.dr_cb.axi_aw_adr   <= req.address;
+      vif.dr_cb.axi_aw_addr  <= req.address;
       vif.dr_cb.axi_aw_valid <= 1;
       vif.dr_cb.axi_aw_len   <= AXI_BURST_LENGTH_1;
       vif.dr_cb.axi_aw_size  <= AXI_BURST_SIZE_WORD;
@@ -70,18 +70,18 @@ class peripheral_uvm_driver extends uvm_driver #(peripheral_uvm_transaction);
 
       // Data Phase
       vif.dr_cb.axi_aw_valid <= 0;
-      vif.dr_cb.axi_aw_adr   <= 'bX;
-      vif.dr_cb.axi_w_id     <= 0;
+      vif.dr_cb.axi_aw_addr  <= 'bX;
+      vif.dr_cb.axi_aw_id    <= 0;
       vif.dr_cb.axi_w_valid  <= 1;
-      vif.dr_cb.axi_w_rdata  <= req.wrdata;
+      vif.dr_cb.axi_w_data   <= req.axi_w_data;
       vif.dr_cb.axi_w_strb   <= 4'hF;
       vif.dr_cb.axi_w_last   <= 1;
       @(posedge vif.axi_w_ready);
 
       // Response Phase
-      vif.dr_cb.axi_w_id    <= 0;
+      vif.dr_cb.axi_aw_id   <= 0;
       vif.dr_cb.axi_w_valid <= 0;
-      vif.dr_cb.axi_w_rdata <= 'bX;
+      vif.dr_cb.axi_w_data  <= 'bX;
       vif.dr_cb.axi_w_strb  <= 0;
       vif.dr_cb.axi_w_last  <= 0;
     end
@@ -98,16 +98,16 @@ class peripheral_uvm_driver extends uvm_driver #(peripheral_uvm_transaction);
       vif.dr_cb.axi_ar_lock  <= AXI_LOCK_NORMAL;
       vif.dr_cb.axi_ar_cache <= 0;
       vif.dr_cb.axi_ar_prot  <= AXI_PROTECTION_NORMAL;
-      vif.dr_cb.rready  <= 0;
+      vif.dr_cb.axi_r_ready  <= 0;
       @(posedge vif.axi_ar_ready);
 
       // Data Phase
       vif.dr_cb.axi_ar_valid <= 0;
-      vif.dr_cb.rready  <= 1;
-      @(posedge vif.rvalid);
+      vif.dr_cb.axi_r_ready  <= 1;
+      @(posedge vif.axi_r_valid);
 
-      vif.dr_cb.rready <= 0;
-      @(negedge vif.rvalid);
+      vif.dr_cb.axi_r_ready <= 0;
+      @(negedge vif.axi_r_valid);
 
       vif.dr_cb.axi_ar_addr <= 'bx;
     end
@@ -119,44 +119,44 @@ class peripheral_uvm_driver extends uvm_driver #(peripheral_uvm_transaction);
     // Global Signals
     vif.dr_cb.rst_ni <= 0;  // Active LOW
 
-    // Write Address Channel
-    vif.dr_cb.axi_aw_id    <= 0;  // Address Write ID
-    vif.dr_cb.axi_aw_adr   <= 0;  // Write Address
-    vif.dr_cb.axi_aw_len   <= 0;  // Burst Length
-    vif.dr_cb.axi_aw_size  <= 0;  // Burst Size
-    vif.dr_cb.axi_aw_burst <= 0;  // Burst Type
-    vif.dr_cb.axi_aw_lock  <= 0;  // Lock Type
-    vif.dr_cb.axi_aw_cache <= 0;  // Cache Type
-    vif.dr_cb.axi_aw_prot  <= 0;  // Protection Type
-    vif.dr_cb.axi_aw_valid <= 0;  // Write Address Valid
+    vif.dr_cb.axi_aw_id <= 0;
+    vif.dr_cb.axi_aw_addr <= 0;
+    vif.dr_cb.axi_aw_len <= 0;
+    vif.dr_cb.axi_aw_size <= 0;
+    vif.dr_cb.axi_aw_burst <= 0;
+    vif.dr_cb.axi_aw_lock <= 0;
+    vif.dr_cb.axi_aw_cache <= 0;
+    vif.dr_cb.axi_aw_prot <= 0;
+    vif.dr_cb.axi_aw_qos <= 0;
+    vif.dr_cb.axi_aw_region <= 0;
+    vif.dr_cb.axi_aw_user <= 0;
+    vif.dr_cb.axi_aw_valid <= 0;
 
-    // Write Data Channel
-    vif.dr_cb.wid     <= 0;  // Write ID
-    vif.dr_cb.wrdata  <= 0;  // Write Data
-    vif.dr_cb.wstrb   <= 0;  // Write Strobes
-    vif.dr_cb.wlast   <= 0;  // Write Last
-    vif.dr_cb.wvalid  <= 0;  // Write Valid
+    vif.dr_cb.axi_ar_id <= 0;
+    vif.dr_cb.axi_ar_addr <= 0;
+    vif.dr_cb.axi_ar_len <= 0;
+    vif.dr_cb.axi_ar_size <= 0;
+    vif.dr_cb.axi_ar_burst <= 0;
+    vif.dr_cb.axi_ar_lock <= 0;
+    vif.dr_cb.axi_ar_cache <= 0;
+    vif.dr_cb.axi_ar_prot <= 0;
+    vif.dr_cb.axi_ar_qos <= 0;
+    vif.dr_cb.axi_ar_region <= 0;
+    vif.dr_cb.axi_ar_user <= 0;
+    vif.dr_cb.axi_ar_valid <= 0;
 
-    // Write Response CHannel
-    vif.dr_cb.axi_b_id     <= 0;  // Response ID
-    vif.dr_cb.axi_b_resp   <= 0;  // Write Response
-    vif.dr_cb.axi_b_valid  <= 0;  // Write Response Valid   
+    vif.dr_cb.axi_w_data <= 0;
+    vif.dr_cb.axi_w_strb <= 0;
+    vif.dr_cb.axi_w_last <= 0;
+    vif.dr_cb.axi_w_user <= 0;
+    vif.dr_cb.axi_w_valid <= 0;
 
-    // Read Address Channel
-    vif.dr_cb.axi_ar_id    <= 0;  // Read Address ID
-    vif.dr_cb.axi_ar_addr  <= 0;  // Read Address
-    vif.dr_cb.axi_ar_len   <= 0;  // Burst Length
-    vif.dr_cb.axi_ar_size  <= 0;  // Burst Size
-    vif.dr_cb.axi_ar_lock  <= 0;  // Lock Type
-    vif.dr_cb.axi_ar_cache <= 0;  // Cache Type
-    vif.dr_cb.axi_ar_prot  <= 0;  // Protection Type
-    vif.dr_cb.axi_ar_valid <= 0;  // Read Address Valid
+    vif.dr_cb.axi_r_ready <= 0;
 
-    // Read Data Channel
-    vif.dr_cb.rready  <= 0;  // Read Ready
+    vif.dr_cb.axi_b_ready <= 0;
 
-    repeat (5) @(posedge vif.aclk);
+    repeat (5) @(posedge vif.clk_i);
 
-    vif.dr_cb.axi_ar_esetn <= 1;  // Inactive HIGH
+    vif.dr_cb.rst_ni <= 1;  // Inactive HIGH
   endtask
 endclass : peripheral_uvm_driver
