@@ -42,5 +42,5 @@
 ::                                                                               ::
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-del *.jou *.log *.pb *.vcd
-rmdir /s /q xsim.dir .Xil
+del *.jou *.log *.pb *.vcd *.wdb
+rmdir /s /q xsim.* *.dir .Xil
