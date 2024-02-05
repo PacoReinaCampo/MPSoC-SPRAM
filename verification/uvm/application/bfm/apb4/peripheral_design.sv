@@ -16,7 +16,7 @@ module peripheral_design (
 );
 
   // Memory Declaration
-  reg [PDATA_SIZE-1:0] memory[31:0];
+  reg [PDATA_SIZE-1:0] memory [31:0];
 
   // State Declaration Communication
   parameter [1:0] IDLE   = 2'b00;
