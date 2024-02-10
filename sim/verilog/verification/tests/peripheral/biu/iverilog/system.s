@@ -42,14 +42,9 @@
 ##                                                                               ##
 ###################################################################################
 
-all: build simulate
+../../../../../../../rtl/verilog/code/pkg/peripheral/biu/peripheral_biu_pkg.sv
+../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_spram_biu.sv
+../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_spram_bridge_biu.sv
+../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_spram_generic_biu.sv
 
-build:
-	xvlog -prj system.prj
-
-simulate:
-	xelab peripheral_spram_testbench
-	xsim -R peripheral_spram_testbench
-
-clean:
-	rm -rf *.dir *.jou *.log *.pb *.vcd .Xil
+../../../../../../../bench/verilog/code/tests/peripheral/biu/peripheral_spram_testbench.sv

@@ -191,6 +191,6 @@ module peripheral_spram_axi4 #(
     .data_i(data_o_int),
 
     .data_o(data_i_int)
-);
+  );
 
 endmodule  // peripheral_spram_axi4

@@ -45,11 +45,10 @@
 all: build simulate
 
 build:
-	xvlog -prj system.prj
+	iverilog -g2012 -o system.vvp -c system.s -s peripheral_spram_testbench -I ../../../../../../../rtl/verilog/code/biu/pkg
 
 simulate:
-	xelab peripheral_spram_testbench
-	xsim -R peripheral_spram_testbench
+	vvp system.vvp
 
 clean:
-	rm -rf *.dir *.jou *.log *.pb *.vcd .Xil
+	rm -rf *.vvp

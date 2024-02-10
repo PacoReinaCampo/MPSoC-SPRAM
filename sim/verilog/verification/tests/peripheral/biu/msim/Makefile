@@ -45,11 +45,11 @@
 all: build simulate
 
 build:
-	xvlog -prj system.prj
+	if [ ! -e work ]; then vlib work; fi
+	vlog -sv -f system.f
 
 simulate:
-	xelab peripheral_spram_testbench
-	xsim -R peripheral_spram_testbench
+	vsim -c -do run.do work.peripheral_spram_testbench
 
 clean:
-	rm -rf *.dir *.jou *.log *.pb *.vcd .Xil
+	rm -rf work transcript

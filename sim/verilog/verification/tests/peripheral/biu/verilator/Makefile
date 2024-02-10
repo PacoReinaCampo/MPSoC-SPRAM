@@ -42,14 +42,17 @@
 ##                                                                               ##
 ###################################################################################
 
-all: build simulate
+all: build
 
 build:
-	xvlog -prj system.prj
+	verilator -Wno-lint -Wno-UNOPTFLAT -Wno-COMBDLY --cc -f system.vc --top-module peripheral_spram_testbench
 
 simulate:
-	xelab peripheral_spram_testbench
-	xsim -R peripheral_spram_testbench
+	make -C obj_dir -j -f Vperipheral_spram_testbench.mk Vperipheral_spram_testbench
+	obj_dir/Vperipheral_spram_testbench
+
+test:
+	gtkwave peripheral_spram_testbench.vcd
 
 clean:
-	rm -rf *.dir *.jou *.log *.pb *.vcd .Xil
+	rm -rf obj_dir

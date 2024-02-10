@@ -42,14 +42,5 @@
 ##                                                                               ##
 ###################################################################################
 
-all: build simulate
-
-build:
-	xvlog -prj system.prj
-
-simulate:
-	xelab peripheral_spram_testbench
-	xsim -R peripheral_spram_testbench
-
-clean:
-	rm -rf *.dir *.jou *.log *.pb *.vcd .Xil
+make clean
+make
