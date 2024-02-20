@@ -44,7 +44,7 @@
 
 +incdir+../../../../../../../rtl/verilog/code/pkg/wb
 
-../../../../../../../bench/verilog/code/tests/peripheral/wb/main/peripheral_spram_testbench.sv
+../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_spram_testbench.sv
 
 ../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_ram_generic_wb.sv
 ../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_spram_wb.sv

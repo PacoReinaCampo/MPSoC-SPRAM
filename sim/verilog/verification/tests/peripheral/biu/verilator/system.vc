@@ -47,4 +47,4 @@
 ../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_spram_bridge_biu.sv
 ../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_spram_generic_biu.sv
 
-../../../../../../../bench/verilog/code/tests/peripheral/biu/peripheral_spram_testbench.sv
+../../../../../../../verification/tasks/library/peripheral/biu/peripheral_spram_testbench.sv
