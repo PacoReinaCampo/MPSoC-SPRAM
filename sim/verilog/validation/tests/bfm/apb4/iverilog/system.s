@@ -42,8 +42,8 @@
 ##                                                                               ##
 ###################################################################################
 
-../../../../../../../verification/tasks/library/bfm/apb4/peripheral_gpio_apb4.sv
+../../../../../../../validation/tasks/library/bfm/apb4/peripheral_gpio_apb4.sv
 
-../../../../../../../verification/tasks/library/bfm/apb4/peripheral_bfm_apb4.sv
-../../../../../../../verification/tasks/library/bfm/apb4/peripheral_bfm_master_apb4.sv
-../../../../../../../verification/tasks/library/bfm/apb4/peripheral_bfm_testbench.sv
+../../../../../../../validation/tasks/library/bfm/apb4/peripheral_bfm_apb4.sv
+../../../../../../../validation/tasks/library/bfm/apb4/peripheral_bfm_master_apb4.sv
+../../../../../../../validation/tasks/library/bfm/apb4/peripheral_bfm_testbench.sv

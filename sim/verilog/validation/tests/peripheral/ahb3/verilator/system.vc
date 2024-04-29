@@ -48,6 +48,6 @@
 ../../../../../../../rtl/verilog/code/peripheral/ahb3/peripheral_spram_1r1w.sv
 ../../../../../../../rtl/verilog/code/peripheral/ahb3/peripheral_spram_1r1w_generic.sv
 
-../../../../../../../verification/tasks/library/peripheral/ahb3/peripheral_bfm_ahb3.sv
-../../../../../../../verification/tasks/library/peripheral/ahb3/peripheral_bfm_master_ahb3.sv
-../../../../../../../verification/tasks/library/peripheral/ahb3/peripheral_spram_testbench.sv
+../../../../../../../validation/tasks/library/peripheral/ahb3/peripheral_bfm_ahb3.sv
+../../../../../../../validation/tasks/library/peripheral/ahb3/peripheral_bfm_master_ahb3.sv
+../../../../../../../validation/tasks/library/peripheral/ahb3/peripheral_spram_testbench.sv

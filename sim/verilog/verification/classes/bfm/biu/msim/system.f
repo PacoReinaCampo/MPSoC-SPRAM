@@ -42,7 +42,7 @@
 ##                                                                               ##
 ###################################################################################
 
-../../../../../../../rtl/verilog/code/pkg/peripheral/bb/peripheral_bb_pkg.sv
-../../../../../../../verification/classes/application/bfm/bb/peripheral_design.sv
+../../../../../../../rtl/verilog/code/pkg/peripheral/biu/peripheral_bb_pkg.sv
+../../../../../../../verification/classes/application/bfm/biu/peripheral_design.sv
 
-../../../../../../../verification/classes/library/bfm/bb/peripheral_testbench.sv
+../../../../../../../verification/classes/library/bfm/biu/peripheral_testbench.sv

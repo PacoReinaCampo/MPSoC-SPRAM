@@ -44,13 +44,13 @@
 
 +incdir+../../../../../../../rtl/verilog/code/pkg/wb
 
-../../../../../../../verification/tasks/library/peripheral/wb/bus/peripheral_bfm_master_wb.sv
-../../../../../../../verification/tasks/library/peripheral/wb/bus/peripheral_bfm_memory_wb.sv
-../../../../../../../verification/tasks/library/peripheral/wb/bus/peripheral_bfm_slave_wb.sv
-../../../../../../../verification/tasks/library/peripheral/wb/bus/peripheral_bfm_transactor_wb.sv
-../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_tap_generator.sv
-../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_utils_testbench.sv
-../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_spram_testbench.sv
+../../../../../../../validation/tasks/library/peripheral/wb/bus/peripheral_bfm_master_wb.sv
+../../../../../../../validation/tasks/library/peripheral/wb/bus/peripheral_bfm_memory_wb.sv
+../../../../../../../validation/tasks/library/peripheral/wb/bus/peripheral_bfm_slave_wb.sv
+../../../../../../../validation/tasks/library/peripheral/wb/bus/peripheral_bfm_transactor_wb.sv
+../../../../../../../validation/tasks/library/peripheral/wb/main/peripheral_tap_generator.sv
+../../../../../../../validation/tasks/library/peripheral/wb/main/peripheral_utils_testbench.sv
+../../../../../../../validation/tasks/library/peripheral/wb/main/peripheral_spram_testbench.sv
 
 ../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_ram_generic_wb.sv
 ../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_spram_wb.sv
