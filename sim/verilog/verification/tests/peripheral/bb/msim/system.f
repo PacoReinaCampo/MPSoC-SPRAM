@@ -42,15 +42,15 @@
 ##                                                                               ##
 ###################################################################################
 
-../../../../../../../rtl/verilog/code/pkg/peripheral/wb/peripheral_wb_pkg.sv
+../../../../../../../rtl/verilog/code/pkg/peripheral/bb/peripheral_bb_pkg.sv
 
-../../../../../../../verification/tasks/library/peripheral/wb/bus/peripheral_bfm_master_wb.sv
-../../../../../../../verification/tasks/library/peripheral/wb/bus/peripheral_bfm_memory_wb.sv
-../../../../../../../verification/tasks/library/peripheral/wb/bus/peripheral_bfm_slave_wb.sv
-../../../../../../../verification/tasks/library/peripheral/wb/bus/peripheral_bfm_transactor_wb.sv
-../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_tap_generator.sv
-../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_utils_testbench.sv
-../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_spram_testbench.sv
+../../../../../../../verification/tasks/library/peripheral/bb/bus/peripheral_bfm_master_bb.sv
+../../../../../../../verification/tasks/library/peripheral/bb/bus/peripheral_bfm_memory_bb.sv
+../../../../../../../verification/tasks/library/peripheral/bb/bus/peripheral_bfm_slave_bb.sv
+../../../../../../../verification/tasks/library/peripheral/bb/bus/peripheral_bfm_transactor_bb.sv
+../../../../../../../verification/tasks/library/peripheral/bb/main/peripheral_tap_generator.sv
+../../../../../../../verification/tasks/library/peripheral/bb/main/peripheral_utils_testbench.sv
+../../../../../../../verification/tasks/library/peripheral/bb/main/peripheral_spram_testbench.sv
 
-../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_spram_generic_wb.sv
-../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_spram_wb.sv
+../../../../../../../rtl/verilog/code/peripheral/bb/peripheral_spram_generic_bb.sv
+../../../../../../../rtl/verilog/code/peripheral/bb/peripheral_spram_bb.sv

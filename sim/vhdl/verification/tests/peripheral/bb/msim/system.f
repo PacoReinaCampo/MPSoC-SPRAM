@@ -43,9 +43,9 @@
 ###################################################################################
 
 ../../../../../../../rtl/vhdl/code/pkg/core/vhdl_pkg.vhd
-../../../../../../../rtl/vhdl/code/pkg/peripheral/wb/peripheral_wb_pkg.vhd
+../../../../../../../rtl/vhdl/code/pkg/peripheral/bb/peripheral_bb_pkg.vhd
 
-../../../../../../../rtl/vhdl/code/peripheral/wb/peripheral_spram_generic_wb.vhd
-../../../../../../../rtl/vhdl/code/peripheral/wb/peripheral_spram_wb.vhd
+../../../../../../../rtl/vhdl/code/peripheral/bb/peripheral_spram_generic_bb.vhd
+../../../../../../../rtl/vhdl/code/peripheral/bb/peripheral_spram_bb.vhd
 
-../../../../../../../bench/vhdl/code/tests/peripheral/wb/peripheral_spram_testbench.vhd
+../../../../../../../bench/vhdl/code/tests/peripheral/bb/peripheral_spram_testbench.vhd

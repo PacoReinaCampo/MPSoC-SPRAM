@@ -42,13 +42,13 @@
 //                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////
 
-sv work ../../../../../../../verification/tasks/library/core/wb/bus/mpsoc_msi_wb_bfm_master.sv
-sv work ../../../../../../../verification/tasks/library/core/wb/bus/mpsoc_msi_wb_bfm_memory.sv
-sv work ../../../../../../../verification/tasks/library/core/wb/bus/mpsoc_msi_wb_bfm_slave.sv
-sv work ../../../../../../../verification/tasks/library/core/wb/bus/mpsoc_msi_wb_bfm_transactor.sv
-sv work ../../../../../../../verification/tasks/library/core/wb/main/vlog_tap_generator.sv
-sv work ../../../../../../../verification/tasks/library/core/wb/main/vlog_tb_utils.sv
-sv work ../../../../../../../verification/tasks/library/core/wb/main/wb_spram_tb.sv
+sv work ../../../../../../../verification/tasks/library/core/bb/bus/mpsoc_msi_bb_bfm_master.sv
+sv work ../../../../../../../verification/tasks/library/core/bb/bus/mpsoc_msi_bb_bfm_memory.sv
+sv work ../../../../../../../verification/tasks/library/core/bb/bus/mpsoc_msi_bb_bfm_slave.sv
+sv work ../../../../../../../verification/tasks/library/core/bb/bus/mpsoc_msi_bb_bfm_transactor.sv
+sv work ../../../../../../../verification/tasks/library/core/bb/main/vlog_tap_generator.sv
+sv work ../../../../../../../verification/tasks/library/core/bb/main/vlog_tb_utils.sv
+sv work ../../../../../../../verification/tasks/library/core/bb/main/wb_spram_tb.sv
 
-sv work ../../../../../../../rtl/verilog/code/wb/core/mpsoc_wb_ram_generic.sv
-sv work ../../../../../../../rtl/verilog/code/wb/core/mpsoc_wb_spram.sv
+sv work ../../../../../../../rtl/verilog/code/bb/core/mpsoc_bb_ram_generic.sv
+sv work ../../../../../../../rtl/verilog/code/bb/core/mpsoc_bb_spram.sv

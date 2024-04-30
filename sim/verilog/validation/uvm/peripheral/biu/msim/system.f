@@ -44,7 +44,7 @@
 
 +incdir+../../../../../../../validation/uvm/src
 
-../../../../../../../rtl/verilog/code/pkg/peripheral/biu/peripheral_bb_pkg.sv
-../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_spram_bb.sv
+../../../../../../../rtl/verilog/code/pkg/peripheral/biu/peripheral_biu_pkg.sv
+../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_spram_biu.sv
 
 ../../../../../../../validation/uvm/library/core/biu/peripheral_uvm_testbench.sv

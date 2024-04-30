@@ -4,10 +4,18 @@ code
 │   │   ├── peripheral_spram_1r1w_generic.vhd
 │   │   ├── peripheral_spram_1r1w.vhd
 │   │   └── peripheral_spram_ahb3.vhd
+│   ├── apb4
+│   │   ├── peripheral_spram_1r1w_generic.vhd
+│   │   ├── peripheral_spram_1r1w.vhd
+│   │   └── peripheral_spram_ahb3.vhd
 │   ├── axi4
 │   │   └── peripheral_spram_axi4.vhd
 │   ├── bb
 │   │   └── peripheral_spram_bb.vhd
+│   ├── biu
+│   │   ├── peripheral_spram_1r1w_generic.vhd
+│   │   ├── peripheral_spram_1r1w.vhd
+│   │   └── peripheral_spram_ahb3.vhd
 │   └── wb
 │       ├── peripheral_spram_generic_wb.vhd
 │       └── peripheral_spram_wb.vhd
@@ -17,9 +25,15 @@ code
     └── peripheral
         ├── ahb3
         │   └── peripheral_ahb3_pkg.vhd
+        ├── apb4
+        │   └── peripheral_ahb3_pkg.vhd
         ├── axi4
         │   └── peripheral_axi4_pkg.vhd
+        ├── bb
+        │   └── peripheral_ahb3_pkg.vhd
+        ├── biu
+        │   └── peripheral_ahb3_pkg.vhd
         └── wb
             └── peripheral_wb_pkg.vhd
 
-11 directories, 11 files
+16 directories, 20 files
