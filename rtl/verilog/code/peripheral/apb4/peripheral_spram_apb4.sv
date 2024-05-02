@@ -38,9 +38,9 @@
 // Author(s):
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-import peripheral_ahb3_pkg::*;
+import peripheral_apb4_pkg::*;
 
-module peripheral_spram_ahb3 #(
+module peripheral_spram_apb4 #(
   parameter MEM_SIZE          = 0,          // Memory in Bytes
   parameter MEM_DEPTH         = 256,        // Memory depth
   parameter PLEN              = 8,

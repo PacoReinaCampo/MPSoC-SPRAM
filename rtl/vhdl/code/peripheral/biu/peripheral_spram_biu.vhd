@@ -45,9 +45,9 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 use work.vhdl_pkg.all;
-use work.peripheral_ahb3_pkg.all;
+use work.peripheral_biu_pkg.all;
 
-entity peripheral_spram_ahb3 is
+entity peripheral_spram_biu is
   generic (
     MEM_SIZE          : integer := 256;  -- Memory in Bytes
     MEM_DEPTH         : integer := 256;  -- Memory depth
@@ -76,9 +76,9 @@ entity peripheral_spram_ahb3 is
     HREADY    : in  std_logic;
     HRESP     : out std_logic
     );
-end peripheral_spram_ahb3;
+end peripheral_spram_biu;
 
-architecture rtl of peripheral_spram_ahb3 is
+architecture rtl of peripheral_spram_biu is
 
   ------------------------------------------------------------------------------
   -- Components
