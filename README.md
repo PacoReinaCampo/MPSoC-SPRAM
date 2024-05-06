@@ -1,6 +1,6 @@
 # MPSoC-SPRAM
 ## QueenField
 
-![QueenField](../master/icon.jpg)
+![QueenField](../main/icon.jpg)
 
 **Single-Port RAM for Instruction & Data for a Multi-Processor System on Chip**
