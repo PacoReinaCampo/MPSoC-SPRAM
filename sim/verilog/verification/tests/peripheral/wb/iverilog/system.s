@@ -42,7 +42,7 @@
 ##                                                                               ##
 ###################################################################################
 
-+incdir+../../../../../../../rtl/verilog/code/pkg/wb
+../../../../../../../rtl/verilog/code/pkg/peripheral/wb/peripheral_wb_pkg.sv
 
 ../../../../../../../verification/tasks/library/peripheral/wb/bus/peripheral_bfm_master_wb.sv
 ../../../../../../../verification/tasks/library/peripheral/wb/bus/peripheral_bfm_memory_wb.sv
@@ -52,5 +52,5 @@
 ../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_utils_testbench.sv
 ../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_spram_testbench.sv
 
-../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_ram_generic_wb.sv
+../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_spram_generic_wb.sv
 ../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_spram_wb.sv

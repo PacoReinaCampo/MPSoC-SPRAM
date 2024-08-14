@@ -42,7 +42,7 @@
 ##                                                                               ##
 ###################################################################################
 
-+incdir+../../../../../../../rtl/verilog/code/pkg/wb
+../../../../../../../rtl/verilog/code/pkg/peripheral/biu/peripheral_biu_pkg.sv
 
 ../../../../../../../validation/tasks/library/peripheral/biu/bus/peripheral_bfm_master_biu.sv
 ../../../../../../../validation/tasks/library/peripheral/biu/bus/peripheral_bfm_memory_biu.sv

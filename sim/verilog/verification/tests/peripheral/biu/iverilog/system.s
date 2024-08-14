@@ -43,6 +43,7 @@
 ###################################################################################
 
 ../../../../../../../rtl/verilog/code/pkg/peripheral/biu/peripheral_biu_pkg.sv
+
 ../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_spram_biu.sv
 ../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_spram_bridge_biu.sv
 ../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_spram_generic_biu.sv
