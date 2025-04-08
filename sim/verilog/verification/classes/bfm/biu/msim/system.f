@@ -42,7 +42,8 @@
 ##                                                                               ##
 ###################################################################################
 
-../../../../../../../rtl/verilog/code/pkg/peripheral/biu/peripheral_biu_pkg.sv
+../../../../../../../rtl/verilog/code/pkg/peripheral/axi4/peripheral_axi4_pkg.sv
+
 ../../../../../../../verification/classes/application/bfm/biu/peripheral_design.sv
 
 ../../../../../../../verification/classes/library/bfm/biu/peripheral_testbench.sv
