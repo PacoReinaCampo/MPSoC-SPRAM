@@ -51,7 +51,7 @@ module peripheral_spram_testbench;
   // Variables
   //////////////////////////////////////////////////////////////////////////////
 
-  // AHB3 signals
+  // AHB4 signals
   logic                   HSEL;
   logic [HADDR_SIZE -1:0] HADDR;
   logic [HDATA_SIZE -1:0] HWDATA;
@@ -91,21 +91,21 @@ module peripheral_spram_testbench;
   // TB and DUT
   //
 
-  peripheral_bfm_ahb3 #(
+  peripheral_bfm_ahb4 #(
     .HADDR_SIZE(HADDR_SIZE),
     .HDATA_SIZE(HDATA_SIZE)
   ) tb (
     .*
   );
 
-  peripheral_spram_ahb3 #(
+  peripheral_spram_ahb4 #(
     .MEM_SIZE         (256),
     .MEM_DEPTH        (256),
     .PLEN             (HADDR_SIZE),
     .XLEN             (HDATA_SIZE),
     .TECHNOLOGY       ("GENERIC"),
     .REGISTERED_OUTPUT("NO")
-  ) spram_ahb3 (
+  ) spram_ahb4 (
     .HRESETn(HRESETn),
     .HCLK   (HCLK),
 
