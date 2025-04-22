@@ -42,13 +42,13 @@
 //                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////
 
-sv work ../../../../../../../validation/tasks/library/core/biu/bus/mpsoc_msi_biu_bfm_master.sv
-sv work ../../../../../../../validation/tasks/library/core/biu/bus/mpsoc_msi_biu_bfm_memory.sv
-sv work ../../../../../../../validation/tasks/library/core/biu/bus/mpsoc_msi_biu_bfm_slave.sv
-sv work ../../../../../../../validation/tasks/library/core/biu/bus/mpsoc_msi_biu_bfm_transactor.sv
-sv work ../../../../../../../validation/tasks/library/core/biu/main/vlog_tap_generator.sv
-sv work ../../../../../../../validation/tasks/library/core/biu/main/vlog_tb_utils.sv
-sv work ../../../../../../../validation/tasks/library/core/biu/main/wb_spram_tb.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/biu/bus/mpsoc_msi_biu_bfm_master.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/biu/bus/mpsoc_msi_biu_bfm_memory.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/biu/bus/mpsoc_msi_biu_bfm_slave.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/biu/bus/mpsoc_msi_biu_bfm_transactor.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/biu/main/vlog_tap_generator.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/biu/main/vlog_tb_utils.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/biu/main/wb_spram_tb.sv
 
-sv work ../../../../../../../rtl/verilog/code/biu/core/mpsoc_biu_ram_generic.sv
-sv work ../../../../../../../rtl/verilog/code/biu/core/mpsoc_biu_spram.sv
+sv work ../../../../../../../rtl/verilog/code/biu/peripheral/mpsoc_biu_ram_generic.sv
+sv work ../../../../../../../rtl/verilog/code/biu/peripheral/mpsoc_biu_spram.sv

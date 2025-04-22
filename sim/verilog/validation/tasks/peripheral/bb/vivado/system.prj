@@ -42,13 +42,13 @@
 //                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////
 
-sv work ../../../../../../../validation/tasks/library/core/bb/bus/mpsoc_msi_bb_bfm_master.sv
-sv work ../../../../../../../validation/tasks/library/core/bb/bus/mpsoc_msi_bb_bfm_memory.sv
-sv work ../../../../../../../validation/tasks/library/core/bb/bus/mpsoc_msi_bb_bfm_slave.sv
-sv work ../../../../../../../validation/tasks/library/core/bb/bus/mpsoc_msi_bb_bfm_transactor.sv
-sv work ../../../../../../../validation/tasks/library/core/bb/main/vlog_tap_generator.sv
-sv work ../../../../../../../validation/tasks/library/core/bb/main/vlog_tb_utils.sv
-sv work ../../../../../../../validation/tasks/library/core/bb/main/wb_spram_tb.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/bb/bus/mpsoc_msi_bb_bfm_master.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/bb/bus/mpsoc_msi_bb_bfm_memory.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/bb/bus/mpsoc_msi_bb_bfm_slave.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/bb/bus/mpsoc_msi_bb_bfm_transactor.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/bb/main/vlog_tap_generator.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/bb/main/vlog_tb_utils.sv
+sv work ../../../../../../../validation/tasks/library/peripheral/bb/main/wb_spram_tb.sv
 
-sv work ../../../../../../../rtl/verilog/code/bb/core/mpsoc_bb_ram_generic.sv
-sv work ../../../../../../../rtl/verilog/code/bb/core/mpsoc_bb_spram.sv
+sv work ../../../../../../../rtl/verilog/code/bb/peripheral/mpsoc_bb_ram_generic.sv
+sv work ../../../../../../../rtl/verilog/code/bb/peripheral/mpsoc_bb_spram.sv
