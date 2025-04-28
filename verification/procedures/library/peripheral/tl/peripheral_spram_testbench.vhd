@@ -44,7 +44,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.peripheral_ahb4_pkg.all;
+use work.peripheral_tl_pkg.all;
 
 entity peripheral_spram_testbench is
 end peripheral_spram_testbench;
@@ -86,7 +86,7 @@ architecture rtl of peripheral_spram_testbench is
   -- Components
   ------------------------------------------------------------------------------
 
-  component peripheral_spram_ahb4
+  component peripheral_spram_tl
     generic (
       MEM_SIZE          : integer := 256;  -- Memory in Bytes
       MEM_DEPTH         : integer := 256;  -- Memory depth
@@ -123,7 +123,7 @@ begin
   ------------------------------------------------------------------------------
 
   -- DUT AHB4
-  ahb4_spram : peripheral_spram_ahb4
+  tl_spram : peripheral_spram_tl
     generic map (
       MEM_SIZE          => 256,
       MEM_DEPTH         => 256,

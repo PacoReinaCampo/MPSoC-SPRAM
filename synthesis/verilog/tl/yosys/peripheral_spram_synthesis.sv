@@ -69,14 +69,14 @@ module peripheral_spram_synthesis #(
   //////////////////////////////////////////////////////////////////////////////
 
   // DUT AHB4
-  peripheral_spram_ahb4 #(
+  peripheral_spram_tl #(
     .MEM_SIZE         (MEM_SIZE),
     .MEM_DEPTH        (MEM_DEPTH),
     .PLEN             (PLEN),
     .XLEN             (XLEN),
     .TECHNOLOGY       (TECHNOLOGY),
     .REGISTERED_OUTPUT(REGISTERED_OUTPUT)
-  ) spram_ahb4 (
+  ) spram_tl (
     .HRESETn(HRESETn),
     .HCLK   (HCLK),
 
